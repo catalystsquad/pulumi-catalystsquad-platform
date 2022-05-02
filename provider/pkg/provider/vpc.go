@@ -65,12 +65,12 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 	eksClusterName := lo.Ternary(args.EksClusterName == "", vpcName, args.EksClusterName)
 
 	// create tag map for adding to all resources
-	var tags map[string]string
+	tags := make(map[string]string)
 
 	// tags for individual resources
-	var vpcTags map[string]string
-	var publicSubnetTags map[string]string
-	var privateSubnetTags map[string]string
+	vpcTags := make(map[string]string)
+	publicSubnetTags := make(map[string]string)
+	privateSubnetTags := make(map[string]string)
 
 	// add user provided tags to all resources
 	if args.Tags != nil {

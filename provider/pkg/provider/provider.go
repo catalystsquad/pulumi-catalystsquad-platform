@@ -24,7 +24,7 @@ import (
 func construct(ctx *pulumi.Context, typ, name string, inputs provider.ConstructInputs,
 	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
 	switch typ {
-	case "catalystsquad-platform":
+	case "catalystsquad-platform:index:Vpc":
 		return constructVpc(ctx, name, inputs, options)
 	default:
 		return nil, errors.Errorf("unknown resource type %s", typ)
