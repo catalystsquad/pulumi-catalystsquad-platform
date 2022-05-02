@@ -1,0 +1,55 @@
+name: Semantic Release
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "provider/**"
+      - "schema.yaml"
+      - "sdk/**"
+jobs:
+  semantic-release:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+    outputs:
+      new_release_published: "${{ steps.release.outputs.new_release_published }}"
+      new_release_version: "${{ steps.release.outputs.new_release_version }}"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Release
+        id: release
+        uses: cycjimmy/semantic-release-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          extra_plugins: |
+            conventional-changelog-conventionalcommits
+            @semantic-release/commit-analyzer
+            @semantic-release/release-notes-generator
+            @semantic-release/changelog
+            @semantic-release/exec
+            @semantic-release/git
+            @semantic-release/github
+  releases-matrix:
+    needs: [ semantic-release ]
+    if: needs.semantic-release.outputs.new_release_published == 'true'
+    name: Release Go Binary
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, darwin]
+        goarch: [amd64]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: wangyoucao577/go-release-action@v1.28
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          goversion: 1.18
+          pre_command: make build_provider
+          release_tag: "v${{ needs.semantic-release.outputs.new_release_version }}"
+          project_path: "provider/cmd/pulumi-catalystsquad-platform"
+          binary_name: "pulumi-resource-catalystsquad-platform"
+          ldflags: "-X github.com/catalystsquad/pulumi-catalystsquad-platform/provider/pkg/version.Version=${{ needs.semantic-release.outputs.new_release_version }}"
