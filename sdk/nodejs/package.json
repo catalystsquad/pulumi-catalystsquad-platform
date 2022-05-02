@@ -1,19 +1,17 @@
 {
-    "name": "@pulumi/xyz",
+    "name": "@pulumi/catalystsquad-platform",
     "version": "${VERSION}",
     "scripts": {
         "build": "tsc"
     },
     "dependencies": {
-        "@pulumi/aws": "^4.0.0"
+        "@pulumi/pulumi": "^3.31.0"
     },
     "devDependencies": {
         "typescript": "^3.7.0"
     },
-    "peerDependencies": {
-        "@pulumi/pulumi": "latest"
-    },
     "pulumi": {
-        "resource": true
+        "resource": true,
+        "pluginDownloadURL": "https://github.com/catalystsquad/pulumi-catalystsquad-platform/releases/download/v${VERSION}"
     }
 }

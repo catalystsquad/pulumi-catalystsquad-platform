@@ -1,0 +1,20 @@
+{
+  "branches": ["main"],
+  "ci": false,
+  "plugins": [
+    ["@semantic-release/commit-analyzer", {
+        "preset": "conventionalcommits",
+        "releaseRules": [{ "scope": "norelease", "release": false }]
+    }],
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/changelog",
+    ["@semantic-release/exec", {
+        "prepareCmd": "sed -i '0,/^version:.*/s//version: ${nextRelease.version}/' schema.yaml"
+    }],
+    ["@semantic-release/git", {
+        "assets": ["CHANGELOG.md", "schema.yaml"],
+        "message": "chore(release): ${nextRelease.version} \n\n${nextRelease.notes}"
+    }],
+    "@semantic-release/github"
+  ]
+}
