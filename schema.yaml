@@ -26,6 +26,28 @@ types:
           the subnet is not created.
     required:
       - azName
+  catalystsquad-platform:index:EksNodeGroup:
+    type: object
+    description: TODO
+    properties:
+      namePrefix:
+        type: string
+      desiredSize:
+        type: integer
+      maxSize:
+        type: integer
+      minSize:
+        type: integer
+      instanceTypes:
+        type: array
+        items:
+          type: string
+    required:
+      - namePrefix
+      - desiredSize
+      - maxSize
+      - minSize
+      - instanceTypes
 resources:
   catalystsquad-platform:index:Vpc:
     isComponent: true
@@ -81,6 +103,45 @@ resources:
         description: Static IPs for all NAT gateways
     required:
       - vpcID
+  catalystsquad-platform:index:Eks:
+    isComponent: true
+    inputProperties:
+      clusterName:
+        type: string
+        description: TODO
+      k8sVersion:
+        type: string
+        description: TODO
+      nodeGroupVersion:
+        type: string
+        description: TODO
+      nodeGroupConfig:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:EksNodeGroup"
+        description: TODO
+      enableECRAccess:
+        type: boolean
+        description: TODO
+      enableClusterAutoscalerResources:
+        type: boolean
+        description: TODO
+      clusterAutoscalerServiceAccount:
+        type: string
+        description: TODO
+      clusterAutoscalerNamespace:
+        type: string
+        description: TODO
+      enabledClusterLogTypes:
+        type: string
+        description: TODO
+      subnetIDs:
+        type: array
+        items:
+          type: string
+        description: TODO
+    requiredInputs:
+      - subnetIDs
 language:
   csharp:
     # namespace override, otherwise build fails because of the `-` in catalystsquad-platform

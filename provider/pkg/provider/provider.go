@@ -26,6 +26,8 @@ func construct(ctx *pulumi.Context, typ, name string, inputs provider.ConstructI
 	switch typ {
 	case "catalystsquad-platform:index:Vpc":
 		return constructVpc(ctx, name, inputs, options)
+	case "catalystsquad-platform:index:Eks":
+		return constructEks(ctx, name, inputs, options)
 	default:
 		return nil, errors.Errorf("unknown resource type %s", typ)
 	}
@@ -53,4 +55,20 @@ func constructVpc(ctx *pulumi.Context, name string, inputs provider.ConstructInp
 	// that is convertible to `pulumi.Input`.
 	return provider.NewConstructResult(vpc)
 }
+
+// constructEks is an implementation of Construct for the EKS component.
+func constructEks(ctx *pulumi.Context, name string, inputs provider.ConstructInputs,
+	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
+
+	args := &EksArgs{}
+	if err := inputs.CopyTo(args); err != nil {
+		return nil, errors.Wrap(err, "setting args")
+	}
+
+	eks, err := NewEks(ctx, name, args, options)
+	if err != nil {
+		return nil, errors.Wrap(err, "creating component")
+	}
+
+	return provider.NewConstructResult(eks)
 }
