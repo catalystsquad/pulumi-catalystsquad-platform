@@ -153,6 +153,7 @@ resources:
           Required, list of subnet IDs to deploy the cluster and nodegroups to
     requiredInputs:
       - subnetIDs
+      - nodeGroupConfig
 language:
   csharp:
     # namespace override, otherwise build fails because of the `-` in catalystsquad-platform
