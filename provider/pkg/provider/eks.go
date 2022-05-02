@@ -16,32 +16,40 @@ import (
 // EksArgs supplies input for configuring EKS
 type EksArgs struct {
 	// TODO document options, add pulumi tags
-	ClusterName      string         `pulumi:"clusterName"`
-	K8sVersion       string         `pulumi:"k8sVersion"`
-	NodeGroupVersion string         `pulumi:"nodeGroupVersion"`
-	NodeGroupConfig  []EksNodeGroup `pulumi:"nodeGroupConfig"`
-
-	// optional
+	// Optional, name of the EKS cluster. Default: <stack name>
+	ClusterName string `pulumi:"clusterName"`
+	// Optional, k8s version of the EKS cluster. Default: 1.22.6
+	K8sVersion string `pulumi:"k8sVersion"`
+	// Optional, k8s version of all node groups. Allows for upgrading the
+	// control plane before upgrading nodegroups. Default: <k8sVersion>
+	NodeGroupVersion string `pulumi:"nodeGroupVersion"`
+	// Required, list of nodegroup configurations to create.
+	NodeGroupConfig []EksNodeGroup `pulumi:"nodeGroupConfig"`
+	// Optional, whether to enable ECR access policy on nodegroups. Default: true
 	EnableECRAccess *bool `pulumi:"enableECRAccess"`
-
-	// optional cluster autoscaler IRSA configuration
-	EnableClusterAutoscalerResources *bool  `pulumi:"enableClusterAutoscalerResources"`
-	ClusterAutoscalerServiceAccount  string `pulumi:"clusterAutoscalerServiceAccount"`
-	ClusterAutoscalerNamespace       string `pulumi:"clusterAutoscalerNamespace"`
-
-	// optional
+	// Optional, whether to enable cluster autoscaler IRSA resources. Default: true
+	EnableClusterAutoscalerResources *bool `pulumi:"enableClusterAutoscalerResources"`
+	// Optional, cluster autoscaler service account name for IRSA. Default: cluster-autoscaler
+	ClusterAutoscalerServiceAccount string `pulumi:"clusterAutoscalerServiceAccount"`
+	// Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler
+	ClusterAutoscalerNamespace string `pulumi:"clusterAutoscalerNamespace"`
+	// Optional, list of log types to enable on the cluster. Default: []
 	EnabledClusterLogTypes []string `pulumi:"enabledClusterLogTypes"`
-
-	// required
+	// Required, list of subnet IDs to deploy the cluster and nodegroups to
 	SubnetIDs []string `pulumi:"subnetIDs"`
 }
 
 // EksNodeGroup allows configuring multiple nodegroups
 type EksNodeGroup struct {
-	NamePrefix    string   `pulumi:"namePrefix"`
-	DesiredSize   int      `pulumi:"desiredSize"`
-	MaxSize       int      `pulumi:"maxSize"`
-	MinSize       int      `pulumi:"minSize"`
+	// Required, name prefix of the nodegroup
+	NamePrefix string `pulumi:"namePrefix"`
+	// Required, initial desired size of nodegroup, ignored after creation
+	DesiredSize int `pulumi:"desiredSize"`
+	// Required, maximum size of nodegroup
+	MaxSize int `pulumi:"maxSize"`
+	// Required, minimum size of nodegroup
+	MinSize int `pulumi:"minSize"`
+	// Required, list of instance types for the nodegroup
 	InstanceTypes []string `pulumi:"instanceTypes"`
 }
 

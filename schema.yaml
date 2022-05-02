@@ -28,7 +28,7 @@ types:
       - azName
   catalystsquad-platform:index:EksNodeGroup:
     type: object
-    description: TODO
+    description: Configuration for an EKS node group
     properties:
       namePrefix:
         type: string
@@ -108,38 +108,49 @@ resources:
     inputProperties:
       clusterName:
         type: string
-        description: TODO
+        description: >-
+          Optional, name of the EKS cluster. Default: <stack name>
       k8sVersion:
         type: string
-        description: TODO
+        description: >-
+          Optional, k8s version of the EKS cluster. Default: 1.22.6
       nodeGroupVersion:
         type: string
-        description: TODO
+        description: >-
+          Optional, k8s version of all node groups. Allows for upgrading the
+          control plane before upgrading nodegroups. Default: <k8sVersion>
       nodeGroupConfig:
         type: array
         items:
           "$ref": "#/types/catalystsquad-platform:index:EksNodeGroup"
-        description: TODO
+        description: >-
+          Required, list of nodegroup configurations to create.
       enableECRAccess:
         type: boolean
-        description: TODO
+        description: >-
+          Optional, whether to enable ECR access policy on nodegroups. Default: true
       enableClusterAutoscalerResources:
         type: boolean
-        description: TODO
+        description: >-
+          Optional, whether to enable cluster autoscaler IRSA resources. Default: true
       clusterAutoscalerServiceAccount:
         type: string
-        description: TODO
+        description: >-
+          Optional, cluster autoscaler service account name for IRSA. Default: cluster-autoscaler
       clusterAutoscalerNamespace:
         type: string
-        description: TODO
+        description: >-
+          Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler
       enabledClusterLogTypes:
         type: string
-        description: TODO
+        description: >-
+          Optional, list of log types to enable on the cluster. Default: []
       subnetIDs:
         type: array
         items:
           type: string
-        description: TODO
+        description: >-
+          Required, list of subnet IDs to deploy the cluster and nodegroups to
     requiredInputs:
       - subnetIDs
 language:
