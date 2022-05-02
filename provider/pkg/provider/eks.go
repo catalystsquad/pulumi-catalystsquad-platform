@@ -10,7 +10,6 @@ import (
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/eks"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/iam"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/samber/lo"
 )
 
 // EksArgs supplies input for configuring EKS
@@ -36,7 +35,7 @@ type EksArgs struct {
 	// Optional, list of log types to enable on the cluster. Default: []
 	EnabledClusterLogTypes []string `pulumi:"enabledClusterLogTypes"`
 	// Required, list of subnet IDs to deploy the cluster and nodegroups to
-	SubnetIDs []string `pulumi:"subnetIDs"`
+	SubnetIDs pulumi.StringArrayInput `pulumi:"subnetIDs"`
 }
 
 // EksNodeGroup allows configuring multiple nodegroups
@@ -81,16 +80,42 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 	if args.SubnetIDs == nil {
 		return component, errors.New("Missing SubnetID argument")
 	}
-	subnetIDs := args.SubnetIDs
 
 	// default eks arguments
-	clusterName := lo.Ternary(args.ClusterName == "", ctx.Stack(), args.ClusterName)
-	k8sVersion := lo.Ternary(args.K8sVersion == "", "1.22.6", args.K8sVersion)
-	nodeGroupVersion := lo.Ternary(args.NodeGroupVersion == "", k8sVersion, args.NodeGroupVersion)
-	enableECRAccess := lo.Ternary(args.EnableECRAccess == nil, true, *args.EnableECRAccess)
-	enableClusterAutoscalerResources := lo.Ternary(args.EnableClusterAutoscalerResources == nil, true, *args.EnableClusterAutoscalerResources)
-	clusterAutoscalerServiceAccount := lo.Ternary(args.ClusterAutoscalerServiceAccount == "", "cluster-autoscaler", args.ClusterAutoscalerServiceAccount)
-	clusterAutoscalerNamespace := lo.Ternary(args.ClusterAutoscalerNamespace == "", "cluster-autoscaler", args.ClusterAutoscalerNamespace)
+	clusterName := ctx.Stack()
+	if args.ClusterName != "" {
+		clusterName = args.ClusterName
+	}
+
+	k8sVersion := "1.22.6"
+	if args.K8sVersion != "" {
+		k8sVersion = args.K8sVersion
+	}
+
+	nodeGroupVersion := k8sVersion
+	if args.NodeGroupVersion != "" {
+		nodeGroupVersion = args.NodeGroupVersion
+	}
+
+	enableECRAccess := true
+	if args.EnableECRAccess != nil {
+		enableECRAccess = *args.EnableECRAccess
+	}
+
+	enableClusterAutoscalerResources := true
+	if args.EnableClusterAutoscalerResources != nil {
+		enableClusterAutoscalerResources = *args.EnableClusterAutoscalerResources
+	}
+
+	clusterAutoscalerServiceAccount := "cluster-autoscaler"
+	if args.ClusterAutoscalerServiceAccount != "" {
+		clusterAutoscalerServiceAccount = args.ClusterAutoscalerServiceAccount
+	}
+
+	clusterAutoscalerNamespace := "cluster-autoscaler"
+	if args.ClusterAutoscalerNamespace != "" {
+		clusterAutoscalerNamespace = args.ClusterAutoscalerNamespace
+	}
 
 	// create eks service role
 	eksServiceRole, err := iam.NewRole(ctx, "eks-service-role", &iam.RoleArgs{
@@ -201,7 +226,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 		RoleArn:                pulumi.StringInput(eksServiceRole.Arn),
 		EnabledClusterLogTypes: pulumi.ToStringArray(args.EnabledClusterLogTypes),
 		VpcConfig: &eks.ClusterVpcConfigArgs{
-			SubnetIds:            pulumi.ToStringArray(subnetIDs),
+			SubnetIds:            args.SubnetIDs,
 			EndpointPublicAccess: pulumi.Bool(true),
 			PublicAccessCidrs: pulumi.StringArray{
 				pulumi.String("0.0.0.0/0"),
@@ -220,7 +245,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 			InstanceTypes:       pulumi.ToStringArray(nodeGroupConfig.InstanceTypes),
 			NodeGroupNamePrefix: pulumi.String(nodeGroupConfig.NamePrefix),
 			NodeRoleArn:         pulumi.StringInput(nodeGroupRole.Arn),
-			SubnetIds:           pulumi.ToStringArray(subnetIDs),
+			SubnetIds:           args.SubnetIDs,
 			Version:             pulumi.String(nodeGroupVersion),
 			ScalingConfig: &eks.NodeGroupScalingConfigArgs{
 				DesiredSize: pulumi.Int(nodeGroupConfig.DesiredSize),
