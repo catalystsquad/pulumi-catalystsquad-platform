@@ -6,7 +6,6 @@ on:
     paths:
       - "provider/**"
       - "schema.yaml"
-      - "sdk/**"
 jobs:
   semantic-release:
     name: Semantic Release
