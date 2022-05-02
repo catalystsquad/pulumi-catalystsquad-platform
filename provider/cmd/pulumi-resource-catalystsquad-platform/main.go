@@ -17,8 +17,8 @@
 package main
 
 import (
-	"github.com/pulumi/pulumi-catalystsquad-platform/pkg/provider"
-	"github.com/pulumi/pulumi-catalystsquad-platform/pkg/version"
+	"github.com/catalystsquad/pulumi-catalystsquad-platform/pkg/provider"
+	"github.com/catalystsquad/pulumi-catalystsquad-platform/pkg/version"
 )
 
 var providerName = "catalystsquad-platform"

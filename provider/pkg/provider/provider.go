@@ -31,11 +31,11 @@ func construct(ctx *pulumi.Context, typ, name string, inputs provider.ConstructI
 	}
 }
 
-// constructStaticPage is an implementation of Construct for the vpc component.
+// constructVpc is an implementation of Construct for the VPC component.
 func constructVpc(ctx *pulumi.Context, name string, inputs provider.ConstructInputs,
 	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
 
-	// Copy the raw inputs to StaticPageArgs. `inputs.CopyTo` uses the types and `pulumi:` tags
+	// Copy the raw inputs to VpcArgs. `inputs.CopyTo` uses the types and `pulumi:` tags
 	// on the struct's fields to convert the raw values to the appropriate Input types.
 	args := &VpcArgs{}
 	if err := inputs.CopyTo(args); err != nil {
@@ -43,7 +43,7 @@ func constructVpc(ctx *pulumi.Context, name string, inputs provider.ConstructInp
 	}
 
 	// Create the component resource.
-	staticPage, err := NewVpc(ctx, name, args, options)
+	vpc, err := NewVpc(ctx, name, args, options)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating component")
 	}
@@ -51,5 +51,6 @@ func constructVpc(ctx *pulumi.Context, name string, inputs provider.ConstructInp
 	// Return the component resource's URN and state. `NewConstructResult` automatically sets the
 	// ConstructResult's state based on resource struct fields tagged with `pulumi:` tags with a value
 	// that is convertible to `pulumi.Input`.
-	return provider.NewConstructResult(staticPage)
+	return provider.NewConstructResult(vpc)
+}
 }
