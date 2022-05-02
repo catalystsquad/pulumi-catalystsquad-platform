@@ -2,7 +2,8 @@
     "name": "@pulumi/catalystsquad-platform",
     "version": "${VERSION}",
     "scripts": {
-        "build": "tsc"
+        "build": "tsc",
+        "install": "node scripts/install-pulumi-plugin.js resource catalystsquad-platform ${VERSION}"
     },
     "dependencies": {
         "@pulumi/pulumi": "^3.31.0"

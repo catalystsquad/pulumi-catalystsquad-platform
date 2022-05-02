@@ -21,3 +21,14 @@ export interface AvailabilityZoneArgs {
      */
     publicSubnetCidr?: pulumi.Input<string>;
 }
+
+/**
+ * Configuration for an EKS node group
+ */
+export interface EksNodeGroupArgs {
+    desiredSize: pulumi.Input<number>;
+    instanceTypes: pulumi.Input<pulumi.Input<string>[]>;
+    maxSize: pulumi.Input<number>;
+    minSize: pulumi.Input<number>;
+    namePrefix: pulumi.Input<string>;
+}

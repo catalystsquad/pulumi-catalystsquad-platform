@@ -10,6 +10,7 @@ from . import _utilities
 
 __all__ = [
     'AvailabilityZoneArgs',
+    'EksNodeGroupArgs',
 ]
 
 @pulumi.input_type
@@ -65,5 +66,68 @@ class AvailabilityZoneArgs:
     @public_subnet_cidr.setter
     def public_subnet_cidr(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "public_subnet_cidr", value)
+
+
+@pulumi.input_type
+class EksNodeGroupArgs:
+    def __init__(__self__, *,
+                 desired_size: pulumi.Input[int],
+                 instance_types: pulumi.Input[Sequence[pulumi.Input[str]]],
+                 max_size: pulumi.Input[int],
+                 min_size: pulumi.Input[int],
+                 name_prefix: pulumi.Input[str]):
+        """
+        Configuration for an EKS node group
+        """
+        pulumi.set(__self__, "desired_size", desired_size)
+        pulumi.set(__self__, "instance_types", instance_types)
+        pulumi.set(__self__, "max_size", max_size)
+        pulumi.set(__self__, "min_size", min_size)
+        pulumi.set(__self__, "name_prefix", name_prefix)
+
+    @property
+    @pulumi.getter(name="desiredSize")
+    def desired_size(self) -> pulumi.Input[int]:
+        return pulumi.get(self, "desired_size")
+
+    @desired_size.setter
+    def desired_size(self, value: pulumi.Input[int]):
+        pulumi.set(self, "desired_size", value)
+
+    @property
+    @pulumi.getter(name="instanceTypes")
+    def instance_types(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
+        return pulumi.get(self, "instance_types")
+
+    @instance_types.setter
+    def instance_types(self, value: pulumi.Input[Sequence[pulumi.Input[str]]]):
+        pulumi.set(self, "instance_types", value)
+
+    @property
+    @pulumi.getter(name="maxSize")
+    def max_size(self) -> pulumi.Input[int]:
+        return pulumi.get(self, "max_size")
+
+    @max_size.setter
+    def max_size(self, value: pulumi.Input[int]):
+        pulumi.set(self, "max_size", value)
+
+    @property
+    @pulumi.getter(name="minSize")
+    def min_size(self) -> pulumi.Input[int]:
+        return pulumi.get(self, "min_size")
+
+    @min_size.setter
+    def min_size(self, value: pulumi.Input[int]):
+        pulumi.set(self, "min_size", value)
+
+    @property
+    @pulumi.getter(name="namePrefix")
+    def name_prefix(self) -> pulumi.Input[str]:
+        return pulumi.get(self, "name_prefix")
+
+    @name_prefix.setter
+    def name_prefix(self, value: pulumi.Input[str]):
+        pulumi.set(self, "name_prefix", value)
 
 

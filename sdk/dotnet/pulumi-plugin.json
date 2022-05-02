@@ -1,0 +1,5 @@
+{
+  "resource": true,
+  "name": "catalystsquad-platform",
+  "server": "https://github.com/catalystsquad/pulumi-catalystsquad-platform/releases/download/v${VERSION}"
+}
