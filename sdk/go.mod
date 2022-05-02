@@ -1,4 +1,4 @@
-module github.com/pulumi/pulumi-catalystsquad-platform/sdk
+module github.com/catalystsquad/pulumi-catalystsquad-platform/sdk
 
 go 1.15
 
