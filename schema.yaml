@@ -1,39 +1,101 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/pulumi/pulumi/master/pkg/codegen/schema/pulumi.json
 ---
-name: xyz
+name: catalystsquad-platform
+version: 1.0.7
+pluginDownloadURL: https://github.com/catalystsquad/pulumi-catalystsquad-platform/releases/download/v${VERSION}
+types:
+  catalystsquad-platform:index:AvailabilityZone:
+    type: object
+    description: >-
+      Configuration supplied to AvailabilityZone list in VpcArgs to specify
+      which availability zones to deploy to and what subnet configuration for
+      each availability zone. Supports one private and public subnet per AZ.
+    properties:
+      azName:
+        type: string
+        description: Name of the availability zone to deploy subnets to.
+      privateSubnetCidr:
+        type: string
+        description: >-
+          CIDR for private subnets in the availability zone. If not supplied,
+          the subnet is not created.
+      publicSubnetCidr:
+        type: string
+        description: >-
+          CIDR for private subnets in the availability zone. If not supplied
+          the subnet is not created.
+    required:
+      - azName
 resources:
-  xyz:index:StaticPage:
+  catalystsquad-platform:index:Vpc:
     isComponent: true
     inputProperties:
-      indexContent:
+      availabilityZoneConfig:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:AvailabilityZone"
+        description: >-
+          Optional, list of AvailabilityZones to create subnets in. Default: []
+      cidr:
         type: string
-        description: The HTML content for index.html.
-    requiredInputs:
-      - indexContent
+        description: >-
+          Optional, CIDR block of the VPC. Default: 10.0.0.0/16
+      enableEksClusterTags:
+        type: boolean
+        description: >-
+          Optional, EKS cluster name, if VPC is used for EKS. Default: <stack
+          name>
+      enableEksClusterTags:
+        type: boolean
+        description: >-
+          Optional, whether to enable required EKS cluster tags to subnets.
+          Default: true
+      name:
+        type: string
+        description: >-
+          Optional, Name tag value for VPC resource. Default: <stack name>
+      tags:
+        type: object
+        additionalProperties: 
+          type: string
+        description: >-
+          Optional, tags to add to all resources. Default: {}
     properties:
-      bucket:
-        "$ref": "/aws/v4.0.0/schema.json#/resources/aws:s3%2Fbucket:Bucket"
-        description: The bucket resource.
-      websiteUrl:
+      vpcID:
         type: string
-        description: The website URL.
+        description: CIDR for the VPC
+      publicSubnetIDs:
+        type: array
+        items:
+          type: string
+        description: IDs for all public subnets
+      privateSubnetIDs:
+        type: array
+        items:
+          type: string
+        description: IDs for all private subnets
+      natGatewayIPs:
+        type: array
+        items:
+          type: string
+        description: Static IPs for all NAT gateways
     required:
-      - bucket
-      - websiteUrl
+      - vpcID
 language:
   csharp:
+    # namespace override, otherwise build fails because of the `-` in catalystsquad-platform
+    namespaces:
+      catalystsquad-platform: CatalystsquadPlatform
     packageReferences:
       Pulumi: 3.*
-      Pulumi.Aws: 4.*
   go:
     generateResourceContainerTypes: true
-    importBasePath: github.com/pulumi/pulumi-xyz/sdk/go/xyz
+    importBasePath: github.com/catalystsquad/pulumi-catalystsquad-platform/sdk/go/catalystsquad-platform
   nodejs:
     dependencies:
-      "@pulumi/aws": "^4.0.0"
+      "@pulumi/pulumi": "^3.31.0"
     devDependencies:
       typescript: "^3.7.0"
   python:
     requires:
       pulumi: ">=3.0.0,<4.0.0"
-      pulumi-aws: ">=4.0.0,<5.0.0"
