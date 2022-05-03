@@ -5,6 +5,7 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "./utilities";
 
 // Export members:
+export * from "./eks";
 export * from "./provider";
 export * from "./vpc";
 
@@ -16,12 +17,15 @@ export {
 };
 
 // Import resources to register:
+import { Eks } from "./eks";
 import { Vpc } from "./vpc";
 
 const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
+            case "catalystsquad-platform:index:Eks":
+                return new Eks(name, <any>undefined, { urn })
             case "catalystsquad-platform:index:Vpc":
                 return new Vpc(name, <any>undefined, { urn })
             default:

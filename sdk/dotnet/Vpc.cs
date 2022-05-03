@@ -54,6 +54,7 @@ namespace Pulumi.CatalystsquadPlatform
             var defaultOptions = new ComponentResourceOptions
             {
                 Version = Utilities.Version,
+                PluginDownloadURL = "https://github.com/catalystsquad/pulumi-catalystsquad-platform/releases/download/v${VERSION}",
             };
             var merged = ComponentResourceOptions.Merge(defaultOptions, options);
             // Override the ID if one was specified for consistency with other language SDKs.

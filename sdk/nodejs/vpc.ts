@@ -45,28 +45,26 @@ export class Vpc extends pulumi.ComponentResource {
      * @param opts A bag of options that control this resource's behavior.
      */
     constructor(name: string, args?: VpcArgs, opts?: pulumi.ComponentResourceOptions) {
-        let inputs: pulumi.Inputs = {};
+        let resourceInputs: pulumi.Inputs = {};
         opts = opts || {};
         if (!opts.id) {
-            inputs["availabilityZoneConfig"] = args ? args.availabilityZoneConfig : undefined;
-            inputs["cidr"] = args ? args.cidr : undefined;
-            inputs["enableEksClusterTags"] = args ? args.enableEksClusterTags : undefined;
-            inputs["name"] = args ? args.name : undefined;
-            inputs["tags"] = args ? args.tags : undefined;
-            inputs["natGatewayIPs"] = undefined /*out*/;
-            inputs["privateSubnetIDs"] = undefined /*out*/;
-            inputs["publicSubnetIDs"] = undefined /*out*/;
-            inputs["vpcID"] = undefined /*out*/;
+            resourceInputs["availabilityZoneConfig"] = args ? args.availabilityZoneConfig : undefined;
+            resourceInputs["cidr"] = args ? args.cidr : undefined;
+            resourceInputs["enableEksClusterTags"] = args ? args.enableEksClusterTags : undefined;
+            resourceInputs["name"] = args ? args.name : undefined;
+            resourceInputs["tags"] = args ? args.tags : undefined;
+            resourceInputs["natGatewayIPs"] = undefined /*out*/;
+            resourceInputs["privateSubnetIDs"] = undefined /*out*/;
+            resourceInputs["publicSubnetIDs"] = undefined /*out*/;
+            resourceInputs["vpcID"] = undefined /*out*/;
         } else {
-            inputs["natGatewayIPs"] = undefined /*out*/;
-            inputs["privateSubnetIDs"] = undefined /*out*/;
-            inputs["publicSubnetIDs"] = undefined /*out*/;
-            inputs["vpcID"] = undefined /*out*/;
+            resourceInputs["natGatewayIPs"] = undefined /*out*/;
+            resourceInputs["privateSubnetIDs"] = undefined /*out*/;
+            resourceInputs["publicSubnetIDs"] = undefined /*out*/;
+            resourceInputs["vpcID"] = undefined /*out*/;
         }
-        if (!opts.version) {
-            opts = pulumi.mergeOptions(opts, { version: utilities.getVersion()});
-        }
-        super(Vpc.__pulumiType, name, inputs, opts, true /*remote*/);
+        opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        super(Vpc.__pulumiType, name, resourceInputs, opts, true /*remote*/);
     }
 }
 
@@ -77,21 +75,21 @@ export interface VpcArgs {
     /**
      * Optional, list of AvailabilityZones to create subnets in. Default: []
      */
-    readonly availabilityZoneConfig?: pulumi.Input<pulumi.Input<inputs.AvailabilityZoneArgs>[]>;
+    availabilityZoneConfig?: pulumi.Input<pulumi.Input<inputs.AvailabilityZoneArgs>[]>;
     /**
      * Optional, CIDR block of the VPC. Default: 10.0.0.0/16
      */
-    readonly cidr?: pulumi.Input<string>;
+    cidr?: pulumi.Input<string>;
     /**
      * Optional, whether to enable required EKS cluster tags to subnets. Default: true
      */
-    readonly enableEksClusterTags?: pulumi.Input<boolean>;
+    enableEksClusterTags?: pulumi.Input<boolean>;
     /**
      * Optional, Name tag value for VPC resource. Default: <stack name>
      */
-    readonly name?: pulumi.Input<string>;
+    name?: pulumi.Input<string>;
     /**
      * Optional, tags to add to all resources. Default: {}
      */
-    readonly tags?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    tags?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
 }

@@ -26,6 +26,28 @@ types:
           the subnet is not created.
     required:
       - azName
+  catalystsquad-platform:index:EksNodeGroup:
+    type: object
+    description: Configuration for an EKS node group
+    properties:
+      namePrefix:
+        type: string
+      desiredSize:
+        type: integer
+      maxSize:
+        type: integer
+      minSize:
+        type: integer
+      instanceTypes:
+        type: array
+        items:
+          type: string
+    required:
+      - namePrefix
+      - desiredSize
+      - maxSize
+      - minSize
+      - instanceTypes
 resources:
   catalystsquad-platform:index:Vpc:
     isComponent: true
@@ -81,6 +103,57 @@ resources:
         description: Static IPs for all NAT gateways
     required:
       - vpcID
+  catalystsquad-platform:index:Eks:
+    isComponent: true
+    inputProperties:
+      clusterName:
+        type: string
+        description: >-
+          Optional, name of the EKS cluster. Default: <stack name>
+      k8sVersion:
+        type: string
+        description: >-
+          Optional, k8s version of the EKS cluster. Default: 1.22.6
+      nodeGroupVersion:
+        type: string
+        description: >-
+          Optional, k8s version of all node groups. Allows for upgrading the
+          control plane before upgrading nodegroups. Default: <k8sVersion>
+      nodeGroupConfig:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:EksNodeGroup"
+        description: >-
+          Required, list of nodegroup configurations to create.
+      enableECRAccess:
+        type: boolean
+        description: >-
+          Optional, whether to enable ECR access policy on nodegroups. Default: true
+      enableClusterAutoscalerResources:
+        type: boolean
+        description: >-
+          Optional, whether to enable cluster autoscaler IRSA resources. Default: true
+      clusterAutoscalerServiceAccount:
+        type: string
+        description: >-
+          Optional, cluster autoscaler service account name for IRSA. Default: cluster-autoscaler
+      clusterAutoscalerNamespace:
+        type: string
+        description: >-
+          Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler
+      enabledClusterLogTypes:
+        type: string
+        description: >-
+          Optional, list of log types to enable on the cluster. Default: []
+      subnetIDs:
+        type: array
+        items:
+          type: string
+        description: >-
+          Required, list of subnet IDs to deploy the cluster and nodegroups to
+    requiredInputs:
+      - subnetIDs
+      - nodeGroupConfig
 language:
   csharp:
     # namespace override, otherwise build fails because of the `-` in catalystsquad-platform
@@ -88,14 +161,17 @@ language:
       catalystsquad-platform: CatalystsquadPlatform
     packageReferences:
       Pulumi: 3.*
+      Pulumi.Aws: 5.*
   go:
     generateResourceContainerTypes: true
     importBasePath: github.com/catalystsquad/pulumi-catalystsquad-platform/sdk/go/catalystsquad-platform
   nodejs:
     dependencies:
       "@pulumi/pulumi": "^3.31.0"
+      "@pulumi/aws": "^5.3.0"
     devDependencies:
       typescript: "^3.7.0"
   python:
     requires:
       pulumi: ">=3.0.0,<4.0.0"
+      pulumi-aws: ">=5.0.0,<6.0.0"

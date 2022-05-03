@@ -3,9 +3,8 @@ package provider
 import (
 	"fmt"
 
-	"github.com/pulumi/pulumi-aws/sdk/v4/go/aws/ec2"
+	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/ec2"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
-	"github.com/samber/lo"
 )
 
 // VpcArgs supplies input for configuring vpc resources
@@ -58,11 +57,30 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 	}
 
 	// default vpc arguments
-	vpcName := lo.Ternary(args.Name == "", ctx.Stack(), args.Name)
-	vpcCidr := lo.Ternary(args.Cidr == "", "10.0.0.0/16", args.Cidr)
-	availabilityZones := lo.Ternary(args.AvailabilityZoneConfig == nil, []AvailabilityZone{}, args.AvailabilityZoneConfig)
-	enableEksClusterTags := lo.Ternary(args.EnableEksClusterTags == nil, true, false)
-	eksClusterName := lo.Ternary(args.EksClusterName == "", vpcName, args.EksClusterName)
+	vpcName := ctx.Stack()
+	if args.Name == "" {
+		vpcName = args.Name
+	}
+
+	vpcCidr := "10.0.0.0/16"
+	if args.Cidr != "" {
+		vpcCidr = args.Cidr
+	}
+
+	availabilityZones := []AvailabilityZone{}
+	if args.AvailabilityZoneConfig != nil {
+		availabilityZones = args.AvailabilityZoneConfig
+	}
+
+	enableEksClusterTags := true
+	if args.EnableEksClusterTags != nil {
+		enableEksClusterTags = *args.EnableEksClusterTags
+	}
+
+	eksClusterName := vpcName
+	if args.EksClusterName == "" {
+		eksClusterName = args.EksClusterName
+	}
 
 	// create tag map for adding to all resources
 	tags := make(map[string]string)
