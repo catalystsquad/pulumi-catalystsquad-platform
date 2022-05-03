@@ -1,3 +1,18 @@
+# [1.1.0](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.0.1...v1.1.0) (2022-05-03)
+
+
+### Bug Fixes
+
+* add automation token to checkout task ([#5](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/5)) ([2616cb5](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/2616cb50e081b413735ac9ddf9713d216106dc77))
+* arbitrary change to trigger release workflow ([#6](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/6)) ([f858f3d](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/f858f3d8db9115664a47d36159063c532ec96893))
+* release PAT, remove comments ([#4](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/4)) ([1d096f3](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/1d096f3604d5babf7aaf9fe1787834041b03a129))
+* typo in release workflow configuration ([6efb0f7](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/6efb0f745f9fa95e3328b9d1a3478dd61c6ec426))
+
+
+### Features
+
+* initial eks component resource, upgrade mods, boilerplate fixes ([#3](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/3)) ([334f80a](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/334f80ae8e3329246bdf784eaa065c6dfa1b4eb8))
+
 ## [1.0.1](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.0.0...v1.0.1) (2022-05-02)
 
 
