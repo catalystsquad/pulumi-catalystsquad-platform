@@ -14,7 +14,6 @@ import (
 
 // EksArgs supplies input for configuring EKS
 type EksArgs struct {
-	// TODO document options, add pulumi tags
 	// Optional, name of the EKS cluster. Default: <stack name>
 	ClusterName string `pulumi:"clusterName"`
 	// Optional, k8s version of the EKS cluster. Default: 1.22.6
