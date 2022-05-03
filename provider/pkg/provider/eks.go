@@ -145,7 +145,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 		_, err := iam.NewRolePolicyAttachment(ctx, fmt.Sprintf("eks-service-role-%s-policy-attachment", policyName), &iam.RolePolicyAttachmentArgs{
 			Role:      eksServiceRole.Name,
 			PolicyArn: pulumi.String(policyArn),
-		})
+		}, pulumi.Parent(component))
 		if err != nil {
 			return nil, err
 		}
@@ -164,7 +164,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 				"Action": "sts:AssumeRole"
 			}]
 		}`),
-	})
+	}, pulumi.Parent(component))
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +180,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 		_, err := iam.NewRolePolicyAttachment(ctx, fmt.Sprintf("nodegroup-role-%s-policy-attachment", policyName), &iam.RolePolicyAttachmentArgs{
 			Role:      nodeGroupRole.Name,
 			PolicyArn: pulumi.String(policyArn),
-		})
+		}, pulumi.Parent(component))
 		if err != nil {
 			return nil, err
 		}
@@ -206,14 +206,14 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 				}
 			]
 		}`),
-		})
+		}, pulumi.Parent(component))
 		if err != nil {
 			return nil, err
 		}
 		_, err = iam.NewRolePolicyAttachment(ctx, "nodegroup-ecr-policy-attachment", &iam.RolePolicyAttachmentArgs{
 			Role:      nodeGroupRole.Name,
 			PolicyArn: ecrAccessPolicy.Arn,
-		})
+		}, pulumi.Parent(component))
 		if err != nil {
 			return nil, err
 		}
@@ -232,7 +232,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 				pulumi.String("0.0.0.0/0"),
 			},
 		},
-	})
+	}, pulumi.Parent(component))
 	if err != nil {
 		return nil, err
 	}
@@ -252,7 +252,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 				MaxSize:     pulumi.Int(nodeGroupConfig.MaxSize),
 				MinSize:     pulumi.Int(nodeGroupConfig.MinSize),
 			},
-		}, pulumi.IgnoreChanges([]string{"scalingConfig.desiredSize"}))
+		}, pulumi.Parent(component), pulumi.IgnoreChanges([]string{"scalingConfig.desiredSize"}))
 		if err != nil {
 			return nil, err
 		}
@@ -264,8 +264,8 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 	oidcProvider, err := iam.NewOpenIdConnectProvider(ctx, "eks-oidc-provider", &iam.OpenIdConnectProviderArgs{
 		ClientIdLists:   pulumi.StringArray{pulumi.String("sts.amazonaws.com")},
 		ThumbprintLists: pulumi.StringArray{pulumi.String(awsRootCAThumbprint)},
-		Url:             eksCluster.Identities.Index(pulumi.Int(0)).Oidcs().Index(pulumi.Int(0)).Issuer().Elem(), // what the fuck
-	})
+		Url:             eksCluster.Identities.Index(pulumi.Int(0)).Oidcs().Index(pulumi.Int(0)).Issuer().Elem(),
+	}, pulumi.Parent(component))
 	if err != nil {
 		return nil, err
 	}
@@ -313,7 +313,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 			Name:        pulumi.String(fmt.Sprintf("cluster-autoscaler-policy-%s", clusterName)),
 			Description: pulumi.String(fmt.Sprintf("cluster autoscaler policy for %s eks cluster", clusterName)),
 			Policy:      pulumi.String(clusterAutoscalerPolicyJSON),
-		})
+		}, pulumi.Parent(component))
 		if err != nil {
 			return nil, err
 		}
@@ -322,14 +322,14 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 		clusterAutoscalerRole, err := iam.NewRole(ctx, "cluster-autoscaler-role", &iam.RoleArgs{
 			Name:             pulumi.String(fmt.Sprintf("cluster-autoscaler-role-%s", clusterName)),
 			AssumeRolePolicy: createIrsaAssumeRolePolicy(oidcProvider, clusterAutoscalerNamespace, clusterAutoscalerServiceAccount),
-		})
+		}, pulumi.Parent(component))
 		if err != nil {
 			return nil, err
 		}
 		_, err = iam.NewRolePolicyAttachment(ctx, "cluster-autoscaler-role-policy-attachment", &iam.RolePolicyAttachmentArgs{
 			Role:      clusterAutoscalerRole.Name,
 			PolicyArn: clusterAutoscalerPolicy.Arn,
-		})
+		}, pulumi.Parent(component))
 		if err != nil {
 			return nil, err
 		}
