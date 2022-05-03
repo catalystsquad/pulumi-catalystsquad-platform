@@ -6,6 +6,7 @@
         "install": "node scripts/install-pulumi-plugin.js resource catalystsquad-platform ${VERSION}"
     },
     "dependencies": {
+        "@pulumi/aws": "^5.3.0",
         "@pulumi/pulumi": "^3.31.0"
     },
     "devDependencies": {
