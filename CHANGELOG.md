@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.1.0...v1.1.1) (2022-05-03)
+
+
+### Bug Fixes
+
+* k8s default version, add eks implementation example ([#7](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/7)) ([4e44a74](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/4e44a74010837de525483c7a2bec02a1ade00bc4))
+
 # [1.1.0](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.0.1...v1.1.0) (2022-05-03)
 
 
