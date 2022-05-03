@@ -86,7 +86,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 		clusterName = args.ClusterName
 	}
 
-	k8sVersion := "1.22.6"
+	k8sVersion := "1.22"
 	if args.K8sVersion != "" {
 		k8sVersion = args.K8sVersion
 	}
