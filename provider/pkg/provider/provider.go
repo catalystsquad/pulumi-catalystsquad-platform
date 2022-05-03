@@ -56,7 +56,7 @@ func constructVpc(ctx *pulumi.Context, name string, inputs provider.ConstructInp
 	return provider.NewConstructResult(vpc)
 }
 
-// constructEks is an implementation of Construct for the EKS component.
+// constructEks is an implementation of Construct for the EKS component
 func constructEks(ctx *pulumi.Context, name string, inputs provider.ConstructInputs,
 	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
 
