@@ -130,7 +130,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 				"Action": "sts:AssumeRole"
 			}]
 		}`),
-	})
+	}, pulumi.Parent(component))
 	if err != nil {
 		return nil, err
 	}
@@ -188,7 +188,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 
 	if enableECRAccess {
 		// ecr access policy
-		ecrAccessPolicy, err := iam.NewPolicy(ctx, "policy", &iam.PolicyArgs{
+		ecrAccessPolicy, err := iam.NewPolicy(ctx, "ecr-access-policy", &iam.PolicyArgs{
 			Name:        pulumi.String(fmt.Sprintf("ecr-access-policy-%s", clusterName)),
 			Description: pulumi.String("Grants access to ECR"),
 			Policy: pulumi.String(`{
