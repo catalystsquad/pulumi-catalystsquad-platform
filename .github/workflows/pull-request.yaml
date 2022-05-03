@@ -21,11 +21,10 @@ jobs:
     needs:
       - conventional-commits-pr
     steps:
-      - uses: crazy-max/ghaction-dump-context@v1
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ github.token }}
+          token: ${{ secrets.AUTOMATION_PAT }}
           ref: ${{ github.ref }}
       - name: Configure git
         uses: fregante/setup-git-user@v1
