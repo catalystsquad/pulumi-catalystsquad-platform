@@ -18,8 +18,8 @@ github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5 h1:0CwZNZbxp69SHPd
 github.com/armon/go-socks5 v0.0.0-20160902184237-e75332964ef5/go.mod h1:wHh0iHkYZB8zMSxRWpUBQtwG5a7fFgvEO+odwuTv2gs=
 github.com/blang/semver v3.5.1+incompatible h1:cQNTCjp13qL8KC3Nbxr/y2Bqb63oX6wdnnjpJbkM4JQ=
 github.com/blang/semver v3.5.1+incompatible/go.mod h1:kRBLl5iJ+tD4TcOOxsy/0fnwebNt5EWlYSAyrTnjyyk=
-github.com/catalystsquad/pulumi-catalystsquad-platform/sdk v0.0.0-20220502225328-997fda7e8adc h1:shebatQGrDan7ztiXUeGXDL4LAd0YaQ40qY8zy8+x0g=
-github.com/catalystsquad/pulumi-catalystsquad-platform/sdk v0.0.0-20220502225328-997fda7e8adc/go.mod h1:Wtq8P4mFnmzJ/QMV4qNlC6Af0H8KBvm8S9mDYIWOyJM=
+github.com/catalystsquad/pulumi-catalystsquad-platform/sdk v0.0.0-20220503191003-9318e15d7746 h1:bzQE27NfhljYF32vdYzWAwaFWnrrfmk5P4wfiB6OROY=
+github.com/catalystsquad/pulumi-catalystsquad-platform/sdk v0.0.0-20220503191003-9318e15d7746/go.mod h1:Wtq8P4mFnmzJ/QMV4qNlC6Af0H8KBvm8S9mDYIWOyJM=
 github.com/census-instrumentation/opencensus-proto v0.2.1/go.mod h1:f6KPmirojxKA12rnyqOA5BBL4O983OfeGPqjHWSTneU=
 github.com/cespare/xxhash/v2 v2.1.1/go.mod h1:VGX0DQ3Q6kWi7AoAeZDth3/j3BFtOZR5XLFGgcrjCOs=
 github.com/cheggaaa/pb v1.0.29 h1:FckUN5ngEk2LpvuG0fw1GEFx6LtyY2pWI/Z2QgCnEYo=
