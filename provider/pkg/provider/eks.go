@@ -29,11 +29,11 @@ type EksArgs struct {
 	EnableClusterAutoscalerResources *bool `pulumi:"enableClusterAutoscalerResources"`
 	// Optional, cluster autoscaler service account name for IRSA. Default: cluster-autoscaler
 	ClusterAutoscalerServiceAccount string `pulumi:"clusterAutoscalerServiceAccount"`
-	// Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler
+	// Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler.
 	ClusterAutoscalerNamespace string `pulumi:"clusterAutoscalerNamespace"`
 	// Optional, list of log types to enable on the cluster. Default: []
 	EnabledClusterLogTypes []string `pulumi:"enabledClusterLogTypes"`
-	// Required, list of subnet IDs to deploy the cluster and nodegroups to
+	// Required, list of subnet IDs to deploy the cluster and nodegroups to.
 	SubnetIDs pulumi.StringArrayInput `pulumi:"subnetIDs"`
 }
 
