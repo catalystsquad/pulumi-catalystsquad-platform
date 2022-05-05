@@ -20,6 +20,10 @@ func (m *module) Version() semver.Version {
 
 func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi.Resource, err error) {
 	switch typ {
+	case "catalystsquad-platform:index:ArgocdApp":
+		r = &ArgocdApp{}
+	case "catalystsquad-platform:index:ClusterBootstrap":
+		r = &ClusterBootstrap{}
 	case "catalystsquad-platform:index:Eks":
 		r = &Eks{}
 	case "catalystsquad-platform:index:Vpc":

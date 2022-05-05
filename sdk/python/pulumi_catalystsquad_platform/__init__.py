@@ -5,6 +5,8 @@
 from . import _utilities
 import typing
 # Export this package's modules as members:
+from .argocd_app import *
+from .cluster_bootstrap import *
 from .eks import *
 from .provider import *
 from .vpc import *
@@ -17,6 +19,8 @@ _utilities.register(
   "mod": "index",
   "fqn": "pulumi_catalystsquad_platform",
   "classes": {
+   "catalystsquad-platform:index:ArgocdApp": "ArgocdApp",
+   "catalystsquad-platform:index:ClusterBootstrap": "ClusterBootstrap",
    "catalystsquad-platform:index:Eks": "Eks",
    "catalystsquad-platform:index:Vpc": "Vpc"
   }

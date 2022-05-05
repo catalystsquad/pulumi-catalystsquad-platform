@@ -50,6 +50,7 @@ export class Vpc extends pulumi.ComponentResource {
         if (!opts.id) {
             resourceInputs["availabilityZoneConfig"] = args ? args.availabilityZoneConfig : undefined;
             resourceInputs["cidr"] = args ? args.cidr : undefined;
+            resourceInputs["eksClusterName"] = args ? args.eksClusterName : undefined;
             resourceInputs["enableEksClusterTags"] = args ? args.enableEksClusterTags : undefined;
             resourceInputs["name"] = args ? args.name : undefined;
             resourceInputs["tags"] = args ? args.tags : undefined;
@@ -80,6 +81,10 @@ export interface VpcArgs {
      * Optional, CIDR block of the VPC. Default: 10.0.0.0/16
      */
     cidr?: pulumi.Input<string>;
+    /**
+     * Optional, EKS cluster name, if VPC is used for EKS. Default: <stack name>
+     */
+    eksClusterName?: pulumi.Input<string>;
     /**
      * Optional, whether to enable required EKS cluster tags to subnets. Default: true
      */
