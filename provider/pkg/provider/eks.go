@@ -77,7 +77,7 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 
 	// throw an error if we don't have required arguments
 	if args.SubnetIDs == nil {
-		return component, errors.New("Missing SubnetID argument")
+		return nil, errors.New("Missing SubnetID argument")
 	}
 
 	// default eks arguments

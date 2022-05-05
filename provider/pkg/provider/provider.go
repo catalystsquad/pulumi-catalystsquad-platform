@@ -28,6 +28,10 @@ func construct(ctx *pulumi.Context, typ, name string, inputs provider.ConstructI
 		return constructVpc(ctx, name, inputs, options)
 	case "catalystsquad-platform:index:Eks":
 		return constructEks(ctx, name, inputs, options)
+	case "catalystsquad-platform:index:ArgocdApp":
+		return constructArgocdApp(ctx, name, inputs, options)
+	case "catalystsquad-platform:index:ClusterBootstrap":
+		return constructClusterBootstrap(ctx, name, inputs, options)
 	default:
 		return nil, errors.Errorf("unknown resource type %s", typ)
 	}
@@ -71,4 +75,38 @@ func constructEks(ctx *pulumi.Context, name string, inputs provider.ConstructInp
 	}
 
 	return provider.NewConstructResult(eks)
+}
+
+// constructArgocdApp is an implementation of Construct for the ArgocdApp component
+func constructArgocdApp(ctx *pulumi.Context, name string, inputs provider.ConstructInputs,
+	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
+
+	args := &ArgocdAppArgs{}
+	if err := inputs.CopyTo(args); err != nil {
+		return nil, errors.Wrap(err, "setting args")
+	}
+
+	app, err := NewArgocdApp(ctx, name, args, options)
+	if err != nil {
+		return nil, errors.Wrap(err, "creating component")
+	}
+
+	return provider.NewConstructResult(app)
+}
+
+// constructClusterBootstrap is an implementation of Construct for the ClusterBootstrap component
+func constructClusterBootstrap(ctx *pulumi.Context, name string, inputs provider.ConstructInputs,
+	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
+
+	args := &ClusterBootstrapArgs{}
+	if err := inputs.CopyTo(args); err != nil {
+		return nil, errors.Wrap(err, "setting args")
+	}
+
+	bootstrap, err := NewClusterBootstrap(ctx, name, args, options)
+	if err != nil {
+		return nil, errors.Wrap(err, "creating component")
+	}
+
+	return provider.NewConstructResult(bootstrap)
 }
