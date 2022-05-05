@@ -84,6 +84,12 @@ namespace Pulumi.CatalystsquadPlatform
         public Input<string>? Cidr { get; set; }
 
         /// <summary>
+        /// Optional, EKS cluster name, if VPC is used for EKS. Default: &lt;stack name&gt;
+        /// </summary>
+        [Input("eksClusterName")]
+        public Input<string>? EksClusterName { get; set; }
+
+        /// <summary>
         /// Optional, whether to enable required EKS cluster tags to subnets. Default: true
         /// </summary>
         [Input("enableEksClusterTags")]

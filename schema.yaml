@@ -48,6 +48,375 @@ types:
       - maxSize
       - minSize
       - instanceTypes
+  # types for cluster bootstrap
+  catalystsquad-platform:index:HelmReleaseConfig:
+    type: object
+    description: Configuration for a helm release
+    properties:
+      version:
+        type: string
+        description: >-
+          Optional for each implementation, defaults specific to each helm chart
+      valuesFiles:
+        type: array
+        items:
+          type: string
+        description: >-
+          Optional for each implementation, empty by default
+      values:
+        type: object
+        additionalProperties:
+          type: string
+        description: >-
+          Optional for each implementation, empty by default
+  catalystsquad-platform:index:PrometheusRemoteWriteConfig:
+    type: object
+    description: Configuration for a Prometheus remoteWrite config secret.
+    properties:
+      basicAuthUsername:
+        type: string
+        description: >-
+          Optional, basic auth username. Default: <stack name>
+      basicAuthPassword:
+        type: string
+        description: >-
+          Required, basic auth password.
+      secretName:
+        type: string
+        description: >-
+          Optional, basic auth secret name. Default:
+          prometheus-remote-write-basic-auth
+  catalystsquad-platform:index:PlatformApplicationConfig:
+    type: object
+    description: Configuration for platform application
+    properties:
+      targetRevision:
+        type: string
+        description: >-
+          Optional, target revision of platform application config. Deafult:
+          >=1.0.0-alpha
+      syncPolicy:
+        "$ref": "#/types/catalystsquad-platform:index:ArgocdApplicationSyncPolicy"
+        description: >-
+          Optional, sync policy of platform application config.
+      values:
+        type: string
+        description: >-
+          Optional, platform application values
+      certManagerDnsSolverSecret:
+        type: string
+        description: >-
+          Optional, value of certmanager dns resolver secret
+  # types for eks auth configmap
+  catalystsquad-platform:index:AuthConfigMapConfig:
+    type: object
+    description: Configuration for the EKS auth configmap
+    properties:
+      nodeGroupIamRole:
+        type: string
+        description: >-
+          IAM role of the Nodegroup. Required if nodegroup IAM role
+          autodiscovery not enabled.
+      enableNodeGroupIamRoleAutoDiscover:
+        type: boolean
+        description: >-
+          Whether to attempt Nodegroup IAM role auto-discovery. Required if
+          nodegroup IAM role not supplied. eksClusterName parameter required.
+      eksClusterName:
+        type: string
+        description:
+          Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
+      autoDiscoverSSORoles:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:SSORolePermissionSetConfig"
+        description: >-
+          Optional, list of AWS SSO permission set roles to autodiscover.
+      iamRoles:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:IAMIdentityConfig"
+        description: >-
+          Optional, list of IAM roles to grant access in the auth configmap
+      iamUsers:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:IAMIdentityConfig"
+        description: >-
+          Optional, list of IAM users to grant access in the auth configmap
+  catalystsquad-platform:index:SSORolePermissionSetConfig:
+    type: object
+    description: Configuration of SSO IAM Roles to auto discover.
+    properties:
+      name:
+        type: string
+        description: >-
+          Name of the permission set. Will use for autodiscovery using regex
+          "AWSReservedSSO_<name>_.*"
+      permissionGroups:
+        type: array
+        items:
+          type: string
+        description: >-
+          List of permission groups to add to each identity. Ex: system:masters
+      username:
+        type: string
+        description: >-
+          Optional username field, defaults to the name of the SSO role.
+  catalystsquad-platform:index:IAMIdentityConfig:
+    type: object
+    description:
+    properties:
+      arn:
+        type: string
+        description: >-
+          Required, ARN of IAM role to use in configmap
+      permissionGroups:
+        type: array
+        items:
+          type: string
+        description: >-
+          Required, permission groups to add role to. Ex: system:masters
+      username:
+        type: string
+        description: >-
+          Optional username field, defaults to role name
+  # types for argocd applications
+  catalystsquad-platform:index:ArgocdApplication:
+    type: object
+    properties:
+      apiVersion:
+        type: string
+      kind:
+        type: string
+      metadata:
+        type: object
+        additionalProperties:
+          type: string
+      spec:
+        "$ref": "#/types/catalystsquad-platform:index:ArgocdApplicationSpec"
+  catalystsquad-platform:index:ArgocdApplicationSpec:
+    type: object
+    description:
+    properties:
+      source:
+        "$ref": "#/types/catalystsquad-platform:index:ArgocdApplicationSpecSource"
+      destination:
+        "$ref": "#/types/catalystsquad-platform:index:ArgocdApplicationSpecDestination"
+      project:
+        type: string
+      syncPolicy:
+        "$ref": "#/types/catalystsquad-platform:index:ArgocdApplicationSyncPolicy"
+      ignoreDifferences:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:ArgocdApplicationIgnoreDifferences"
+  catalystsquad-platform:index:ArgocdApplicationSpecSource:
+    type: object
+    properties:
+      repoURL:
+        type: string
+      path:
+        type: string
+      targetRevision:
+        type: string
+      helm:
+        "$ref": "#/types/catalystsquad-platform:index:HelmSource"
+      kustomize:
+        "$ref": "#/types/catalystsquad-platform:index:KustomizeSource"
+      directory:
+        "$ref": "#/types/catalystsquad-platform:index:DirectorySource"
+      plugin:
+        "$ref": "#/types/catalystsquad-platform:index:PluginSource"
+      chart:
+        type: string
+  catalystsquad-platform:index:HelmSource:
+    type: object
+    properties:
+      valueFiles:
+        type: array
+        items:
+          type: string
+      parameters:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:HelmSourceParameter"
+      releaseName:
+        type: string
+      values:
+        type: string
+      fileParameters:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:HelmSourceFileParameter"
+      version:
+        type: string
+      passCredentials:
+        type: boolean
+      ignoreMissingValueFiles:
+        type: boolean
+      skipCrds:
+        type: string
+  catalystsquad-platform:index:HelmSourceParameter:
+    type: object
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+      forceString:
+        type: boolean
+  catalystsquad-platform:index:HelmSourceFileParameter:
+    type: object
+    properties:
+      name:
+        type: string
+      path:
+        type: string
+  catalystsquad-platform:index:KustomizeSource:
+    type: object
+    properties:
+      namePrefix:
+        type: string
+      nameSuffix:
+        type: string
+      images:
+        type: array
+        items:
+          type: string
+      commonLabels:
+        type: object
+        additionalProperties:
+          type: string
+      version:
+        type: string
+      commonAnnotations:
+        type: object
+        additionalProperties:
+          type: string
+      forceCommonLabels:
+        type: boolean
+      forceCommonAnnotations:
+        type: boolean
+  catalystsquad-platform:index:DirectorySource:
+    type: object
+    properties:
+      recurse:
+        type: boolean
+      jsonnet:
+        "$ref": "#/types/catalystsquad-platform:index:DirectorySourceJsonnet"
+      exclude:
+        type: string
+      include:
+        type: string
+  catalystsquad-platform:index:DirectorySourceJsonnet:
+    type: object
+    properties:
+      extVars:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:JsonnetVar"
+      TLAs:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:JsonnetVar"
+      libs:
+        type: array
+        items:
+          type: string
+  catalystsquad-platform:index:JsonnetVar:
+    type: object
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+      code:
+        type: boolean
+  catalystsquad-platform:index:PluginSource:
+    type: object
+    properties:
+      name:
+        type: string
+      env:
+        type: array
+        items:
+          "$ref": "#/types/catalystsquad-platform:index:PluginSourceEnv"
+  catalystsquad-platform:index:PluginSourceEnv:
+    type: object
+    properties:
+      name:
+        type: string
+      value:
+        type: string
+  catalystsquad-platform:index:ArgocdApplicationSpecDestination:
+    type: object
+    properties:
+      server:
+        type: string
+      namespace:
+        type: string
+      name:
+        type: string
+  catalystsquad-platform:index:ArgocdApplicationSyncPolicy:
+    type: object
+    properties:
+      automated:
+        "$ref": "#/types/catalystsquad-platform:index:SyncPolicyAutomated"
+      retry:
+        "$ref": "#/types/catalystsquad-platform:index:SyncPolicyRetry"
+      syncOptions:
+        type: array
+        items:
+          type: string
+  catalystsquad-platform:index:SyncPolicyAutomated:
+    type: object
+    properties:
+      prune:
+        type: boolean
+      selfHeal:
+        type: boolean
+      allowEmpty:
+        type: boolean
+  catalystsquad-platform:index:SyncPolicyRetry:
+    type: object
+    properties:
+      limit:
+        type: integer
+      backoff:
+        "$ref": "#/types/catalystsquad-platform:index:RetryBackoff"
+  catalystsquad-platform:index:RetryBackoff:
+    type: object
+    properties:
+      duration:
+        type: string
+      factor:
+        type: integer
+      maxDuration:
+        type: string
+  catalystsquad-platform:index:ArgocdApplicationIgnoreDifferences:
+    type: object
+    properties:
+      group:
+        type: string
+      kind:
+        type: string
+      name:
+        type: string
+      namespace:
+        type: string
+      jsonPointers:
+        type: array
+        items:
+          type: string
+      jqPathExpressions:
+        type: array
+        items:
+          type: string
+      managedFieldsManagers:
+        type: array
+        items:
+          type: string
 resources:
   catalystsquad-platform:index:Vpc:
     isComponent: true
@@ -62,8 +431,8 @@ resources:
         type: string
         description: >-
           Optional, CIDR block of the VPC. Default: 10.0.0.0/16
-      enableEksClusterTags:
-        type: boolean
+      eksClusterName:
+        type: string
         description: >-
           Optional, EKS cluster name, if VPC is used for EKS. Default: <stack
           name>
@@ -154,6 +523,54 @@ resources:
     requiredInputs:
       - subnetIDs
       - nodeGroupConfig
+  catalystsquad-platform:index:ArgocdApp:
+    isComponent: true
+    inputProperties:
+      name:
+        type: string
+        description: >-
+          Required, name of the Argocd Application
+      spec:
+        "$ref": "#/types/catalystsquad-platform:index:ArgocdApplication"
+        description: >-
+          Required, spec of the Argocd Application
+      namespace:
+        type: string
+        description: >-
+          Optional, namespace to deploy Argocd Application to. Should be the
+          namespace where the argocd server runs. Default: "argo-cd"
+      apiVersion:
+        type: string
+        description: >-
+          Optional, apiVersion of the Argocd Application. Default: v1alpha1
+    requiredInputs:
+      - name
+  catalystsquad-platform:index:ClusterBootstrap:
+    isComponent: true
+    inputProperties:
+      argocdHelmConfig:
+        "$ref": "#/types/catalystsquad-platform:index:HelmReleaseConfig"
+        description: >-
+          Optional, configures the argocd helm release.
+      kubePrometheusStackHelmConfig:
+        "$ref": "#/types/catalystsquad-platform:index:HelmReleaseConfig"
+        description: >-
+          Optional, configures the kube-prometheus-stack helm release.
+      eksAuthConfigmapConfig:
+        "$ref": "#/types/catalystsquad-platform:index:AuthConfigMapConfig"
+        description: >-
+          Optional, configures management of the eks auth configmap. Does not
+          manage the configmap if not specified.
+      prometheusRemoteWriteConfig:
+        "$ref": "#/types/catalystsquad-platform:index:PrometheusRemoteWriteConfig"
+        description: >-
+          Optional, configuration for a prometheus remoteWrite secret. Does not
+          deploy if not specified.
+      platformApplicationConfig:
+        "$ref": "#/types/catalystsquad-platform:index:PlatformApplicationConfig"
+        description: >-
+          Optional, configures the platform application release. Does not
+          deploy if not specified.
 language:
   csharp:
     # namespace override, otherwise build fails because of the `-` in catalystsquad-platform

@@ -44,6 +44,8 @@ type vpcArgs struct {
 	AvailabilityZoneConfig []AvailabilityZone `pulumi:"availabilityZoneConfig"`
 	// Optional, CIDR block of the VPC. Default: 10.0.0.0/16
 	Cidr *string `pulumi:"cidr"`
+	// Optional, EKS cluster name, if VPC is used for EKS. Default: <stack name>
+	EksClusterName *string `pulumi:"eksClusterName"`
 	// Optional, whether to enable required EKS cluster tags to subnets. Default: true
 	EnableEksClusterTags *bool `pulumi:"enableEksClusterTags"`
 	// Optional, Name tag value for VPC resource. Default: <stack name>
@@ -58,6 +60,8 @@ type VpcArgs struct {
 	AvailabilityZoneConfig AvailabilityZoneArrayInput
 	// Optional, CIDR block of the VPC. Default: 10.0.0.0/16
 	Cidr pulumi.StringPtrInput
+	// Optional, EKS cluster name, if VPC is used for EKS. Default: <stack name>
+	EksClusterName pulumi.StringPtrInput
 	// Optional, whether to enable required EKS cluster tags to subnets. Default: true
 	EnableEksClusterTags pulumi.BoolPtrInput
 	// Optional, Name tag value for VPC resource. Default: <stack name>

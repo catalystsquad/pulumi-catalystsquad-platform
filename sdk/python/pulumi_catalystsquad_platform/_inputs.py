@@ -9,9 +9,527 @@ from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 
 __all__ = [
+    'ArgocdApplicationIgnoreDifferencesArgs',
+    'ArgocdApplicationSpecDestinationArgs',
+    'ArgocdApplicationSpecSourceArgs',
+    'ArgocdApplicationSpecArgs',
+    'ArgocdApplicationSyncPolicyArgs',
+    'ArgocdApplicationArgs',
+    'AuthConfigMapConfigArgs',
     'AvailabilityZoneArgs',
+    'DirectorySourceJsonnetArgs',
+    'DirectorySourceArgs',
     'EksNodeGroupArgs',
+    'HelmReleaseConfigArgs',
+    'HelmSourceFileParameterArgs',
+    'HelmSourceParameterArgs',
+    'HelmSourceArgs',
+    'IAMIdentityConfigArgs',
+    'JsonnetVarArgs',
+    'KustomizeSourceArgs',
+    'PlatformApplicationConfigArgs',
+    'PluginSourceEnvArgs',
+    'PluginSourceArgs',
+    'PrometheusRemoteWriteConfigArgs',
+    'RetryBackoffArgs',
+    'SSORolePermissionSetConfigArgs',
+    'SyncPolicyAutomatedArgs',
+    'SyncPolicyRetryArgs',
 ]
+
+@pulumi.input_type
+class ArgocdApplicationIgnoreDifferencesArgs:
+    def __init__(__self__, *,
+                 group: Optional[pulumi.Input[str]] = None,
+                 jq_path_expressions: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 json_pointers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 kind: Optional[pulumi.Input[str]] = None,
+                 managed_fields_managers: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 namespace: Optional[pulumi.Input[str]] = None):
+        if group is not None:
+            pulumi.set(__self__, "group", group)
+        if jq_path_expressions is not None:
+            pulumi.set(__self__, "jq_path_expressions", jq_path_expressions)
+        if json_pointers is not None:
+            pulumi.set(__self__, "json_pointers", json_pointers)
+        if kind is not None:
+            pulumi.set(__self__, "kind", kind)
+        if managed_fields_managers is not None:
+            pulumi.set(__self__, "managed_fields_managers", managed_fields_managers)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if namespace is not None:
+            pulumi.set(__self__, "namespace", namespace)
+
+    @property
+    @pulumi.getter
+    def group(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "group")
+
+    @group.setter
+    def group(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "group", value)
+
+    @property
+    @pulumi.getter(name="jqPathExpressions")
+    def jq_path_expressions(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        return pulumi.get(self, "jq_path_expressions")
+
+    @jq_path_expressions.setter
+    def jq_path_expressions(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "jq_path_expressions", value)
+
+    @property
+    @pulumi.getter(name="jsonPointers")
+    def json_pointers(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        return pulumi.get(self, "json_pointers")
+
+    @json_pointers.setter
+    def json_pointers(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "json_pointers", value)
+
+    @property
+    @pulumi.getter
+    def kind(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "kind")
+
+    @kind.setter
+    def kind(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "kind", value)
+
+    @property
+    @pulumi.getter(name="managedFieldsManagers")
+    def managed_fields_managers(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        return pulumi.get(self, "managed_fields_managers")
+
+    @managed_fields_managers.setter
+    def managed_fields_managers(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "managed_fields_managers", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter
+    def namespace(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "namespace")
+
+    @namespace.setter
+    def namespace(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "namespace", value)
+
+
+@pulumi.input_type
+class ArgocdApplicationSpecDestinationArgs:
+    def __init__(__self__, *,
+                 name: Optional[pulumi.Input[str]] = None,
+                 namespace: Optional[pulumi.Input[str]] = None,
+                 server: Optional[pulumi.Input[str]] = None):
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if namespace is not None:
+            pulumi.set(__self__, "namespace", namespace)
+        if server is not None:
+            pulumi.set(__self__, "server", server)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter
+    def namespace(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "namespace")
+
+    @namespace.setter
+    def namespace(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "namespace", value)
+
+    @property
+    @pulumi.getter
+    def server(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "server")
+
+    @server.setter
+    def server(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "server", value)
+
+
+@pulumi.input_type
+class ArgocdApplicationSpecSourceArgs:
+    def __init__(__self__, *,
+                 chart: Optional[pulumi.Input[str]] = None,
+                 directory: Optional[pulumi.Input['DirectorySourceArgs']] = None,
+                 helm: Optional[pulumi.Input['HelmSourceArgs']] = None,
+                 kustomize: Optional[pulumi.Input['KustomizeSourceArgs']] = None,
+                 path: Optional[pulumi.Input[str]] = None,
+                 plugin: Optional[pulumi.Input['PluginSourceArgs']] = None,
+                 repo_url: Optional[pulumi.Input[str]] = None,
+                 target_revision: Optional[pulumi.Input[str]] = None):
+        if chart is not None:
+            pulumi.set(__self__, "chart", chart)
+        if directory is not None:
+            pulumi.set(__self__, "directory", directory)
+        if helm is not None:
+            pulumi.set(__self__, "helm", helm)
+        if kustomize is not None:
+            pulumi.set(__self__, "kustomize", kustomize)
+        if path is not None:
+            pulumi.set(__self__, "path", path)
+        if plugin is not None:
+            pulumi.set(__self__, "plugin", plugin)
+        if repo_url is not None:
+            pulumi.set(__self__, "repo_url", repo_url)
+        if target_revision is not None:
+            pulumi.set(__self__, "target_revision", target_revision)
+
+    @property
+    @pulumi.getter
+    def chart(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "chart")
+
+    @chart.setter
+    def chart(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "chart", value)
+
+    @property
+    @pulumi.getter
+    def directory(self) -> Optional[pulumi.Input['DirectorySourceArgs']]:
+        return pulumi.get(self, "directory")
+
+    @directory.setter
+    def directory(self, value: Optional[pulumi.Input['DirectorySourceArgs']]):
+        pulumi.set(self, "directory", value)
+
+    @property
+    @pulumi.getter
+    def helm(self) -> Optional[pulumi.Input['HelmSourceArgs']]:
+        return pulumi.get(self, "helm")
+
+    @helm.setter
+    def helm(self, value: Optional[pulumi.Input['HelmSourceArgs']]):
+        pulumi.set(self, "helm", value)
+
+    @property
+    @pulumi.getter
+    def kustomize(self) -> Optional[pulumi.Input['KustomizeSourceArgs']]:
+        return pulumi.get(self, "kustomize")
+
+    @kustomize.setter
+    def kustomize(self, value: Optional[pulumi.Input['KustomizeSourceArgs']]):
+        pulumi.set(self, "kustomize", value)
+
+    @property
+    @pulumi.getter
+    def path(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "path")
+
+    @path.setter
+    def path(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "path", value)
+
+    @property
+    @pulumi.getter
+    def plugin(self) -> Optional[pulumi.Input['PluginSourceArgs']]:
+        return pulumi.get(self, "plugin")
+
+    @plugin.setter
+    def plugin(self, value: Optional[pulumi.Input['PluginSourceArgs']]):
+        pulumi.set(self, "plugin", value)
+
+    @property
+    @pulumi.getter(name="repoURL")
+    def repo_url(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "repo_url")
+
+    @repo_url.setter
+    def repo_url(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "repo_url", value)
+
+    @property
+    @pulumi.getter(name="targetRevision")
+    def target_revision(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "target_revision")
+
+    @target_revision.setter
+    def target_revision(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "target_revision", value)
+
+
+@pulumi.input_type
+class ArgocdApplicationSpecArgs:
+    def __init__(__self__, *,
+                 destination: Optional[pulumi.Input['ArgocdApplicationSpecDestinationArgs']] = None,
+                 ignore_differences: Optional[pulumi.Input[Sequence[pulumi.Input['ArgocdApplicationIgnoreDifferencesArgs']]]] = None,
+                 project: Optional[pulumi.Input[str]] = None,
+                 source: Optional[pulumi.Input['ArgocdApplicationSpecSourceArgs']] = None,
+                 sync_policy: Optional[pulumi.Input['ArgocdApplicationSyncPolicyArgs']] = None):
+        if destination is not None:
+            pulumi.set(__self__, "destination", destination)
+        if ignore_differences is not None:
+            pulumi.set(__self__, "ignore_differences", ignore_differences)
+        if project is not None:
+            pulumi.set(__self__, "project", project)
+        if source is not None:
+            pulumi.set(__self__, "source", source)
+        if sync_policy is not None:
+            pulumi.set(__self__, "sync_policy", sync_policy)
+
+    @property
+    @pulumi.getter
+    def destination(self) -> Optional[pulumi.Input['ArgocdApplicationSpecDestinationArgs']]:
+        return pulumi.get(self, "destination")
+
+    @destination.setter
+    def destination(self, value: Optional[pulumi.Input['ArgocdApplicationSpecDestinationArgs']]):
+        pulumi.set(self, "destination", value)
+
+    @property
+    @pulumi.getter(name="ignoreDifferences")
+    def ignore_differences(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['ArgocdApplicationIgnoreDifferencesArgs']]]]:
+        return pulumi.get(self, "ignore_differences")
+
+    @ignore_differences.setter
+    def ignore_differences(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['ArgocdApplicationIgnoreDifferencesArgs']]]]):
+        pulumi.set(self, "ignore_differences", value)
+
+    @property
+    @pulumi.getter
+    def project(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "project")
+
+    @project.setter
+    def project(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "project", value)
+
+    @property
+    @pulumi.getter
+    def source(self) -> Optional[pulumi.Input['ArgocdApplicationSpecSourceArgs']]:
+        return pulumi.get(self, "source")
+
+    @source.setter
+    def source(self, value: Optional[pulumi.Input['ArgocdApplicationSpecSourceArgs']]):
+        pulumi.set(self, "source", value)
+
+    @property
+    @pulumi.getter(name="syncPolicy")
+    def sync_policy(self) -> Optional[pulumi.Input['ArgocdApplicationSyncPolicyArgs']]:
+        return pulumi.get(self, "sync_policy")
+
+    @sync_policy.setter
+    def sync_policy(self, value: Optional[pulumi.Input['ArgocdApplicationSyncPolicyArgs']]):
+        pulumi.set(self, "sync_policy", value)
+
+
+@pulumi.input_type
+class ArgocdApplicationSyncPolicyArgs:
+    def __init__(__self__, *,
+                 automated: Optional[pulumi.Input['SyncPolicyAutomatedArgs']] = None,
+                 retry: Optional[pulumi.Input['SyncPolicyRetryArgs']] = None,
+                 sync_options: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
+        if automated is not None:
+            pulumi.set(__self__, "automated", automated)
+        if retry is not None:
+            pulumi.set(__self__, "retry", retry)
+        if sync_options is not None:
+            pulumi.set(__self__, "sync_options", sync_options)
+
+    @property
+    @pulumi.getter
+    def automated(self) -> Optional[pulumi.Input['SyncPolicyAutomatedArgs']]:
+        return pulumi.get(self, "automated")
+
+    @automated.setter
+    def automated(self, value: Optional[pulumi.Input['SyncPolicyAutomatedArgs']]):
+        pulumi.set(self, "automated", value)
+
+    @property
+    @pulumi.getter
+    def retry(self) -> Optional[pulumi.Input['SyncPolicyRetryArgs']]:
+        return pulumi.get(self, "retry")
+
+    @retry.setter
+    def retry(self, value: Optional[pulumi.Input['SyncPolicyRetryArgs']]):
+        pulumi.set(self, "retry", value)
+
+    @property
+    @pulumi.getter(name="syncOptions")
+    def sync_options(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        return pulumi.get(self, "sync_options")
+
+    @sync_options.setter
+    def sync_options(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "sync_options", value)
+
+
+@pulumi.input_type
+class ArgocdApplicationArgs:
+    def __init__(__self__, *,
+                 api_version: Optional[pulumi.Input[str]] = None,
+                 kind: Optional[pulumi.Input[str]] = None,
+                 metadata: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 spec: Optional[pulumi.Input['ArgocdApplicationSpecArgs']] = None):
+        if api_version is not None:
+            pulumi.set(__self__, "api_version", api_version)
+        if kind is not None:
+            pulumi.set(__self__, "kind", kind)
+        if metadata is not None:
+            pulumi.set(__self__, "metadata", metadata)
+        if spec is not None:
+            pulumi.set(__self__, "spec", spec)
+
+    @property
+    @pulumi.getter(name="apiVersion")
+    def api_version(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "api_version")
+
+    @api_version.setter
+    def api_version(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "api_version", value)
+
+    @property
+    @pulumi.getter
+    def kind(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "kind")
+
+    @kind.setter
+    def kind(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "kind", value)
+
+    @property
+    @pulumi.getter
+    def metadata(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        return pulumi.get(self, "metadata")
+
+    @metadata.setter
+    def metadata(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "metadata", value)
+
+    @property
+    @pulumi.getter
+    def spec(self) -> Optional[pulumi.Input['ArgocdApplicationSpecArgs']]:
+        return pulumi.get(self, "spec")
+
+    @spec.setter
+    def spec(self, value: Optional[pulumi.Input['ArgocdApplicationSpecArgs']]):
+        pulumi.set(self, "spec", value)
+
+
+@pulumi.input_type
+class AuthConfigMapConfigArgs:
+    def __init__(__self__, *,
+                 auto_discover_sso_roles: Optional[pulumi.Input[Sequence[pulumi.Input['SSORolePermissionSetConfigArgs']]]] = None,
+                 eks_cluster_name: Optional[pulumi.Input[str]] = None,
+                 enable_node_group_iam_role_auto_discover: Optional[pulumi.Input[bool]] = None,
+                 iam_roles: Optional[pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]]] = None,
+                 iam_users: Optional[pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]]] = None,
+                 node_group_iam_role: Optional[pulumi.Input[str]] = None):
+        """
+        Configuration for the EKS auth configmap
+        :param pulumi.Input[Sequence[pulumi.Input['SSORolePermissionSetConfigArgs']]] auto_discover_sso_roles: Optional, list of AWS SSO permission set roles to autodiscover.
+        :param pulumi.Input[str] eks_cluster_name: Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
+        :param pulumi.Input[bool] enable_node_group_iam_role_auto_discover: Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
+        :param pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]] iam_roles: Optional, list of IAM roles to grant access in the auth configmap
+        :param pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]] iam_users: Optional, list of IAM users to grant access in the auth configmap
+        :param pulumi.Input[str] node_group_iam_role: IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
+        """
+        if auto_discover_sso_roles is not None:
+            pulumi.set(__self__, "auto_discover_sso_roles", auto_discover_sso_roles)
+        if eks_cluster_name is not None:
+            pulumi.set(__self__, "eks_cluster_name", eks_cluster_name)
+        if enable_node_group_iam_role_auto_discover is not None:
+            pulumi.set(__self__, "enable_node_group_iam_role_auto_discover", enable_node_group_iam_role_auto_discover)
+        if iam_roles is not None:
+            pulumi.set(__self__, "iam_roles", iam_roles)
+        if iam_users is not None:
+            pulumi.set(__self__, "iam_users", iam_users)
+        if node_group_iam_role is not None:
+            pulumi.set(__self__, "node_group_iam_role", node_group_iam_role)
+
+    @property
+    @pulumi.getter(name="autoDiscoverSSORoles")
+    def auto_discover_sso_roles(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['SSORolePermissionSetConfigArgs']]]]:
+        """
+        Optional, list of AWS SSO permission set roles to autodiscover.
+        """
+        return pulumi.get(self, "auto_discover_sso_roles")
+
+    @auto_discover_sso_roles.setter
+    def auto_discover_sso_roles(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['SSORolePermissionSetConfigArgs']]]]):
+        pulumi.set(self, "auto_discover_sso_roles", value)
+
+    @property
+    @pulumi.getter(name="eksClusterName")
+    def eks_cluster_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
+        """
+        return pulumi.get(self, "eks_cluster_name")
+
+    @eks_cluster_name.setter
+    def eks_cluster_name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "eks_cluster_name", value)
+
+    @property
+    @pulumi.getter(name="enableNodeGroupIamRoleAutoDiscover")
+    def enable_node_group_iam_role_auto_discover(self) -> Optional[pulumi.Input[bool]]:
+        """
+        Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
+        """
+        return pulumi.get(self, "enable_node_group_iam_role_auto_discover")
+
+    @enable_node_group_iam_role_auto_discover.setter
+    def enable_node_group_iam_role_auto_discover(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "enable_node_group_iam_role_auto_discover", value)
+
+    @property
+    @pulumi.getter(name="iamRoles")
+    def iam_roles(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]]]:
+        """
+        Optional, list of IAM roles to grant access in the auth configmap
+        """
+        return pulumi.get(self, "iam_roles")
+
+    @iam_roles.setter
+    def iam_roles(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]]]):
+        pulumi.set(self, "iam_roles", value)
+
+    @property
+    @pulumi.getter(name="iamUsers")
+    def iam_users(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]]]:
+        """
+        Optional, list of IAM users to grant access in the auth configmap
+        """
+        return pulumi.get(self, "iam_users")
+
+    @iam_users.setter
+    def iam_users(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]]]):
+        pulumi.set(self, "iam_users", value)
+
+    @property
+    @pulumi.getter(name="nodeGroupIamRole")
+    def node_group_iam_role(self) -> Optional[pulumi.Input[str]]:
+        """
+        IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
+        """
+        return pulumi.get(self, "node_group_iam_role")
+
+    @node_group_iam_role.setter
+    def node_group_iam_role(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "node_group_iam_role", value)
+
 
 @pulumi.input_type
 class AvailabilityZoneArgs:
@@ -66,6 +584,100 @@ class AvailabilityZoneArgs:
     @public_subnet_cidr.setter
     def public_subnet_cidr(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "public_subnet_cidr", value)
+
+
+@pulumi.input_type
+class DirectorySourceJsonnetArgs:
+    def __init__(__self__, *,
+                 tlas: Optional[pulumi.Input[Sequence[pulumi.Input['JsonnetVarArgs']]]] = None,
+                 ext_vars: Optional[pulumi.Input[Sequence[pulumi.Input['JsonnetVarArgs']]]] = None,
+                 libs: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
+        if tlas is not None:
+            pulumi.set(__self__, "tlas", tlas)
+        if ext_vars is not None:
+            pulumi.set(__self__, "ext_vars", ext_vars)
+        if libs is not None:
+            pulumi.set(__self__, "libs", libs)
+
+    @property
+    @pulumi.getter(name="TLAs")
+    def tlas(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['JsonnetVarArgs']]]]:
+        return pulumi.get(self, "tlas")
+
+    @tlas.setter
+    def tlas(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['JsonnetVarArgs']]]]):
+        pulumi.set(self, "tlas", value)
+
+    @property
+    @pulumi.getter(name="extVars")
+    def ext_vars(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['JsonnetVarArgs']]]]:
+        return pulumi.get(self, "ext_vars")
+
+    @ext_vars.setter
+    def ext_vars(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['JsonnetVarArgs']]]]):
+        pulumi.set(self, "ext_vars", value)
+
+    @property
+    @pulumi.getter
+    def libs(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        return pulumi.get(self, "libs")
+
+    @libs.setter
+    def libs(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "libs", value)
+
+
+@pulumi.input_type
+class DirectorySourceArgs:
+    def __init__(__self__, *,
+                 exclude: Optional[pulumi.Input[str]] = None,
+                 include: Optional[pulumi.Input[str]] = None,
+                 jsonnet: Optional[pulumi.Input['DirectorySourceJsonnetArgs']] = None,
+                 recurse: Optional[pulumi.Input[bool]] = None):
+        if exclude is not None:
+            pulumi.set(__self__, "exclude", exclude)
+        if include is not None:
+            pulumi.set(__self__, "include", include)
+        if jsonnet is not None:
+            pulumi.set(__self__, "jsonnet", jsonnet)
+        if recurse is not None:
+            pulumi.set(__self__, "recurse", recurse)
+
+    @property
+    @pulumi.getter
+    def exclude(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "exclude")
+
+    @exclude.setter
+    def exclude(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "exclude", value)
+
+    @property
+    @pulumi.getter
+    def include(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "include")
+
+    @include.setter
+    def include(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "include", value)
+
+    @property
+    @pulumi.getter
+    def jsonnet(self) -> Optional[pulumi.Input['DirectorySourceJsonnetArgs']]:
+        return pulumi.get(self, "jsonnet")
+
+    @jsonnet.setter
+    def jsonnet(self, value: Optional[pulumi.Input['DirectorySourceJsonnetArgs']]):
+        pulumi.set(self, "jsonnet", value)
+
+    @property
+    @pulumi.getter
+    def recurse(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "recurse")
+
+    @recurse.setter
+    def recurse(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "recurse", value)
 
 
 @pulumi.input_type
@@ -129,5 +741,794 @@ class EksNodeGroupArgs:
     @name_prefix.setter
     def name_prefix(self, value: pulumi.Input[str]):
         pulumi.set(self, "name_prefix", value)
+
+
+@pulumi.input_type
+class HelmReleaseConfigArgs:
+    def __init__(__self__, *,
+                 values: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 values_files: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 version: Optional[pulumi.Input[str]] = None):
+        """
+        Configuration for a helm release
+        :param pulumi.Input[Mapping[str, pulumi.Input[str]]] values: Optional for each implementation, empty by default
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] values_files: Optional for each implementation, empty by default
+        :param pulumi.Input[str] version: Optional for each implementation, defaults specific to each helm chart
+        """
+        if values is not None:
+            pulumi.set(__self__, "values", values)
+        if values_files is not None:
+            pulumi.set(__self__, "values_files", values_files)
+        if version is not None:
+            pulumi.set(__self__, "version", version)
+
+    @property
+    @pulumi.getter
+    def values(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        """
+        Optional for each implementation, empty by default
+        """
+        return pulumi.get(self, "values")
+
+    @values.setter
+    def values(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "values", value)
+
+    @property
+    @pulumi.getter(name="valuesFiles")
+    def values_files(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Optional for each implementation, empty by default
+        """
+        return pulumi.get(self, "values_files")
+
+    @values_files.setter
+    def values_files(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "values_files", value)
+
+    @property
+    @pulumi.getter
+    def version(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional for each implementation, defaults specific to each helm chart
+        """
+        return pulumi.get(self, "version")
+
+    @version.setter
+    def version(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "version", value)
+
+
+@pulumi.input_type
+class HelmSourceFileParameterArgs:
+    def __init__(__self__, *,
+                 name: Optional[pulumi.Input[str]] = None,
+                 path: Optional[pulumi.Input[str]] = None):
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if path is not None:
+            pulumi.set(__self__, "path", path)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter
+    def path(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "path")
+
+    @path.setter
+    def path(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "path", value)
+
+
+@pulumi.input_type
+class HelmSourceParameterArgs:
+    def __init__(__self__, *,
+                 force_string: Optional[pulumi.Input[bool]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 value: Optional[pulumi.Input[str]] = None):
+        if force_string is not None:
+            pulumi.set(__self__, "force_string", force_string)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if value is not None:
+            pulumi.set(__self__, "value", value)
+
+    @property
+    @pulumi.getter(name="forceString")
+    def force_string(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "force_string")
+
+    @force_string.setter
+    def force_string(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "force_string", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter
+    def value(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "value")
+
+    @value.setter
+    def value(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "value", value)
+
+
+@pulumi.input_type
+class HelmSourceArgs:
+    def __init__(__self__, *,
+                 file_parameters: Optional[pulumi.Input[Sequence[pulumi.Input['HelmSourceFileParameterArgs']]]] = None,
+                 ignore_missing_value_files: Optional[pulumi.Input[bool]] = None,
+                 parameters: Optional[pulumi.Input[Sequence[pulumi.Input['HelmSourceParameterArgs']]]] = None,
+                 pass_credentials: Optional[pulumi.Input[bool]] = None,
+                 release_name: Optional[pulumi.Input[str]] = None,
+                 skip_crds: Optional[pulumi.Input[str]] = None,
+                 value_files: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 values: Optional[pulumi.Input[str]] = None,
+                 version: Optional[pulumi.Input[str]] = None):
+        if file_parameters is not None:
+            pulumi.set(__self__, "file_parameters", file_parameters)
+        if ignore_missing_value_files is not None:
+            pulumi.set(__self__, "ignore_missing_value_files", ignore_missing_value_files)
+        if parameters is not None:
+            pulumi.set(__self__, "parameters", parameters)
+        if pass_credentials is not None:
+            pulumi.set(__self__, "pass_credentials", pass_credentials)
+        if release_name is not None:
+            pulumi.set(__self__, "release_name", release_name)
+        if skip_crds is not None:
+            pulumi.set(__self__, "skip_crds", skip_crds)
+        if value_files is not None:
+            pulumi.set(__self__, "value_files", value_files)
+        if values is not None:
+            pulumi.set(__self__, "values", values)
+        if version is not None:
+            pulumi.set(__self__, "version", version)
+
+    @property
+    @pulumi.getter(name="fileParameters")
+    def file_parameters(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['HelmSourceFileParameterArgs']]]]:
+        return pulumi.get(self, "file_parameters")
+
+    @file_parameters.setter
+    def file_parameters(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['HelmSourceFileParameterArgs']]]]):
+        pulumi.set(self, "file_parameters", value)
+
+    @property
+    @pulumi.getter(name="ignoreMissingValueFiles")
+    def ignore_missing_value_files(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "ignore_missing_value_files")
+
+    @ignore_missing_value_files.setter
+    def ignore_missing_value_files(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "ignore_missing_value_files", value)
+
+    @property
+    @pulumi.getter
+    def parameters(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['HelmSourceParameterArgs']]]]:
+        return pulumi.get(self, "parameters")
+
+    @parameters.setter
+    def parameters(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['HelmSourceParameterArgs']]]]):
+        pulumi.set(self, "parameters", value)
+
+    @property
+    @pulumi.getter(name="passCredentials")
+    def pass_credentials(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "pass_credentials")
+
+    @pass_credentials.setter
+    def pass_credentials(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "pass_credentials", value)
+
+    @property
+    @pulumi.getter(name="releaseName")
+    def release_name(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "release_name")
+
+    @release_name.setter
+    def release_name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "release_name", value)
+
+    @property
+    @pulumi.getter(name="skipCrds")
+    def skip_crds(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "skip_crds")
+
+    @skip_crds.setter
+    def skip_crds(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "skip_crds", value)
+
+    @property
+    @pulumi.getter(name="valueFiles")
+    def value_files(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        return pulumi.get(self, "value_files")
+
+    @value_files.setter
+    def value_files(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "value_files", value)
+
+    @property
+    @pulumi.getter
+    def values(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "values")
+
+    @values.setter
+    def values(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "values", value)
+
+    @property
+    @pulumi.getter
+    def version(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "version")
+
+    @version.setter
+    def version(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "version", value)
+
+
+@pulumi.input_type
+class IAMIdentityConfigArgs:
+    def __init__(__self__, *,
+                 arn: Optional[pulumi.Input[str]] = None,
+                 permission_groups: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 username: Optional[pulumi.Input[str]] = None):
+        """
+        :param pulumi.Input[str] arn: Required, ARN of IAM role to use in configmap
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] permission_groups: Required, permission groups to add role to. Ex: system:masters
+        :param pulumi.Input[str] username: Optional username field, defaults to role name
+        """
+        if arn is not None:
+            pulumi.set(__self__, "arn", arn)
+        if permission_groups is not None:
+            pulumi.set(__self__, "permission_groups", permission_groups)
+        if username is not None:
+            pulumi.set(__self__, "username", username)
+
+    @property
+    @pulumi.getter
+    def arn(self) -> Optional[pulumi.Input[str]]:
+        """
+        Required, ARN of IAM role to use in configmap
+        """
+        return pulumi.get(self, "arn")
+
+    @arn.setter
+    def arn(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "arn", value)
+
+    @property
+    @pulumi.getter(name="permissionGroups")
+    def permission_groups(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Required, permission groups to add role to. Ex: system:masters
+        """
+        return pulumi.get(self, "permission_groups")
+
+    @permission_groups.setter
+    def permission_groups(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "permission_groups", value)
+
+    @property
+    @pulumi.getter
+    def username(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional username field, defaults to role name
+        """
+        return pulumi.get(self, "username")
+
+    @username.setter
+    def username(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "username", value)
+
+
+@pulumi.input_type
+class JsonnetVarArgs:
+    def __init__(__self__, *,
+                 code: Optional[pulumi.Input[bool]] = None,
+                 name: Optional[pulumi.Input[str]] = None,
+                 value: Optional[pulumi.Input[str]] = None):
+        if code is not None:
+            pulumi.set(__self__, "code", code)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if value is not None:
+            pulumi.set(__self__, "value", value)
+
+    @property
+    @pulumi.getter
+    def code(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "code")
+
+    @code.setter
+    def code(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "code", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter
+    def value(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "value")
+
+    @value.setter
+    def value(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "value", value)
+
+
+@pulumi.input_type
+class KustomizeSourceArgs:
+    def __init__(__self__, *,
+                 common_annotations: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 common_labels: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
+                 force_common_annotations: Optional[pulumi.Input[bool]] = None,
+                 force_common_labels: Optional[pulumi.Input[bool]] = None,
+                 images: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 name_prefix: Optional[pulumi.Input[str]] = None,
+                 name_suffix: Optional[pulumi.Input[str]] = None,
+                 version: Optional[pulumi.Input[str]] = None):
+        if common_annotations is not None:
+            pulumi.set(__self__, "common_annotations", common_annotations)
+        if common_labels is not None:
+            pulumi.set(__self__, "common_labels", common_labels)
+        if force_common_annotations is not None:
+            pulumi.set(__self__, "force_common_annotations", force_common_annotations)
+        if force_common_labels is not None:
+            pulumi.set(__self__, "force_common_labels", force_common_labels)
+        if images is not None:
+            pulumi.set(__self__, "images", images)
+        if name_prefix is not None:
+            pulumi.set(__self__, "name_prefix", name_prefix)
+        if name_suffix is not None:
+            pulumi.set(__self__, "name_suffix", name_suffix)
+        if version is not None:
+            pulumi.set(__self__, "version", version)
+
+    @property
+    @pulumi.getter(name="commonAnnotations")
+    def common_annotations(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        return pulumi.get(self, "common_annotations")
+
+    @common_annotations.setter
+    def common_annotations(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "common_annotations", value)
+
+    @property
+    @pulumi.getter(name="commonLabels")
+    def common_labels(self) -> Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]:
+        return pulumi.get(self, "common_labels")
+
+    @common_labels.setter
+    def common_labels(self, value: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]]):
+        pulumi.set(self, "common_labels", value)
+
+    @property
+    @pulumi.getter(name="forceCommonAnnotations")
+    def force_common_annotations(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "force_common_annotations")
+
+    @force_common_annotations.setter
+    def force_common_annotations(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "force_common_annotations", value)
+
+    @property
+    @pulumi.getter(name="forceCommonLabels")
+    def force_common_labels(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "force_common_labels")
+
+    @force_common_labels.setter
+    def force_common_labels(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "force_common_labels", value)
+
+    @property
+    @pulumi.getter
+    def images(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        return pulumi.get(self, "images")
+
+    @images.setter
+    def images(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "images", value)
+
+    @property
+    @pulumi.getter(name="namePrefix")
+    def name_prefix(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "name_prefix")
+
+    @name_prefix.setter
+    def name_prefix(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name_prefix", value)
+
+    @property
+    @pulumi.getter(name="nameSuffix")
+    def name_suffix(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "name_suffix")
+
+    @name_suffix.setter
+    def name_suffix(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name_suffix", value)
+
+    @property
+    @pulumi.getter
+    def version(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "version")
+
+    @version.setter
+    def version(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "version", value)
+
+
+@pulumi.input_type
+class PlatformApplicationConfigArgs:
+    def __init__(__self__, *,
+                 cert_manager_dns_solver_secret: Optional[pulumi.Input[str]] = None,
+                 sync_policy: Optional[pulumi.Input['ArgocdApplicationSyncPolicyArgs']] = None,
+                 target_revision: Optional[pulumi.Input[str]] = None,
+                 values: Optional[pulumi.Input[str]] = None):
+        """
+        Configuration for platform application
+        :param pulumi.Input[str] cert_manager_dns_solver_secret: Optional, value of certmanager dns resolver secret
+        :param pulumi.Input['ArgocdApplicationSyncPolicyArgs'] sync_policy: Optional, sync policy of platform application config.
+        :param pulumi.Input[str] target_revision: Optional, target revision of platform application config. Deafult: >=1.0.0-alpha
+        :param pulumi.Input[str] values: Optional, platform application values
+        """
+        if cert_manager_dns_solver_secret is not None:
+            pulumi.set(__self__, "cert_manager_dns_solver_secret", cert_manager_dns_solver_secret)
+        if sync_policy is not None:
+            pulumi.set(__self__, "sync_policy", sync_policy)
+        if target_revision is not None:
+            pulumi.set(__self__, "target_revision", target_revision)
+        if values is not None:
+            pulumi.set(__self__, "values", values)
+
+    @property
+    @pulumi.getter(name="certManagerDnsSolverSecret")
+    def cert_manager_dns_solver_secret(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, value of certmanager dns resolver secret
+        """
+        return pulumi.get(self, "cert_manager_dns_solver_secret")
+
+    @cert_manager_dns_solver_secret.setter
+    def cert_manager_dns_solver_secret(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "cert_manager_dns_solver_secret", value)
+
+    @property
+    @pulumi.getter(name="syncPolicy")
+    def sync_policy(self) -> Optional[pulumi.Input['ArgocdApplicationSyncPolicyArgs']]:
+        """
+        Optional, sync policy of platform application config.
+        """
+        return pulumi.get(self, "sync_policy")
+
+    @sync_policy.setter
+    def sync_policy(self, value: Optional[pulumi.Input['ArgocdApplicationSyncPolicyArgs']]):
+        pulumi.set(self, "sync_policy", value)
+
+    @property
+    @pulumi.getter(name="targetRevision")
+    def target_revision(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, target revision of platform application config. Deafult: >=1.0.0-alpha
+        """
+        return pulumi.get(self, "target_revision")
+
+    @target_revision.setter
+    def target_revision(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "target_revision", value)
+
+    @property
+    @pulumi.getter
+    def values(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, platform application values
+        """
+        return pulumi.get(self, "values")
+
+    @values.setter
+    def values(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "values", value)
+
+
+@pulumi.input_type
+class PluginSourceEnvArgs:
+    def __init__(__self__, *,
+                 name: Optional[pulumi.Input[str]] = None,
+                 value: Optional[pulumi.Input[str]] = None):
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if value is not None:
+            pulumi.set(__self__, "value", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter
+    def value(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "value")
+
+    @value.setter
+    def value(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "value", value)
+
+
+@pulumi.input_type
+class PluginSourceArgs:
+    def __init__(__self__, *,
+                 env: Optional[pulumi.Input[Sequence[pulumi.Input['PluginSourceEnvArgs']]]] = None,
+                 name: Optional[pulumi.Input[str]] = None):
+        if env is not None:
+            pulumi.set(__self__, "env", env)
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+
+    @property
+    @pulumi.getter
+    def env(self) -> Optional[pulumi.Input[Sequence[pulumi.Input['PluginSourceEnvArgs']]]]:
+        return pulumi.get(self, "env")
+
+    @env.setter
+    def env(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['PluginSourceEnvArgs']]]]):
+        pulumi.set(self, "env", value)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+
+@pulumi.input_type
+class PrometheusRemoteWriteConfigArgs:
+    def __init__(__self__, *,
+                 basic_auth_password: Optional[pulumi.Input[str]] = None,
+                 basic_auth_username: Optional[pulumi.Input[str]] = None,
+                 secret_name: Optional[pulumi.Input[str]] = None):
+        """
+        Configuration for a Prometheus remoteWrite config secret.
+        :param pulumi.Input[str] basic_auth_password: Required, basic auth password.
+        :param pulumi.Input[str] basic_auth_username: Optional, basic auth username. Default: <stack name>
+        :param pulumi.Input[str] secret_name: Optional, basic auth secret name. Default: prometheus-remote-write-basic-auth
+        """
+        if basic_auth_password is not None:
+            pulumi.set(__self__, "basic_auth_password", basic_auth_password)
+        if basic_auth_username is not None:
+            pulumi.set(__self__, "basic_auth_username", basic_auth_username)
+        if secret_name is not None:
+            pulumi.set(__self__, "secret_name", secret_name)
+
+    @property
+    @pulumi.getter(name="basicAuthPassword")
+    def basic_auth_password(self) -> Optional[pulumi.Input[str]]:
+        """
+        Required, basic auth password.
+        """
+        return pulumi.get(self, "basic_auth_password")
+
+    @basic_auth_password.setter
+    def basic_auth_password(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "basic_auth_password", value)
+
+    @property
+    @pulumi.getter(name="basicAuthUsername")
+    def basic_auth_username(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, basic auth username. Default: <stack name>
+        """
+        return pulumi.get(self, "basic_auth_username")
+
+    @basic_auth_username.setter
+    def basic_auth_username(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "basic_auth_username", value)
+
+    @property
+    @pulumi.getter(name="secretName")
+    def secret_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, basic auth secret name. Default: prometheus-remote-write-basic-auth
+        """
+        return pulumi.get(self, "secret_name")
+
+    @secret_name.setter
+    def secret_name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "secret_name", value)
+
+
+@pulumi.input_type
+class RetryBackoffArgs:
+    def __init__(__self__, *,
+                 duration: Optional[pulumi.Input[str]] = None,
+                 factor: Optional[pulumi.Input[int]] = None,
+                 max_duration: Optional[pulumi.Input[str]] = None):
+        if duration is not None:
+            pulumi.set(__self__, "duration", duration)
+        if factor is not None:
+            pulumi.set(__self__, "factor", factor)
+        if max_duration is not None:
+            pulumi.set(__self__, "max_duration", max_duration)
+
+    @property
+    @pulumi.getter
+    def duration(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "duration")
+
+    @duration.setter
+    def duration(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "duration", value)
+
+    @property
+    @pulumi.getter
+    def factor(self) -> Optional[pulumi.Input[int]]:
+        return pulumi.get(self, "factor")
+
+    @factor.setter
+    def factor(self, value: Optional[pulumi.Input[int]]):
+        pulumi.set(self, "factor", value)
+
+    @property
+    @pulumi.getter(name="maxDuration")
+    def max_duration(self) -> Optional[pulumi.Input[str]]:
+        return pulumi.get(self, "max_duration")
+
+    @max_duration.setter
+    def max_duration(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "max_duration", value)
+
+
+@pulumi.input_type
+class SSORolePermissionSetConfigArgs:
+    def __init__(__self__, *,
+                 name: Optional[pulumi.Input[str]] = None,
+                 permission_groups: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
+                 username: Optional[pulumi.Input[str]] = None):
+        """
+        Configuration of SSO IAM Roles to auto discover.
+        :param pulumi.Input[str] name: Name of the permission set. Will use for autodiscovery using regex "AWSReservedSSO_<name>_.*"
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] permission_groups: List of permission groups to add to each identity. Ex: system:masters
+        :param pulumi.Input[str] username: Optional username field, defaults to the name of the SSO role.
+        """
+        if name is not None:
+            pulumi.set(__self__, "name", name)
+        if permission_groups is not None:
+            pulumi.set(__self__, "permission_groups", permission_groups)
+        if username is not None:
+            pulumi.set(__self__, "username", username)
+
+    @property
+    @pulumi.getter
+    def name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Name of the permission set. Will use for autodiscovery using regex "AWSReservedSSO_<name>_.*"
+        """
+        return pulumi.get(self, "name")
+
+    @name.setter
+    def name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "name", value)
+
+    @property
+    @pulumi.getter(name="permissionGroups")
+    def permission_groups(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        List of permission groups to add to each identity. Ex: system:masters
+        """
+        return pulumi.get(self, "permission_groups")
+
+    @permission_groups.setter
+    def permission_groups(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "permission_groups", value)
+
+    @property
+    @pulumi.getter
+    def username(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional username field, defaults to the name of the SSO role.
+        """
+        return pulumi.get(self, "username")
+
+    @username.setter
+    def username(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "username", value)
+
+
+@pulumi.input_type
+class SyncPolicyAutomatedArgs:
+    def __init__(__self__, *,
+                 allow_empty: Optional[pulumi.Input[bool]] = None,
+                 prune: Optional[pulumi.Input[bool]] = None,
+                 self_heal: Optional[pulumi.Input[bool]] = None):
+        if allow_empty is not None:
+            pulumi.set(__self__, "allow_empty", allow_empty)
+        if prune is not None:
+            pulumi.set(__self__, "prune", prune)
+        if self_heal is not None:
+            pulumi.set(__self__, "self_heal", self_heal)
+
+    @property
+    @pulumi.getter(name="allowEmpty")
+    def allow_empty(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "allow_empty")
+
+    @allow_empty.setter
+    def allow_empty(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "allow_empty", value)
+
+    @property
+    @pulumi.getter
+    def prune(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "prune")
+
+    @prune.setter
+    def prune(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "prune", value)
+
+    @property
+    @pulumi.getter(name="selfHeal")
+    def self_heal(self) -> Optional[pulumi.Input[bool]]:
+        return pulumi.get(self, "self_heal")
+
+    @self_heal.setter
+    def self_heal(self, value: Optional[pulumi.Input[bool]]):
+        pulumi.set(self, "self_heal", value)
+
+
+@pulumi.input_type
+class SyncPolicyRetryArgs:
+    def __init__(__self__, *,
+                 backoff: Optional[pulumi.Input['RetryBackoffArgs']] = None,
+                 limit: Optional[pulumi.Input[int]] = None):
+        if backoff is not None:
+            pulumi.set(__self__, "backoff", backoff)
+        if limit is not None:
+            pulumi.set(__self__, "limit", limit)
+
+    @property
+    @pulumi.getter
+    def backoff(self) -> Optional[pulumi.Input['RetryBackoffArgs']]:
+        return pulumi.get(self, "backoff")
+
+    @backoff.setter
+    def backoff(self, value: Optional[pulumi.Input['RetryBackoffArgs']]):
+        pulumi.set(self, "backoff", value)
+
+    @property
+    @pulumi.getter
+    def limit(self) -> Optional[pulumi.Input[int]]:
+        return pulumi.get(self, "limit")
+
+    @limit.setter
+    def limit(self, value: Optional[pulumi.Input[int]]):
+        pulumi.set(self, "limit", value)
 
 

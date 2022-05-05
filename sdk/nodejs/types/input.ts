@@ -4,6 +4,84 @@
 import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs } from "../types";
 
+export interface ArgocdApplicationArgs {
+    apiVersion?: pulumi.Input<string>;
+    kind?: pulumi.Input<string>;
+    metadata?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    spec?: pulumi.Input<inputs.ArgocdApplicationSpecArgs>;
+}
+
+export interface ArgocdApplicationIgnoreDifferencesArgs {
+    group?: pulumi.Input<string>;
+    jqPathExpressions?: pulumi.Input<pulumi.Input<string>[]>;
+    jsonPointers?: pulumi.Input<pulumi.Input<string>[]>;
+    kind?: pulumi.Input<string>;
+    managedFieldsManagers?: pulumi.Input<pulumi.Input<string>[]>;
+    name?: pulumi.Input<string>;
+    namespace?: pulumi.Input<string>;
+}
+
+export interface ArgocdApplicationSpecArgs {
+    destination?: pulumi.Input<inputs.ArgocdApplicationSpecDestinationArgs>;
+    ignoreDifferences?: pulumi.Input<pulumi.Input<inputs.ArgocdApplicationIgnoreDifferencesArgs>[]>;
+    project?: pulumi.Input<string>;
+    source?: pulumi.Input<inputs.ArgocdApplicationSpecSourceArgs>;
+    syncPolicy?: pulumi.Input<inputs.ArgocdApplicationSyncPolicyArgs>;
+}
+
+export interface ArgocdApplicationSpecDestinationArgs {
+    name?: pulumi.Input<string>;
+    namespace?: pulumi.Input<string>;
+    server?: pulumi.Input<string>;
+}
+
+export interface ArgocdApplicationSpecSourceArgs {
+    chart?: pulumi.Input<string>;
+    directory?: pulumi.Input<inputs.DirectorySourceArgs>;
+    helm?: pulumi.Input<inputs.HelmSourceArgs>;
+    kustomize?: pulumi.Input<inputs.KustomizeSourceArgs>;
+    path?: pulumi.Input<string>;
+    plugin?: pulumi.Input<inputs.PluginSourceArgs>;
+    repoURL?: pulumi.Input<string>;
+    targetRevision?: pulumi.Input<string>;
+}
+
+export interface ArgocdApplicationSyncPolicyArgs {
+    automated?: pulumi.Input<inputs.SyncPolicyAutomatedArgs>;
+    retry?: pulumi.Input<inputs.SyncPolicyRetryArgs>;
+    syncOptions?: pulumi.Input<pulumi.Input<string>[]>;
+}
+
+/**
+ * Configuration for the EKS auth configmap
+ */
+export interface AuthConfigMapConfigArgs {
+    /**
+     * Optional, list of AWS SSO permission set roles to autodiscover.
+     */
+    autoDiscoverSSORoles?: pulumi.Input<pulumi.Input<inputs.SSORolePermissionSetConfigArgs>[]>;
+    /**
+     * Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
+     */
+    eksClusterName?: pulumi.Input<string>;
+    /**
+     * Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
+     */
+    enableNodeGroupIamRoleAutoDiscover?: pulumi.Input<boolean>;
+    /**
+     * Optional, list of IAM roles to grant access in the auth configmap
+     */
+    iamRoles?: pulumi.Input<pulumi.Input<inputs.IAMIdentityConfigArgs>[]>;
+    /**
+     * Optional, list of IAM users to grant access in the auth configmap
+     */
+    iamUsers?: pulumi.Input<pulumi.Input<inputs.IAMIdentityConfigArgs>[]>;
+    /**
+     * IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
+     */
+    nodeGroupIamRole?: pulumi.Input<string>;
+}
+
 /**
  * Configuration supplied to AvailabilityZone list in VpcArgs to specify which availability zones to deploy to and what subnet configuration for each availability zone. Supports one private and public subnet per AZ.
  */
@@ -22,6 +100,19 @@ export interface AvailabilityZoneArgs {
     publicSubnetCidr?: pulumi.Input<string>;
 }
 
+export interface DirectorySourceArgs {
+    exclude?: pulumi.Input<string>;
+    include?: pulumi.Input<string>;
+    jsonnet?: pulumi.Input<inputs.DirectorySourceJsonnetArgs>;
+    recurse?: pulumi.Input<boolean>;
+}
+
+export interface DirectorySourceJsonnetArgs {
+    TLAs?: pulumi.Input<pulumi.Input<inputs.JsonnetVarArgs>[]>;
+    extVars?: pulumi.Input<pulumi.Input<inputs.JsonnetVarArgs>[]>;
+    libs?: pulumi.Input<pulumi.Input<string>[]>;
+}
+
 /**
  * Configuration for an EKS node group
  */
@@ -31,4 +122,162 @@ export interface EksNodeGroupArgs {
     maxSize: pulumi.Input<number>;
     minSize: pulumi.Input<number>;
     namePrefix: pulumi.Input<string>;
+}
+
+/**
+ * Configuration for a helm release
+ */
+export interface HelmReleaseConfigArgs {
+    /**
+     * Optional for each implementation, empty by default
+     */
+    values?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    /**
+     * Optional for each implementation, empty by default
+     */
+    valuesFiles?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Optional for each implementation, defaults specific to each helm chart
+     */
+    version?: pulumi.Input<string>;
+}
+
+export interface HelmSourceArgs {
+    fileParameters?: pulumi.Input<pulumi.Input<inputs.HelmSourceFileParameterArgs>[]>;
+    ignoreMissingValueFiles?: pulumi.Input<boolean>;
+    parameters?: pulumi.Input<pulumi.Input<inputs.HelmSourceParameterArgs>[]>;
+    passCredentials?: pulumi.Input<boolean>;
+    releaseName?: pulumi.Input<string>;
+    skipCrds?: pulumi.Input<string>;
+    valueFiles?: pulumi.Input<pulumi.Input<string>[]>;
+    values?: pulumi.Input<string>;
+    version?: pulumi.Input<string>;
+}
+
+export interface HelmSourceFileParameterArgs {
+    name?: pulumi.Input<string>;
+    path?: pulumi.Input<string>;
+}
+
+export interface HelmSourceParameterArgs {
+    forceString?: pulumi.Input<boolean>;
+    name?: pulumi.Input<string>;
+    value?: pulumi.Input<string>;
+}
+
+export interface IAMIdentityConfigArgs {
+    /**
+     * Required, ARN of IAM role to use in configmap
+     */
+    arn?: pulumi.Input<string>;
+    /**
+     * Required, permission groups to add role to. Ex: system:masters
+     */
+    permissionGroups?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Optional username field, defaults to role name
+     */
+    username?: pulumi.Input<string>;
+}
+
+export interface JsonnetVarArgs {
+    code?: pulumi.Input<boolean>;
+    name?: pulumi.Input<string>;
+    value?: pulumi.Input<string>;
+}
+
+export interface KustomizeSourceArgs {
+    commonAnnotations?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    commonLabels?: pulumi.Input<{[key: string]: pulumi.Input<string>}>;
+    forceCommonAnnotations?: pulumi.Input<boolean>;
+    forceCommonLabels?: pulumi.Input<boolean>;
+    images?: pulumi.Input<pulumi.Input<string>[]>;
+    namePrefix?: pulumi.Input<string>;
+    nameSuffix?: pulumi.Input<string>;
+    version?: pulumi.Input<string>;
+}
+
+/**
+ * Configuration for platform application
+ */
+export interface PlatformApplicationConfigArgs {
+    /**
+     * Optional, value of certmanager dns resolver secret
+     */
+    certManagerDnsSolverSecret?: pulumi.Input<string>;
+    /**
+     * Optional, sync policy of platform application config.
+     */
+    syncPolicy?: pulumi.Input<inputs.ArgocdApplicationSyncPolicyArgs>;
+    /**
+     * Optional, target revision of platform application config. Deafult: >=1.0.0-alpha
+     */
+    targetRevision?: pulumi.Input<string>;
+    /**
+     * Optional, platform application values
+     */
+    values?: pulumi.Input<string>;
+}
+
+export interface PluginSourceArgs {
+    env?: pulumi.Input<pulumi.Input<inputs.PluginSourceEnvArgs>[]>;
+    name?: pulumi.Input<string>;
+}
+
+export interface PluginSourceEnvArgs {
+    name?: pulumi.Input<string>;
+    value?: pulumi.Input<string>;
+}
+
+/**
+ * Configuration for a Prometheus remoteWrite config secret.
+ */
+export interface PrometheusRemoteWriteConfigArgs {
+    /**
+     * Required, basic auth password.
+     */
+    basicAuthPassword?: pulumi.Input<string>;
+    /**
+     * Optional, basic auth username. Default: <stack name>
+     */
+    basicAuthUsername?: pulumi.Input<string>;
+    /**
+     * Optional, basic auth secret name. Default: prometheus-remote-write-basic-auth
+     */
+    secretName?: pulumi.Input<string>;
+}
+
+export interface RetryBackoffArgs {
+    duration?: pulumi.Input<string>;
+    factor?: pulumi.Input<number>;
+    maxDuration?: pulumi.Input<string>;
+}
+
+/**
+ * Configuration of SSO IAM Roles to auto discover.
+ */
+export interface SSORolePermissionSetConfigArgs {
+    /**
+     * Name of the permission set. Will use for autodiscovery using regex "AWSReservedSSO_<name>_.*"
+     */
+    name?: pulumi.Input<string>;
+    /**
+     * List of permission groups to add to each identity. Ex: system:masters
+     */
+    permissionGroups?: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Optional username field, defaults to the name of the SSO role.
+     */
+    username?: pulumi.Input<string>;
+}
+
+export interface SyncPolicyAutomatedArgs {
+    allowEmpty?: pulumi.Input<boolean>;
+    prune?: pulumi.Input<boolean>;
+    selfHeal?: pulumi.Input<boolean>;
+}
+
+export interface SyncPolicyRetryArgs {
+    backoff?: pulumi.Input<inputs.RetryBackoffArgs>;
+    limit?: pulumi.Input<number>;
 }

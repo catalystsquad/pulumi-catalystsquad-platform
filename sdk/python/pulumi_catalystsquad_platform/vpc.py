@@ -16,6 +16,7 @@ class VpcArgs:
     def __init__(__self__, *,
                  availability_zone_config: Optional[pulumi.Input[Sequence[pulumi.Input['AvailabilityZoneArgs']]]] = None,
                  cidr: Optional[pulumi.Input[str]] = None,
+                 eks_cluster_name: Optional[pulumi.Input[str]] = None,
                  enable_eks_cluster_tags: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  tags: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None):
@@ -23,6 +24,7 @@ class VpcArgs:
         The set of arguments for constructing a Vpc resource.
         :param pulumi.Input[Sequence[pulumi.Input['AvailabilityZoneArgs']]] availability_zone_config: Optional, list of AvailabilityZones to create subnets in. Default: []
         :param pulumi.Input[str] cidr: Optional, CIDR block of the VPC. Default: 10.0.0.0/16
+        :param pulumi.Input[str] eks_cluster_name: Optional, EKS cluster name, if VPC is used for EKS. Default: <stack name>
         :param pulumi.Input[bool] enable_eks_cluster_tags: Optional, whether to enable required EKS cluster tags to subnets. Default: true
         :param pulumi.Input[str] name: Optional, Name tag value for VPC resource. Default: <stack name>
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] tags: Optional, tags to add to all resources. Default: {}
@@ -31,6 +33,8 @@ class VpcArgs:
             pulumi.set(__self__, "availability_zone_config", availability_zone_config)
         if cidr is not None:
             pulumi.set(__self__, "cidr", cidr)
+        if eks_cluster_name is not None:
+            pulumi.set(__self__, "eks_cluster_name", eks_cluster_name)
         if enable_eks_cluster_tags is not None:
             pulumi.set(__self__, "enable_eks_cluster_tags", enable_eks_cluster_tags)
         if name is not None:
@@ -61,6 +65,18 @@ class VpcArgs:
     @cidr.setter
     def cidr(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "cidr", value)
+
+    @property
+    @pulumi.getter(name="eksClusterName")
+    def eks_cluster_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, EKS cluster name, if VPC is used for EKS. Default: <stack name>
+        """
+        return pulumi.get(self, "eks_cluster_name")
+
+    @eks_cluster_name.setter
+    def eks_cluster_name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "eks_cluster_name", value)
 
     @property
     @pulumi.getter(name="enableEksClusterTags")
@@ -106,6 +122,7 @@ class Vpc(pulumi.ComponentResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  availability_zone_config: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['AvailabilityZoneArgs']]]]] = None,
                  cidr: Optional[pulumi.Input[str]] = None,
+                 eks_cluster_name: Optional[pulumi.Input[str]] = None,
                  enable_eks_cluster_tags: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  tags: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
@@ -116,6 +133,7 @@ class Vpc(pulumi.ComponentResource):
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['AvailabilityZoneArgs']]]] availability_zone_config: Optional, list of AvailabilityZones to create subnets in. Default: []
         :param pulumi.Input[str] cidr: Optional, CIDR block of the VPC. Default: 10.0.0.0/16
+        :param pulumi.Input[str] eks_cluster_name: Optional, EKS cluster name, if VPC is used for EKS. Default: <stack name>
         :param pulumi.Input[bool] enable_eks_cluster_tags: Optional, whether to enable required EKS cluster tags to subnets. Default: true
         :param pulumi.Input[str] name: Optional, Name tag value for VPC resource. Default: <stack name>
         :param pulumi.Input[Mapping[str, pulumi.Input[str]]] tags: Optional, tags to add to all resources. Default: {}
@@ -145,6 +163,7 @@ class Vpc(pulumi.ComponentResource):
                  opts: Optional[pulumi.ResourceOptions] = None,
                  availability_zone_config: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['AvailabilityZoneArgs']]]]] = None,
                  cidr: Optional[pulumi.Input[str]] = None,
+                 eks_cluster_name: Optional[pulumi.Input[str]] = None,
                  enable_eks_cluster_tags: Optional[pulumi.Input[bool]] = None,
                  name: Optional[pulumi.Input[str]] = None,
                  tags: Optional[pulumi.Input[Mapping[str, pulumi.Input[str]]]] = None,
@@ -166,6 +185,7 @@ class Vpc(pulumi.ComponentResource):
 
             __props__.__dict__["availability_zone_config"] = availability_zone_config
             __props__.__dict__["cidr"] = cidr
+            __props__.__dict__["eks_cluster_name"] = eks_cluster_name
             __props__.__dict__["enable_eks_cluster_tags"] = enable_eks_cluster_tags
             __props__.__dict__["name"] = name
             __props__.__dict__["tags"] = tags

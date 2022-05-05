@@ -13,6 +13,8 @@
         "strict": true
     },
     "files": [
+        "argocdApp.ts",
+        "clusterBootstrap.ts",
         "eks.ts",
         "index.ts",
         "provider.ts",

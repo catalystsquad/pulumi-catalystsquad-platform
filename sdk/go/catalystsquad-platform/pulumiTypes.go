@@ -10,6 +10,1306 @@ import (
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
+type ArgocdApplication struct {
+	ApiVersion *string                `pulumi:"apiVersion"`
+	Kind       *string                `pulumi:"kind"`
+	Metadata   map[string]string      `pulumi:"metadata"`
+	Spec       *ArgocdApplicationSpec `pulumi:"spec"`
+}
+
+// ArgocdApplicationInput is an input type that accepts ArgocdApplicationArgs and ArgocdApplicationOutput values.
+// You can construct a concrete instance of `ArgocdApplicationInput` via:
+//
+//          ArgocdApplicationArgs{...}
+type ArgocdApplicationInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationOutput() ArgocdApplicationOutput
+	ToArgocdApplicationOutputWithContext(context.Context) ArgocdApplicationOutput
+}
+
+type ArgocdApplicationArgs struct {
+	ApiVersion pulumi.StringPtrInput         `pulumi:"apiVersion"`
+	Kind       pulumi.StringPtrInput         `pulumi:"kind"`
+	Metadata   pulumi.StringMapInput         `pulumi:"metadata"`
+	Spec       ArgocdApplicationSpecPtrInput `pulumi:"spec"`
+}
+
+func (ArgocdApplicationArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplication)(nil)).Elem()
+}
+
+func (i ArgocdApplicationArgs) ToArgocdApplicationOutput() ArgocdApplicationOutput {
+	return i.ToArgocdApplicationOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationArgs) ToArgocdApplicationOutputWithContext(ctx context.Context) ArgocdApplicationOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationOutput)
+}
+
+func (i ArgocdApplicationArgs) ToArgocdApplicationPtrOutput() ArgocdApplicationPtrOutput {
+	return i.ToArgocdApplicationPtrOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationArgs) ToArgocdApplicationPtrOutputWithContext(ctx context.Context) ArgocdApplicationPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationOutput).ToArgocdApplicationPtrOutputWithContext(ctx)
+}
+
+// ArgocdApplicationPtrInput is an input type that accepts ArgocdApplicationArgs, ArgocdApplicationPtr and ArgocdApplicationPtrOutput values.
+// You can construct a concrete instance of `ArgocdApplicationPtrInput` via:
+//
+//          ArgocdApplicationArgs{...}
+//
+//  or:
+//
+//          nil
+type ArgocdApplicationPtrInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationPtrOutput() ArgocdApplicationPtrOutput
+	ToArgocdApplicationPtrOutputWithContext(context.Context) ArgocdApplicationPtrOutput
+}
+
+type argocdApplicationPtrType ArgocdApplicationArgs
+
+func ArgocdApplicationPtr(v *ArgocdApplicationArgs) ArgocdApplicationPtrInput {
+	return (*argocdApplicationPtrType)(v)
+}
+
+func (*argocdApplicationPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ArgocdApplication)(nil)).Elem()
+}
+
+func (i *argocdApplicationPtrType) ToArgocdApplicationPtrOutput() ArgocdApplicationPtrOutput {
+	return i.ToArgocdApplicationPtrOutputWithContext(context.Background())
+}
+
+func (i *argocdApplicationPtrType) ToArgocdApplicationPtrOutputWithContext(ctx context.Context) ArgocdApplicationPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationPtrOutput)
+}
+
+type ArgocdApplicationOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplication)(nil)).Elem()
+}
+
+func (o ArgocdApplicationOutput) ToArgocdApplicationOutput() ArgocdApplicationOutput {
+	return o
+}
+
+func (o ArgocdApplicationOutput) ToArgocdApplicationOutputWithContext(ctx context.Context) ArgocdApplicationOutput {
+	return o
+}
+
+func (o ArgocdApplicationOutput) ToArgocdApplicationPtrOutput() ArgocdApplicationPtrOutput {
+	return o.ToArgocdApplicationPtrOutputWithContext(context.Background())
+}
+
+func (o ArgocdApplicationOutput) ToArgocdApplicationPtrOutputWithContext(ctx context.Context) ArgocdApplicationPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ArgocdApplication) *ArgocdApplication {
+		return &v
+	}).(ArgocdApplicationPtrOutput)
+}
+
+func (o ArgocdApplicationOutput) ApiVersion() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplication) *string { return v.ApiVersion }).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationOutput) Kind() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplication) *string { return v.Kind }).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationOutput) Metadata() pulumi.StringMapOutput {
+	return o.ApplyT(func(v ArgocdApplication) map[string]string { return v.Metadata }).(pulumi.StringMapOutput)
+}
+
+func (o ArgocdApplicationOutput) Spec() ArgocdApplicationSpecPtrOutput {
+	return o.ApplyT(func(v ArgocdApplication) *ArgocdApplicationSpec { return v.Spec }).(ArgocdApplicationSpecPtrOutput)
+}
+
+type ArgocdApplicationPtrOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ArgocdApplication)(nil)).Elem()
+}
+
+func (o ArgocdApplicationPtrOutput) ToArgocdApplicationPtrOutput() ArgocdApplicationPtrOutput {
+	return o
+}
+
+func (o ArgocdApplicationPtrOutput) ToArgocdApplicationPtrOutputWithContext(ctx context.Context) ArgocdApplicationPtrOutput {
+	return o
+}
+
+func (o ArgocdApplicationPtrOutput) Elem() ArgocdApplicationOutput {
+	return o.ApplyT(func(v *ArgocdApplication) ArgocdApplication {
+		if v != nil {
+			return *v
+		}
+		var ret ArgocdApplication
+		return ret
+	}).(ArgocdApplicationOutput)
+}
+
+func (o ArgocdApplicationPtrOutput) ApiVersion() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplication) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ApiVersion
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationPtrOutput) Kind() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplication) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Kind
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationPtrOutput) Metadata() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *ArgocdApplication) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Metadata
+	}).(pulumi.StringMapOutput)
+}
+
+func (o ArgocdApplicationPtrOutput) Spec() ArgocdApplicationSpecPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplication) *ArgocdApplicationSpec {
+		if v == nil {
+			return nil
+		}
+		return v.Spec
+	}).(ArgocdApplicationSpecPtrOutput)
+}
+
+type ArgocdApplicationIgnoreDifferences struct {
+	Group                 *string  `pulumi:"group"`
+	JqPathExpressions     []string `pulumi:"jqPathExpressions"`
+	JsonPointers          []string `pulumi:"jsonPointers"`
+	Kind                  *string  `pulumi:"kind"`
+	ManagedFieldsManagers []string `pulumi:"managedFieldsManagers"`
+	Name                  *string  `pulumi:"name"`
+	Namespace             *string  `pulumi:"namespace"`
+}
+
+// ArgocdApplicationIgnoreDifferencesInput is an input type that accepts ArgocdApplicationIgnoreDifferencesArgs and ArgocdApplicationIgnoreDifferencesOutput values.
+// You can construct a concrete instance of `ArgocdApplicationIgnoreDifferencesInput` via:
+//
+//          ArgocdApplicationIgnoreDifferencesArgs{...}
+type ArgocdApplicationIgnoreDifferencesInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationIgnoreDifferencesOutput() ArgocdApplicationIgnoreDifferencesOutput
+	ToArgocdApplicationIgnoreDifferencesOutputWithContext(context.Context) ArgocdApplicationIgnoreDifferencesOutput
+}
+
+type ArgocdApplicationIgnoreDifferencesArgs struct {
+	Group                 pulumi.StringPtrInput   `pulumi:"group"`
+	JqPathExpressions     pulumi.StringArrayInput `pulumi:"jqPathExpressions"`
+	JsonPointers          pulumi.StringArrayInput `pulumi:"jsonPointers"`
+	Kind                  pulumi.StringPtrInput   `pulumi:"kind"`
+	ManagedFieldsManagers pulumi.StringArrayInput `pulumi:"managedFieldsManagers"`
+	Name                  pulumi.StringPtrInput   `pulumi:"name"`
+	Namespace             pulumi.StringPtrInput   `pulumi:"namespace"`
+}
+
+func (ArgocdApplicationIgnoreDifferencesArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplicationIgnoreDifferences)(nil)).Elem()
+}
+
+func (i ArgocdApplicationIgnoreDifferencesArgs) ToArgocdApplicationIgnoreDifferencesOutput() ArgocdApplicationIgnoreDifferencesOutput {
+	return i.ToArgocdApplicationIgnoreDifferencesOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationIgnoreDifferencesArgs) ToArgocdApplicationIgnoreDifferencesOutputWithContext(ctx context.Context) ArgocdApplicationIgnoreDifferencesOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationIgnoreDifferencesOutput)
+}
+
+// ArgocdApplicationIgnoreDifferencesArrayInput is an input type that accepts ArgocdApplicationIgnoreDifferencesArray and ArgocdApplicationIgnoreDifferencesArrayOutput values.
+// You can construct a concrete instance of `ArgocdApplicationIgnoreDifferencesArrayInput` via:
+//
+//          ArgocdApplicationIgnoreDifferencesArray{ ArgocdApplicationIgnoreDifferencesArgs{...} }
+type ArgocdApplicationIgnoreDifferencesArrayInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationIgnoreDifferencesArrayOutput() ArgocdApplicationIgnoreDifferencesArrayOutput
+	ToArgocdApplicationIgnoreDifferencesArrayOutputWithContext(context.Context) ArgocdApplicationIgnoreDifferencesArrayOutput
+}
+
+type ArgocdApplicationIgnoreDifferencesArray []ArgocdApplicationIgnoreDifferencesInput
+
+func (ArgocdApplicationIgnoreDifferencesArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ArgocdApplicationIgnoreDifferences)(nil)).Elem()
+}
+
+func (i ArgocdApplicationIgnoreDifferencesArray) ToArgocdApplicationIgnoreDifferencesArrayOutput() ArgocdApplicationIgnoreDifferencesArrayOutput {
+	return i.ToArgocdApplicationIgnoreDifferencesArrayOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationIgnoreDifferencesArray) ToArgocdApplicationIgnoreDifferencesArrayOutputWithContext(ctx context.Context) ArgocdApplicationIgnoreDifferencesArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationIgnoreDifferencesArrayOutput)
+}
+
+type ArgocdApplicationIgnoreDifferencesOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationIgnoreDifferencesOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplicationIgnoreDifferences)(nil)).Elem()
+}
+
+func (o ArgocdApplicationIgnoreDifferencesOutput) ToArgocdApplicationIgnoreDifferencesOutput() ArgocdApplicationIgnoreDifferencesOutput {
+	return o
+}
+
+func (o ArgocdApplicationIgnoreDifferencesOutput) ToArgocdApplicationIgnoreDifferencesOutputWithContext(ctx context.Context) ArgocdApplicationIgnoreDifferencesOutput {
+	return o
+}
+
+func (o ArgocdApplicationIgnoreDifferencesOutput) Group() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationIgnoreDifferences) *string { return v.Group }).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationIgnoreDifferencesOutput) JqPathExpressions() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ArgocdApplicationIgnoreDifferences) []string { return v.JqPathExpressions }).(pulumi.StringArrayOutput)
+}
+
+func (o ArgocdApplicationIgnoreDifferencesOutput) JsonPointers() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ArgocdApplicationIgnoreDifferences) []string { return v.JsonPointers }).(pulumi.StringArrayOutput)
+}
+
+func (o ArgocdApplicationIgnoreDifferencesOutput) Kind() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationIgnoreDifferences) *string { return v.Kind }).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationIgnoreDifferencesOutput) ManagedFieldsManagers() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ArgocdApplicationIgnoreDifferences) []string { return v.ManagedFieldsManagers }).(pulumi.StringArrayOutput)
+}
+
+func (o ArgocdApplicationIgnoreDifferencesOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationIgnoreDifferences) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationIgnoreDifferencesOutput) Namespace() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationIgnoreDifferences) *string { return v.Namespace }).(pulumi.StringPtrOutput)
+}
+
+type ArgocdApplicationIgnoreDifferencesArrayOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationIgnoreDifferencesArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]ArgocdApplicationIgnoreDifferences)(nil)).Elem()
+}
+
+func (o ArgocdApplicationIgnoreDifferencesArrayOutput) ToArgocdApplicationIgnoreDifferencesArrayOutput() ArgocdApplicationIgnoreDifferencesArrayOutput {
+	return o
+}
+
+func (o ArgocdApplicationIgnoreDifferencesArrayOutput) ToArgocdApplicationIgnoreDifferencesArrayOutputWithContext(ctx context.Context) ArgocdApplicationIgnoreDifferencesArrayOutput {
+	return o
+}
+
+func (o ArgocdApplicationIgnoreDifferencesArrayOutput) Index(i pulumi.IntInput) ArgocdApplicationIgnoreDifferencesOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) ArgocdApplicationIgnoreDifferences {
+		return vs[0].([]ArgocdApplicationIgnoreDifferences)[vs[1].(int)]
+	}).(ArgocdApplicationIgnoreDifferencesOutput)
+}
+
+type ArgocdApplicationSpec struct {
+	Destination       *ArgocdApplicationSpecDestination    `pulumi:"destination"`
+	IgnoreDifferences []ArgocdApplicationIgnoreDifferences `pulumi:"ignoreDifferences"`
+	Project           *string                              `pulumi:"project"`
+	Source            *ArgocdApplicationSpecSource         `pulumi:"source"`
+	SyncPolicy        *ArgocdApplicationSyncPolicy         `pulumi:"syncPolicy"`
+}
+
+// ArgocdApplicationSpecInput is an input type that accepts ArgocdApplicationSpecArgs and ArgocdApplicationSpecOutput values.
+// You can construct a concrete instance of `ArgocdApplicationSpecInput` via:
+//
+//          ArgocdApplicationSpecArgs{...}
+type ArgocdApplicationSpecInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationSpecOutput() ArgocdApplicationSpecOutput
+	ToArgocdApplicationSpecOutputWithContext(context.Context) ArgocdApplicationSpecOutput
+}
+
+type ArgocdApplicationSpecArgs struct {
+	Destination       ArgocdApplicationSpecDestinationPtrInput     `pulumi:"destination"`
+	IgnoreDifferences ArgocdApplicationIgnoreDifferencesArrayInput `pulumi:"ignoreDifferences"`
+	Project           pulumi.StringPtrInput                        `pulumi:"project"`
+	Source            ArgocdApplicationSpecSourcePtrInput          `pulumi:"source"`
+	SyncPolicy        ArgocdApplicationSyncPolicyPtrInput          `pulumi:"syncPolicy"`
+}
+
+func (ArgocdApplicationSpecArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplicationSpec)(nil)).Elem()
+}
+
+func (i ArgocdApplicationSpecArgs) ToArgocdApplicationSpecOutput() ArgocdApplicationSpecOutput {
+	return i.ToArgocdApplicationSpecOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationSpecArgs) ToArgocdApplicationSpecOutputWithContext(ctx context.Context) ArgocdApplicationSpecOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSpecOutput)
+}
+
+func (i ArgocdApplicationSpecArgs) ToArgocdApplicationSpecPtrOutput() ArgocdApplicationSpecPtrOutput {
+	return i.ToArgocdApplicationSpecPtrOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationSpecArgs) ToArgocdApplicationSpecPtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSpecOutput).ToArgocdApplicationSpecPtrOutputWithContext(ctx)
+}
+
+// ArgocdApplicationSpecPtrInput is an input type that accepts ArgocdApplicationSpecArgs, ArgocdApplicationSpecPtr and ArgocdApplicationSpecPtrOutput values.
+// You can construct a concrete instance of `ArgocdApplicationSpecPtrInput` via:
+//
+//          ArgocdApplicationSpecArgs{...}
+//
+//  or:
+//
+//          nil
+type ArgocdApplicationSpecPtrInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationSpecPtrOutput() ArgocdApplicationSpecPtrOutput
+	ToArgocdApplicationSpecPtrOutputWithContext(context.Context) ArgocdApplicationSpecPtrOutput
+}
+
+type argocdApplicationSpecPtrType ArgocdApplicationSpecArgs
+
+func ArgocdApplicationSpecPtr(v *ArgocdApplicationSpecArgs) ArgocdApplicationSpecPtrInput {
+	return (*argocdApplicationSpecPtrType)(v)
+}
+
+func (*argocdApplicationSpecPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ArgocdApplicationSpec)(nil)).Elem()
+}
+
+func (i *argocdApplicationSpecPtrType) ToArgocdApplicationSpecPtrOutput() ArgocdApplicationSpecPtrOutput {
+	return i.ToArgocdApplicationSpecPtrOutputWithContext(context.Background())
+}
+
+func (i *argocdApplicationSpecPtrType) ToArgocdApplicationSpecPtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSpecPtrOutput)
+}
+
+type ArgocdApplicationSpecOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationSpecOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplicationSpec)(nil)).Elem()
+}
+
+func (o ArgocdApplicationSpecOutput) ToArgocdApplicationSpecOutput() ArgocdApplicationSpecOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecOutput) ToArgocdApplicationSpecOutputWithContext(ctx context.Context) ArgocdApplicationSpecOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecOutput) ToArgocdApplicationSpecPtrOutput() ArgocdApplicationSpecPtrOutput {
+	return o.ToArgocdApplicationSpecPtrOutputWithContext(context.Background())
+}
+
+func (o ArgocdApplicationSpecOutput) ToArgocdApplicationSpecPtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ArgocdApplicationSpec) *ArgocdApplicationSpec {
+		return &v
+	}).(ArgocdApplicationSpecPtrOutput)
+}
+
+func (o ArgocdApplicationSpecOutput) Destination() ArgocdApplicationSpecDestinationPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpec) *ArgocdApplicationSpecDestination { return v.Destination }).(ArgocdApplicationSpecDestinationPtrOutput)
+}
+
+func (o ArgocdApplicationSpecOutput) IgnoreDifferences() ArgocdApplicationIgnoreDifferencesArrayOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpec) []ArgocdApplicationIgnoreDifferences { return v.IgnoreDifferences }).(ArgocdApplicationIgnoreDifferencesArrayOutput)
+}
+
+func (o ArgocdApplicationSpecOutput) Project() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpec) *string { return v.Project }).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecOutput) Source() ArgocdApplicationSpecSourcePtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpec) *ArgocdApplicationSpecSource { return v.Source }).(ArgocdApplicationSpecSourcePtrOutput)
+}
+
+func (o ArgocdApplicationSpecOutput) SyncPolicy() ArgocdApplicationSyncPolicyPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpec) *ArgocdApplicationSyncPolicy { return v.SyncPolicy }).(ArgocdApplicationSyncPolicyPtrOutput)
+}
+
+type ArgocdApplicationSpecPtrOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationSpecPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ArgocdApplicationSpec)(nil)).Elem()
+}
+
+func (o ArgocdApplicationSpecPtrOutput) ToArgocdApplicationSpecPtrOutput() ArgocdApplicationSpecPtrOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecPtrOutput) ToArgocdApplicationSpecPtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecPtrOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecPtrOutput) Elem() ArgocdApplicationSpecOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpec) ArgocdApplicationSpec {
+		if v != nil {
+			return *v
+		}
+		var ret ArgocdApplicationSpec
+		return ret
+	}).(ArgocdApplicationSpecOutput)
+}
+
+func (o ArgocdApplicationSpecPtrOutput) Destination() ArgocdApplicationSpecDestinationPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpec) *ArgocdApplicationSpecDestination {
+		if v == nil {
+			return nil
+		}
+		return v.Destination
+	}).(ArgocdApplicationSpecDestinationPtrOutput)
+}
+
+func (o ArgocdApplicationSpecPtrOutput) IgnoreDifferences() ArgocdApplicationIgnoreDifferencesArrayOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpec) []ArgocdApplicationIgnoreDifferences {
+		if v == nil {
+			return nil
+		}
+		return v.IgnoreDifferences
+	}).(ArgocdApplicationIgnoreDifferencesArrayOutput)
+}
+
+func (o ArgocdApplicationSpecPtrOutput) Project() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpec) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Project
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecPtrOutput) Source() ArgocdApplicationSpecSourcePtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpec) *ArgocdApplicationSpecSource {
+		if v == nil {
+			return nil
+		}
+		return v.Source
+	}).(ArgocdApplicationSpecSourcePtrOutput)
+}
+
+func (o ArgocdApplicationSpecPtrOutput) SyncPolicy() ArgocdApplicationSyncPolicyPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpec) *ArgocdApplicationSyncPolicy {
+		if v == nil {
+			return nil
+		}
+		return v.SyncPolicy
+	}).(ArgocdApplicationSyncPolicyPtrOutput)
+}
+
+type ArgocdApplicationSpecDestination struct {
+	Name      *string `pulumi:"name"`
+	Namespace *string `pulumi:"namespace"`
+	Server    *string `pulumi:"server"`
+}
+
+// ArgocdApplicationSpecDestinationInput is an input type that accepts ArgocdApplicationSpecDestinationArgs and ArgocdApplicationSpecDestinationOutput values.
+// You can construct a concrete instance of `ArgocdApplicationSpecDestinationInput` via:
+//
+//          ArgocdApplicationSpecDestinationArgs{...}
+type ArgocdApplicationSpecDestinationInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationSpecDestinationOutput() ArgocdApplicationSpecDestinationOutput
+	ToArgocdApplicationSpecDestinationOutputWithContext(context.Context) ArgocdApplicationSpecDestinationOutput
+}
+
+type ArgocdApplicationSpecDestinationArgs struct {
+	Name      pulumi.StringPtrInput `pulumi:"name"`
+	Namespace pulumi.StringPtrInput `pulumi:"namespace"`
+	Server    pulumi.StringPtrInput `pulumi:"server"`
+}
+
+func (ArgocdApplicationSpecDestinationArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplicationSpecDestination)(nil)).Elem()
+}
+
+func (i ArgocdApplicationSpecDestinationArgs) ToArgocdApplicationSpecDestinationOutput() ArgocdApplicationSpecDestinationOutput {
+	return i.ToArgocdApplicationSpecDestinationOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationSpecDestinationArgs) ToArgocdApplicationSpecDestinationOutputWithContext(ctx context.Context) ArgocdApplicationSpecDestinationOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSpecDestinationOutput)
+}
+
+func (i ArgocdApplicationSpecDestinationArgs) ToArgocdApplicationSpecDestinationPtrOutput() ArgocdApplicationSpecDestinationPtrOutput {
+	return i.ToArgocdApplicationSpecDestinationPtrOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationSpecDestinationArgs) ToArgocdApplicationSpecDestinationPtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecDestinationPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSpecDestinationOutput).ToArgocdApplicationSpecDestinationPtrOutputWithContext(ctx)
+}
+
+// ArgocdApplicationSpecDestinationPtrInput is an input type that accepts ArgocdApplicationSpecDestinationArgs, ArgocdApplicationSpecDestinationPtr and ArgocdApplicationSpecDestinationPtrOutput values.
+// You can construct a concrete instance of `ArgocdApplicationSpecDestinationPtrInput` via:
+//
+//          ArgocdApplicationSpecDestinationArgs{...}
+//
+//  or:
+//
+//          nil
+type ArgocdApplicationSpecDestinationPtrInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationSpecDestinationPtrOutput() ArgocdApplicationSpecDestinationPtrOutput
+	ToArgocdApplicationSpecDestinationPtrOutputWithContext(context.Context) ArgocdApplicationSpecDestinationPtrOutput
+}
+
+type argocdApplicationSpecDestinationPtrType ArgocdApplicationSpecDestinationArgs
+
+func ArgocdApplicationSpecDestinationPtr(v *ArgocdApplicationSpecDestinationArgs) ArgocdApplicationSpecDestinationPtrInput {
+	return (*argocdApplicationSpecDestinationPtrType)(v)
+}
+
+func (*argocdApplicationSpecDestinationPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ArgocdApplicationSpecDestination)(nil)).Elem()
+}
+
+func (i *argocdApplicationSpecDestinationPtrType) ToArgocdApplicationSpecDestinationPtrOutput() ArgocdApplicationSpecDestinationPtrOutput {
+	return i.ToArgocdApplicationSpecDestinationPtrOutputWithContext(context.Background())
+}
+
+func (i *argocdApplicationSpecDestinationPtrType) ToArgocdApplicationSpecDestinationPtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecDestinationPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSpecDestinationPtrOutput)
+}
+
+type ArgocdApplicationSpecDestinationOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationSpecDestinationOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplicationSpecDestination)(nil)).Elem()
+}
+
+func (o ArgocdApplicationSpecDestinationOutput) ToArgocdApplicationSpecDestinationOutput() ArgocdApplicationSpecDestinationOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecDestinationOutput) ToArgocdApplicationSpecDestinationOutputWithContext(ctx context.Context) ArgocdApplicationSpecDestinationOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecDestinationOutput) ToArgocdApplicationSpecDestinationPtrOutput() ArgocdApplicationSpecDestinationPtrOutput {
+	return o.ToArgocdApplicationSpecDestinationPtrOutputWithContext(context.Background())
+}
+
+func (o ArgocdApplicationSpecDestinationOutput) ToArgocdApplicationSpecDestinationPtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecDestinationPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ArgocdApplicationSpecDestination) *ArgocdApplicationSpecDestination {
+		return &v
+	}).(ArgocdApplicationSpecDestinationPtrOutput)
+}
+
+func (o ArgocdApplicationSpecDestinationOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpecDestination) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecDestinationOutput) Namespace() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpecDestination) *string { return v.Namespace }).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecDestinationOutput) Server() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpecDestination) *string { return v.Server }).(pulumi.StringPtrOutput)
+}
+
+type ArgocdApplicationSpecDestinationPtrOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationSpecDestinationPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ArgocdApplicationSpecDestination)(nil)).Elem()
+}
+
+func (o ArgocdApplicationSpecDestinationPtrOutput) ToArgocdApplicationSpecDestinationPtrOutput() ArgocdApplicationSpecDestinationPtrOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecDestinationPtrOutput) ToArgocdApplicationSpecDestinationPtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecDestinationPtrOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecDestinationPtrOutput) Elem() ArgocdApplicationSpecDestinationOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecDestination) ArgocdApplicationSpecDestination {
+		if v != nil {
+			return *v
+		}
+		var ret ArgocdApplicationSpecDestination
+		return ret
+	}).(ArgocdApplicationSpecDestinationOutput)
+}
+
+func (o ArgocdApplicationSpecDestinationPtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecDestination) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecDestinationPtrOutput) Namespace() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecDestination) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Namespace
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecDestinationPtrOutput) Server() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecDestination) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Server
+	}).(pulumi.StringPtrOutput)
+}
+
+type ArgocdApplicationSpecSource struct {
+	Chart          *string          `pulumi:"chart"`
+	Directory      *DirectorySource `pulumi:"directory"`
+	Helm           *HelmSource      `pulumi:"helm"`
+	Kustomize      *KustomizeSource `pulumi:"kustomize"`
+	Path           *string          `pulumi:"path"`
+	Plugin         *PluginSource    `pulumi:"plugin"`
+	RepoURL        *string          `pulumi:"repoURL"`
+	TargetRevision *string          `pulumi:"targetRevision"`
+}
+
+// ArgocdApplicationSpecSourceInput is an input type that accepts ArgocdApplicationSpecSourceArgs and ArgocdApplicationSpecSourceOutput values.
+// You can construct a concrete instance of `ArgocdApplicationSpecSourceInput` via:
+//
+//          ArgocdApplicationSpecSourceArgs{...}
+type ArgocdApplicationSpecSourceInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationSpecSourceOutput() ArgocdApplicationSpecSourceOutput
+	ToArgocdApplicationSpecSourceOutputWithContext(context.Context) ArgocdApplicationSpecSourceOutput
+}
+
+type ArgocdApplicationSpecSourceArgs struct {
+	Chart          pulumi.StringPtrInput   `pulumi:"chart"`
+	Directory      DirectorySourcePtrInput `pulumi:"directory"`
+	Helm           HelmSourcePtrInput      `pulumi:"helm"`
+	Kustomize      KustomizeSourcePtrInput `pulumi:"kustomize"`
+	Path           pulumi.StringPtrInput   `pulumi:"path"`
+	Plugin         PluginSourcePtrInput    `pulumi:"plugin"`
+	RepoURL        pulumi.StringPtrInput   `pulumi:"repoURL"`
+	TargetRevision pulumi.StringPtrInput   `pulumi:"targetRevision"`
+}
+
+func (ArgocdApplicationSpecSourceArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplicationSpecSource)(nil)).Elem()
+}
+
+func (i ArgocdApplicationSpecSourceArgs) ToArgocdApplicationSpecSourceOutput() ArgocdApplicationSpecSourceOutput {
+	return i.ToArgocdApplicationSpecSourceOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationSpecSourceArgs) ToArgocdApplicationSpecSourceOutputWithContext(ctx context.Context) ArgocdApplicationSpecSourceOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSpecSourceOutput)
+}
+
+func (i ArgocdApplicationSpecSourceArgs) ToArgocdApplicationSpecSourcePtrOutput() ArgocdApplicationSpecSourcePtrOutput {
+	return i.ToArgocdApplicationSpecSourcePtrOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationSpecSourceArgs) ToArgocdApplicationSpecSourcePtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecSourcePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSpecSourceOutput).ToArgocdApplicationSpecSourcePtrOutputWithContext(ctx)
+}
+
+// ArgocdApplicationSpecSourcePtrInput is an input type that accepts ArgocdApplicationSpecSourceArgs, ArgocdApplicationSpecSourcePtr and ArgocdApplicationSpecSourcePtrOutput values.
+// You can construct a concrete instance of `ArgocdApplicationSpecSourcePtrInput` via:
+//
+//          ArgocdApplicationSpecSourceArgs{...}
+//
+//  or:
+//
+//          nil
+type ArgocdApplicationSpecSourcePtrInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationSpecSourcePtrOutput() ArgocdApplicationSpecSourcePtrOutput
+	ToArgocdApplicationSpecSourcePtrOutputWithContext(context.Context) ArgocdApplicationSpecSourcePtrOutput
+}
+
+type argocdApplicationSpecSourcePtrType ArgocdApplicationSpecSourceArgs
+
+func ArgocdApplicationSpecSourcePtr(v *ArgocdApplicationSpecSourceArgs) ArgocdApplicationSpecSourcePtrInput {
+	return (*argocdApplicationSpecSourcePtrType)(v)
+}
+
+func (*argocdApplicationSpecSourcePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ArgocdApplicationSpecSource)(nil)).Elem()
+}
+
+func (i *argocdApplicationSpecSourcePtrType) ToArgocdApplicationSpecSourcePtrOutput() ArgocdApplicationSpecSourcePtrOutput {
+	return i.ToArgocdApplicationSpecSourcePtrOutputWithContext(context.Background())
+}
+
+func (i *argocdApplicationSpecSourcePtrType) ToArgocdApplicationSpecSourcePtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecSourcePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSpecSourcePtrOutput)
+}
+
+type ArgocdApplicationSpecSourceOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationSpecSourceOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplicationSpecSource)(nil)).Elem()
+}
+
+func (o ArgocdApplicationSpecSourceOutput) ToArgocdApplicationSpecSourceOutput() ArgocdApplicationSpecSourceOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecSourceOutput) ToArgocdApplicationSpecSourceOutputWithContext(ctx context.Context) ArgocdApplicationSpecSourceOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecSourceOutput) ToArgocdApplicationSpecSourcePtrOutput() ArgocdApplicationSpecSourcePtrOutput {
+	return o.ToArgocdApplicationSpecSourcePtrOutputWithContext(context.Background())
+}
+
+func (o ArgocdApplicationSpecSourceOutput) ToArgocdApplicationSpecSourcePtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecSourcePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ArgocdApplicationSpecSource) *ArgocdApplicationSpecSource {
+		return &v
+	}).(ArgocdApplicationSpecSourcePtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourceOutput) Chart() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpecSource) *string { return v.Chart }).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourceOutput) Directory() DirectorySourcePtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpecSource) *DirectorySource { return v.Directory }).(DirectorySourcePtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourceOutput) Helm() HelmSourcePtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpecSource) *HelmSource { return v.Helm }).(HelmSourcePtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourceOutput) Kustomize() KustomizeSourcePtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpecSource) *KustomizeSource { return v.Kustomize }).(KustomizeSourcePtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourceOutput) Path() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpecSource) *string { return v.Path }).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourceOutput) Plugin() PluginSourcePtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpecSource) *PluginSource { return v.Plugin }).(PluginSourcePtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourceOutput) RepoURL() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpecSource) *string { return v.RepoURL }).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourceOutput) TargetRevision() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSpecSource) *string { return v.TargetRevision }).(pulumi.StringPtrOutput)
+}
+
+type ArgocdApplicationSpecSourcePtrOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationSpecSourcePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ArgocdApplicationSpecSource)(nil)).Elem()
+}
+
+func (o ArgocdApplicationSpecSourcePtrOutput) ToArgocdApplicationSpecSourcePtrOutput() ArgocdApplicationSpecSourcePtrOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecSourcePtrOutput) ToArgocdApplicationSpecSourcePtrOutputWithContext(ctx context.Context) ArgocdApplicationSpecSourcePtrOutput {
+	return o
+}
+
+func (o ArgocdApplicationSpecSourcePtrOutput) Elem() ArgocdApplicationSpecSourceOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecSource) ArgocdApplicationSpecSource {
+		if v != nil {
+			return *v
+		}
+		var ret ArgocdApplicationSpecSource
+		return ret
+	}).(ArgocdApplicationSpecSourceOutput)
+}
+
+func (o ArgocdApplicationSpecSourcePtrOutput) Chart() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Chart
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourcePtrOutput) Directory() DirectorySourcePtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecSource) *DirectorySource {
+		if v == nil {
+			return nil
+		}
+		return v.Directory
+	}).(DirectorySourcePtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourcePtrOutput) Helm() HelmSourcePtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecSource) *HelmSource {
+		if v == nil {
+			return nil
+		}
+		return v.Helm
+	}).(HelmSourcePtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourcePtrOutput) Kustomize() KustomizeSourcePtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecSource) *KustomizeSource {
+		if v == nil {
+			return nil
+		}
+		return v.Kustomize
+	}).(KustomizeSourcePtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourcePtrOutput) Path() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Path
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourcePtrOutput) Plugin() PluginSourcePtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecSource) *PluginSource {
+		if v == nil {
+			return nil
+		}
+		return v.Plugin
+	}).(PluginSourcePtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourcePtrOutput) RepoURL() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.RepoURL
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o ArgocdApplicationSpecSourcePtrOutput) TargetRevision() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSpecSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.TargetRevision
+	}).(pulumi.StringPtrOutput)
+}
+
+type ArgocdApplicationSyncPolicy struct {
+	Automated   *SyncPolicyAutomated `pulumi:"automated"`
+	Retry       *SyncPolicyRetry     `pulumi:"retry"`
+	SyncOptions []string             `pulumi:"syncOptions"`
+}
+
+// ArgocdApplicationSyncPolicyInput is an input type that accepts ArgocdApplicationSyncPolicyArgs and ArgocdApplicationSyncPolicyOutput values.
+// You can construct a concrete instance of `ArgocdApplicationSyncPolicyInput` via:
+//
+//          ArgocdApplicationSyncPolicyArgs{...}
+type ArgocdApplicationSyncPolicyInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationSyncPolicyOutput() ArgocdApplicationSyncPolicyOutput
+	ToArgocdApplicationSyncPolicyOutputWithContext(context.Context) ArgocdApplicationSyncPolicyOutput
+}
+
+type ArgocdApplicationSyncPolicyArgs struct {
+	Automated   SyncPolicyAutomatedPtrInput `pulumi:"automated"`
+	Retry       SyncPolicyRetryPtrInput     `pulumi:"retry"`
+	SyncOptions pulumi.StringArrayInput     `pulumi:"syncOptions"`
+}
+
+func (ArgocdApplicationSyncPolicyArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplicationSyncPolicy)(nil)).Elem()
+}
+
+func (i ArgocdApplicationSyncPolicyArgs) ToArgocdApplicationSyncPolicyOutput() ArgocdApplicationSyncPolicyOutput {
+	return i.ToArgocdApplicationSyncPolicyOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationSyncPolicyArgs) ToArgocdApplicationSyncPolicyOutputWithContext(ctx context.Context) ArgocdApplicationSyncPolicyOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSyncPolicyOutput)
+}
+
+func (i ArgocdApplicationSyncPolicyArgs) ToArgocdApplicationSyncPolicyPtrOutput() ArgocdApplicationSyncPolicyPtrOutput {
+	return i.ToArgocdApplicationSyncPolicyPtrOutputWithContext(context.Background())
+}
+
+func (i ArgocdApplicationSyncPolicyArgs) ToArgocdApplicationSyncPolicyPtrOutputWithContext(ctx context.Context) ArgocdApplicationSyncPolicyPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSyncPolicyOutput).ToArgocdApplicationSyncPolicyPtrOutputWithContext(ctx)
+}
+
+// ArgocdApplicationSyncPolicyPtrInput is an input type that accepts ArgocdApplicationSyncPolicyArgs, ArgocdApplicationSyncPolicyPtr and ArgocdApplicationSyncPolicyPtrOutput values.
+// You can construct a concrete instance of `ArgocdApplicationSyncPolicyPtrInput` via:
+//
+//          ArgocdApplicationSyncPolicyArgs{...}
+//
+//  or:
+//
+//          nil
+type ArgocdApplicationSyncPolicyPtrInput interface {
+	pulumi.Input
+
+	ToArgocdApplicationSyncPolicyPtrOutput() ArgocdApplicationSyncPolicyPtrOutput
+	ToArgocdApplicationSyncPolicyPtrOutputWithContext(context.Context) ArgocdApplicationSyncPolicyPtrOutput
+}
+
+type argocdApplicationSyncPolicyPtrType ArgocdApplicationSyncPolicyArgs
+
+func ArgocdApplicationSyncPolicyPtr(v *ArgocdApplicationSyncPolicyArgs) ArgocdApplicationSyncPolicyPtrInput {
+	return (*argocdApplicationSyncPolicyPtrType)(v)
+}
+
+func (*argocdApplicationSyncPolicyPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**ArgocdApplicationSyncPolicy)(nil)).Elem()
+}
+
+func (i *argocdApplicationSyncPolicyPtrType) ToArgocdApplicationSyncPolicyPtrOutput() ArgocdApplicationSyncPolicyPtrOutput {
+	return i.ToArgocdApplicationSyncPolicyPtrOutputWithContext(context.Background())
+}
+
+func (i *argocdApplicationSyncPolicyPtrType) ToArgocdApplicationSyncPolicyPtrOutputWithContext(ctx context.Context) ArgocdApplicationSyncPolicyPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(ArgocdApplicationSyncPolicyPtrOutput)
+}
+
+type ArgocdApplicationSyncPolicyOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationSyncPolicyOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*ArgocdApplicationSyncPolicy)(nil)).Elem()
+}
+
+func (o ArgocdApplicationSyncPolicyOutput) ToArgocdApplicationSyncPolicyOutput() ArgocdApplicationSyncPolicyOutput {
+	return o
+}
+
+func (o ArgocdApplicationSyncPolicyOutput) ToArgocdApplicationSyncPolicyOutputWithContext(ctx context.Context) ArgocdApplicationSyncPolicyOutput {
+	return o
+}
+
+func (o ArgocdApplicationSyncPolicyOutput) ToArgocdApplicationSyncPolicyPtrOutput() ArgocdApplicationSyncPolicyPtrOutput {
+	return o.ToArgocdApplicationSyncPolicyPtrOutputWithContext(context.Background())
+}
+
+func (o ArgocdApplicationSyncPolicyOutput) ToArgocdApplicationSyncPolicyPtrOutputWithContext(ctx context.Context) ArgocdApplicationSyncPolicyPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v ArgocdApplicationSyncPolicy) *ArgocdApplicationSyncPolicy {
+		return &v
+	}).(ArgocdApplicationSyncPolicyPtrOutput)
+}
+
+func (o ArgocdApplicationSyncPolicyOutput) Automated() SyncPolicyAutomatedPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSyncPolicy) *SyncPolicyAutomated { return v.Automated }).(SyncPolicyAutomatedPtrOutput)
+}
+
+func (o ArgocdApplicationSyncPolicyOutput) Retry() SyncPolicyRetryPtrOutput {
+	return o.ApplyT(func(v ArgocdApplicationSyncPolicy) *SyncPolicyRetry { return v.Retry }).(SyncPolicyRetryPtrOutput)
+}
+
+func (o ArgocdApplicationSyncPolicyOutput) SyncOptions() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v ArgocdApplicationSyncPolicy) []string { return v.SyncOptions }).(pulumi.StringArrayOutput)
+}
+
+type ArgocdApplicationSyncPolicyPtrOutput struct{ *pulumi.OutputState }
+
+func (ArgocdApplicationSyncPolicyPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**ArgocdApplicationSyncPolicy)(nil)).Elem()
+}
+
+func (o ArgocdApplicationSyncPolicyPtrOutput) ToArgocdApplicationSyncPolicyPtrOutput() ArgocdApplicationSyncPolicyPtrOutput {
+	return o
+}
+
+func (o ArgocdApplicationSyncPolicyPtrOutput) ToArgocdApplicationSyncPolicyPtrOutputWithContext(ctx context.Context) ArgocdApplicationSyncPolicyPtrOutput {
+	return o
+}
+
+func (o ArgocdApplicationSyncPolicyPtrOutput) Elem() ArgocdApplicationSyncPolicyOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSyncPolicy) ArgocdApplicationSyncPolicy {
+		if v != nil {
+			return *v
+		}
+		var ret ArgocdApplicationSyncPolicy
+		return ret
+	}).(ArgocdApplicationSyncPolicyOutput)
+}
+
+func (o ArgocdApplicationSyncPolicyPtrOutput) Automated() SyncPolicyAutomatedPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSyncPolicy) *SyncPolicyAutomated {
+		if v == nil {
+			return nil
+		}
+		return v.Automated
+	}).(SyncPolicyAutomatedPtrOutput)
+}
+
+func (o ArgocdApplicationSyncPolicyPtrOutput) Retry() SyncPolicyRetryPtrOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSyncPolicy) *SyncPolicyRetry {
+		if v == nil {
+			return nil
+		}
+		return v.Retry
+	}).(SyncPolicyRetryPtrOutput)
+}
+
+func (o ArgocdApplicationSyncPolicyPtrOutput) SyncOptions() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *ArgocdApplicationSyncPolicy) []string {
+		if v == nil {
+			return nil
+		}
+		return v.SyncOptions
+	}).(pulumi.StringArrayOutput)
+}
+
+// Configuration for the EKS auth configmap
+type AuthConfigMapConfig struct {
+	// Optional, list of AWS SSO permission set roles to autodiscover.
+	AutoDiscoverSSORoles []SSORolePermissionSetConfig `pulumi:"autoDiscoverSSORoles"`
+	// Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
+	EksClusterName *string `pulumi:"eksClusterName"`
+	// Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
+	EnableNodeGroupIamRoleAutoDiscover *bool `pulumi:"enableNodeGroupIamRoleAutoDiscover"`
+	// Optional, list of IAM roles to grant access in the auth configmap
+	IamRoles []IAMIdentityConfig `pulumi:"iamRoles"`
+	// Optional, list of IAM users to grant access in the auth configmap
+	IamUsers []IAMIdentityConfig `pulumi:"iamUsers"`
+	// IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
+	NodeGroupIamRole *string `pulumi:"nodeGroupIamRole"`
+}
+
+// AuthConfigMapConfigInput is an input type that accepts AuthConfigMapConfigArgs and AuthConfigMapConfigOutput values.
+// You can construct a concrete instance of `AuthConfigMapConfigInput` via:
+//
+//          AuthConfigMapConfigArgs{...}
+type AuthConfigMapConfigInput interface {
+	pulumi.Input
+
+	ToAuthConfigMapConfigOutput() AuthConfigMapConfigOutput
+	ToAuthConfigMapConfigOutputWithContext(context.Context) AuthConfigMapConfigOutput
+}
+
+// Configuration for the EKS auth configmap
+type AuthConfigMapConfigArgs struct {
+	// Optional, list of AWS SSO permission set roles to autodiscover.
+	AutoDiscoverSSORoles SSORolePermissionSetConfigArrayInput `pulumi:"autoDiscoverSSORoles"`
+	// Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
+	EksClusterName pulumi.StringPtrInput `pulumi:"eksClusterName"`
+	// Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
+	EnableNodeGroupIamRoleAutoDiscover pulumi.BoolPtrInput `pulumi:"enableNodeGroupIamRoleAutoDiscover"`
+	// Optional, list of IAM roles to grant access in the auth configmap
+	IamRoles IAMIdentityConfigArrayInput `pulumi:"iamRoles"`
+	// Optional, list of IAM users to grant access in the auth configmap
+	IamUsers IAMIdentityConfigArrayInput `pulumi:"iamUsers"`
+	// IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
+	NodeGroupIamRole pulumi.StringPtrInput `pulumi:"nodeGroupIamRole"`
+}
+
+func (AuthConfigMapConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*AuthConfigMapConfig)(nil)).Elem()
+}
+
+func (i AuthConfigMapConfigArgs) ToAuthConfigMapConfigOutput() AuthConfigMapConfigOutput {
+	return i.ToAuthConfigMapConfigOutputWithContext(context.Background())
+}
+
+func (i AuthConfigMapConfigArgs) ToAuthConfigMapConfigOutputWithContext(ctx context.Context) AuthConfigMapConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(AuthConfigMapConfigOutput)
+}
+
+func (i AuthConfigMapConfigArgs) ToAuthConfigMapConfigPtrOutput() AuthConfigMapConfigPtrOutput {
+	return i.ToAuthConfigMapConfigPtrOutputWithContext(context.Background())
+}
+
+func (i AuthConfigMapConfigArgs) ToAuthConfigMapConfigPtrOutputWithContext(ctx context.Context) AuthConfigMapConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(AuthConfigMapConfigOutput).ToAuthConfigMapConfigPtrOutputWithContext(ctx)
+}
+
+// AuthConfigMapConfigPtrInput is an input type that accepts AuthConfigMapConfigArgs, AuthConfigMapConfigPtr and AuthConfigMapConfigPtrOutput values.
+// You can construct a concrete instance of `AuthConfigMapConfigPtrInput` via:
+//
+//          AuthConfigMapConfigArgs{...}
+//
+//  or:
+//
+//          nil
+type AuthConfigMapConfigPtrInput interface {
+	pulumi.Input
+
+	ToAuthConfigMapConfigPtrOutput() AuthConfigMapConfigPtrOutput
+	ToAuthConfigMapConfigPtrOutputWithContext(context.Context) AuthConfigMapConfigPtrOutput
+}
+
+type authConfigMapConfigPtrType AuthConfigMapConfigArgs
+
+func AuthConfigMapConfigPtr(v *AuthConfigMapConfigArgs) AuthConfigMapConfigPtrInput {
+	return (*authConfigMapConfigPtrType)(v)
+}
+
+func (*authConfigMapConfigPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**AuthConfigMapConfig)(nil)).Elem()
+}
+
+func (i *authConfigMapConfigPtrType) ToAuthConfigMapConfigPtrOutput() AuthConfigMapConfigPtrOutput {
+	return i.ToAuthConfigMapConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *authConfigMapConfigPtrType) ToAuthConfigMapConfigPtrOutputWithContext(ctx context.Context) AuthConfigMapConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(AuthConfigMapConfigPtrOutput)
+}
+
+// Configuration for the EKS auth configmap
+type AuthConfigMapConfigOutput struct{ *pulumi.OutputState }
+
+func (AuthConfigMapConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*AuthConfigMapConfig)(nil)).Elem()
+}
+
+func (o AuthConfigMapConfigOutput) ToAuthConfigMapConfigOutput() AuthConfigMapConfigOutput {
+	return o
+}
+
+func (o AuthConfigMapConfigOutput) ToAuthConfigMapConfigOutputWithContext(ctx context.Context) AuthConfigMapConfigOutput {
+	return o
+}
+
+func (o AuthConfigMapConfigOutput) ToAuthConfigMapConfigPtrOutput() AuthConfigMapConfigPtrOutput {
+	return o.ToAuthConfigMapConfigPtrOutputWithContext(context.Background())
+}
+
+func (o AuthConfigMapConfigOutput) ToAuthConfigMapConfigPtrOutputWithContext(ctx context.Context) AuthConfigMapConfigPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v AuthConfigMapConfig) *AuthConfigMapConfig {
+		return &v
+	}).(AuthConfigMapConfigPtrOutput)
+}
+
+// Optional, list of AWS SSO permission set roles to autodiscover.
+func (o AuthConfigMapConfigOutput) AutoDiscoverSSORoles() SSORolePermissionSetConfigArrayOutput {
+	return o.ApplyT(func(v AuthConfigMapConfig) []SSORolePermissionSetConfig { return v.AutoDiscoverSSORoles }).(SSORolePermissionSetConfigArrayOutput)
+}
+
+// Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
+func (o AuthConfigMapConfigOutput) EksClusterName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v AuthConfigMapConfig) *string { return v.EksClusterName }).(pulumi.StringPtrOutput)
+}
+
+// Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
+func (o AuthConfigMapConfigOutput) EnableNodeGroupIamRoleAutoDiscover() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v AuthConfigMapConfig) *bool { return v.EnableNodeGroupIamRoleAutoDiscover }).(pulumi.BoolPtrOutput)
+}
+
+// Optional, list of IAM roles to grant access in the auth configmap
+func (o AuthConfigMapConfigOutput) IamRoles() IAMIdentityConfigArrayOutput {
+	return o.ApplyT(func(v AuthConfigMapConfig) []IAMIdentityConfig { return v.IamRoles }).(IAMIdentityConfigArrayOutput)
+}
+
+// Optional, list of IAM users to grant access in the auth configmap
+func (o AuthConfigMapConfigOutput) IamUsers() IAMIdentityConfigArrayOutput {
+	return o.ApplyT(func(v AuthConfigMapConfig) []IAMIdentityConfig { return v.IamUsers }).(IAMIdentityConfigArrayOutput)
+}
+
+// IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
+func (o AuthConfigMapConfigOutput) NodeGroupIamRole() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v AuthConfigMapConfig) *string { return v.NodeGroupIamRole }).(pulumi.StringPtrOutput)
+}
+
+type AuthConfigMapConfigPtrOutput struct{ *pulumi.OutputState }
+
+func (AuthConfigMapConfigPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**AuthConfigMapConfig)(nil)).Elem()
+}
+
+func (o AuthConfigMapConfigPtrOutput) ToAuthConfigMapConfigPtrOutput() AuthConfigMapConfigPtrOutput {
+	return o
+}
+
+func (o AuthConfigMapConfigPtrOutput) ToAuthConfigMapConfigPtrOutputWithContext(ctx context.Context) AuthConfigMapConfigPtrOutput {
+	return o
+}
+
+func (o AuthConfigMapConfigPtrOutput) Elem() AuthConfigMapConfigOutput {
+	return o.ApplyT(func(v *AuthConfigMapConfig) AuthConfigMapConfig {
+		if v != nil {
+			return *v
+		}
+		var ret AuthConfigMapConfig
+		return ret
+	}).(AuthConfigMapConfigOutput)
+}
+
+// Optional, list of AWS SSO permission set roles to autodiscover.
+func (o AuthConfigMapConfigPtrOutput) AutoDiscoverSSORoles() SSORolePermissionSetConfigArrayOutput {
+	return o.ApplyT(func(v *AuthConfigMapConfig) []SSORolePermissionSetConfig {
+		if v == nil {
+			return nil
+		}
+		return v.AutoDiscoverSSORoles
+	}).(SSORolePermissionSetConfigArrayOutput)
+}
+
+// Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
+func (o AuthConfigMapConfigPtrOutput) EksClusterName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *AuthConfigMapConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.EksClusterName
+	}).(pulumi.StringPtrOutput)
+}
+
+// Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
+func (o AuthConfigMapConfigPtrOutput) EnableNodeGroupIamRoleAutoDiscover() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *AuthConfigMapConfig) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.EnableNodeGroupIamRoleAutoDiscover
+	}).(pulumi.BoolPtrOutput)
+}
+
+// Optional, list of IAM roles to grant access in the auth configmap
+func (o AuthConfigMapConfigPtrOutput) IamRoles() IAMIdentityConfigArrayOutput {
+	return o.ApplyT(func(v *AuthConfigMapConfig) []IAMIdentityConfig {
+		if v == nil {
+			return nil
+		}
+		return v.IamRoles
+	}).(IAMIdentityConfigArrayOutput)
+}
+
+// Optional, list of IAM users to grant access in the auth configmap
+func (o AuthConfigMapConfigPtrOutput) IamUsers() IAMIdentityConfigArrayOutput {
+	return o.ApplyT(func(v *AuthConfigMapConfig) []IAMIdentityConfig {
+		if v == nil {
+			return nil
+		}
+		return v.IamUsers
+	}).(IAMIdentityConfigArrayOutput)
+}
+
+// IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
+func (o AuthConfigMapConfigPtrOutput) NodeGroupIamRole() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *AuthConfigMapConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.NodeGroupIamRole
+	}).(pulumi.StringPtrOutput)
+}
+
 // Configuration supplied to AvailabilityZone list in VpcArgs to specify which availability zones to deploy to and what subnet configuration for each availability zone. Supports one private and public subnet per AZ.
 type AvailabilityZone struct {
 	// Name of the availability zone to deploy subnets to.
@@ -126,6 +1426,347 @@ func (o AvailabilityZoneArrayOutput) Index(i pulumi.IntInput) AvailabilityZoneOu
 	return pulumi.All(o, i).ApplyT(func(vs []interface{}) AvailabilityZone {
 		return vs[0].([]AvailabilityZone)[vs[1].(int)]
 	}).(AvailabilityZoneOutput)
+}
+
+type DirectorySource struct {
+	Exclude *string                 `pulumi:"exclude"`
+	Include *string                 `pulumi:"include"`
+	Jsonnet *DirectorySourceJsonnet `pulumi:"jsonnet"`
+	Recurse *bool                   `pulumi:"recurse"`
+}
+
+// DirectorySourceInput is an input type that accepts DirectorySourceArgs and DirectorySourceOutput values.
+// You can construct a concrete instance of `DirectorySourceInput` via:
+//
+//          DirectorySourceArgs{...}
+type DirectorySourceInput interface {
+	pulumi.Input
+
+	ToDirectorySourceOutput() DirectorySourceOutput
+	ToDirectorySourceOutputWithContext(context.Context) DirectorySourceOutput
+}
+
+type DirectorySourceArgs struct {
+	Exclude pulumi.StringPtrInput          `pulumi:"exclude"`
+	Include pulumi.StringPtrInput          `pulumi:"include"`
+	Jsonnet DirectorySourceJsonnetPtrInput `pulumi:"jsonnet"`
+	Recurse pulumi.BoolPtrInput            `pulumi:"recurse"`
+}
+
+func (DirectorySourceArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*DirectorySource)(nil)).Elem()
+}
+
+func (i DirectorySourceArgs) ToDirectorySourceOutput() DirectorySourceOutput {
+	return i.ToDirectorySourceOutputWithContext(context.Background())
+}
+
+func (i DirectorySourceArgs) ToDirectorySourceOutputWithContext(ctx context.Context) DirectorySourceOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DirectorySourceOutput)
+}
+
+func (i DirectorySourceArgs) ToDirectorySourcePtrOutput() DirectorySourcePtrOutput {
+	return i.ToDirectorySourcePtrOutputWithContext(context.Background())
+}
+
+func (i DirectorySourceArgs) ToDirectorySourcePtrOutputWithContext(ctx context.Context) DirectorySourcePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DirectorySourceOutput).ToDirectorySourcePtrOutputWithContext(ctx)
+}
+
+// DirectorySourcePtrInput is an input type that accepts DirectorySourceArgs, DirectorySourcePtr and DirectorySourcePtrOutput values.
+// You can construct a concrete instance of `DirectorySourcePtrInput` via:
+//
+//          DirectorySourceArgs{...}
+//
+//  or:
+//
+//          nil
+type DirectorySourcePtrInput interface {
+	pulumi.Input
+
+	ToDirectorySourcePtrOutput() DirectorySourcePtrOutput
+	ToDirectorySourcePtrOutputWithContext(context.Context) DirectorySourcePtrOutput
+}
+
+type directorySourcePtrType DirectorySourceArgs
+
+func DirectorySourcePtr(v *DirectorySourceArgs) DirectorySourcePtrInput {
+	return (*directorySourcePtrType)(v)
+}
+
+func (*directorySourcePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**DirectorySource)(nil)).Elem()
+}
+
+func (i *directorySourcePtrType) ToDirectorySourcePtrOutput() DirectorySourcePtrOutput {
+	return i.ToDirectorySourcePtrOutputWithContext(context.Background())
+}
+
+func (i *directorySourcePtrType) ToDirectorySourcePtrOutputWithContext(ctx context.Context) DirectorySourcePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DirectorySourcePtrOutput)
+}
+
+type DirectorySourceOutput struct{ *pulumi.OutputState }
+
+func (DirectorySourceOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*DirectorySource)(nil)).Elem()
+}
+
+func (o DirectorySourceOutput) ToDirectorySourceOutput() DirectorySourceOutput {
+	return o
+}
+
+func (o DirectorySourceOutput) ToDirectorySourceOutputWithContext(ctx context.Context) DirectorySourceOutput {
+	return o
+}
+
+func (o DirectorySourceOutput) ToDirectorySourcePtrOutput() DirectorySourcePtrOutput {
+	return o.ToDirectorySourcePtrOutputWithContext(context.Background())
+}
+
+func (o DirectorySourceOutput) ToDirectorySourcePtrOutputWithContext(ctx context.Context) DirectorySourcePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v DirectorySource) *DirectorySource {
+		return &v
+	}).(DirectorySourcePtrOutput)
+}
+
+func (o DirectorySourceOutput) Exclude() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v DirectorySource) *string { return v.Exclude }).(pulumi.StringPtrOutput)
+}
+
+func (o DirectorySourceOutput) Include() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v DirectorySource) *string { return v.Include }).(pulumi.StringPtrOutput)
+}
+
+func (o DirectorySourceOutput) Jsonnet() DirectorySourceJsonnetPtrOutput {
+	return o.ApplyT(func(v DirectorySource) *DirectorySourceJsonnet { return v.Jsonnet }).(DirectorySourceJsonnetPtrOutput)
+}
+
+func (o DirectorySourceOutput) Recurse() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v DirectorySource) *bool { return v.Recurse }).(pulumi.BoolPtrOutput)
+}
+
+type DirectorySourcePtrOutput struct{ *pulumi.OutputState }
+
+func (DirectorySourcePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**DirectorySource)(nil)).Elem()
+}
+
+func (o DirectorySourcePtrOutput) ToDirectorySourcePtrOutput() DirectorySourcePtrOutput {
+	return o
+}
+
+func (o DirectorySourcePtrOutput) ToDirectorySourcePtrOutputWithContext(ctx context.Context) DirectorySourcePtrOutput {
+	return o
+}
+
+func (o DirectorySourcePtrOutput) Elem() DirectorySourceOutput {
+	return o.ApplyT(func(v *DirectorySource) DirectorySource {
+		if v != nil {
+			return *v
+		}
+		var ret DirectorySource
+		return ret
+	}).(DirectorySourceOutput)
+}
+
+func (o DirectorySourcePtrOutput) Exclude() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *DirectorySource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Exclude
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o DirectorySourcePtrOutput) Include() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *DirectorySource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Include
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o DirectorySourcePtrOutput) Jsonnet() DirectorySourceJsonnetPtrOutput {
+	return o.ApplyT(func(v *DirectorySource) *DirectorySourceJsonnet {
+		if v == nil {
+			return nil
+		}
+		return v.Jsonnet
+	}).(DirectorySourceJsonnetPtrOutput)
+}
+
+func (o DirectorySourcePtrOutput) Recurse() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *DirectorySource) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Recurse
+	}).(pulumi.BoolPtrOutput)
+}
+
+type DirectorySourceJsonnet struct {
+	TLAs    []JsonnetVar `pulumi:"TLAs"`
+	ExtVars []JsonnetVar `pulumi:"extVars"`
+	Libs    []string     `pulumi:"libs"`
+}
+
+// DirectorySourceJsonnetInput is an input type that accepts DirectorySourceJsonnetArgs and DirectorySourceJsonnetOutput values.
+// You can construct a concrete instance of `DirectorySourceJsonnetInput` via:
+//
+//          DirectorySourceJsonnetArgs{...}
+type DirectorySourceJsonnetInput interface {
+	pulumi.Input
+
+	ToDirectorySourceJsonnetOutput() DirectorySourceJsonnetOutput
+	ToDirectorySourceJsonnetOutputWithContext(context.Context) DirectorySourceJsonnetOutput
+}
+
+type DirectorySourceJsonnetArgs struct {
+	TLAs    JsonnetVarArrayInput    `pulumi:"TLAs"`
+	ExtVars JsonnetVarArrayInput    `pulumi:"extVars"`
+	Libs    pulumi.StringArrayInput `pulumi:"libs"`
+}
+
+func (DirectorySourceJsonnetArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*DirectorySourceJsonnet)(nil)).Elem()
+}
+
+func (i DirectorySourceJsonnetArgs) ToDirectorySourceJsonnetOutput() DirectorySourceJsonnetOutput {
+	return i.ToDirectorySourceJsonnetOutputWithContext(context.Background())
+}
+
+func (i DirectorySourceJsonnetArgs) ToDirectorySourceJsonnetOutputWithContext(ctx context.Context) DirectorySourceJsonnetOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DirectorySourceJsonnetOutput)
+}
+
+func (i DirectorySourceJsonnetArgs) ToDirectorySourceJsonnetPtrOutput() DirectorySourceJsonnetPtrOutput {
+	return i.ToDirectorySourceJsonnetPtrOutputWithContext(context.Background())
+}
+
+func (i DirectorySourceJsonnetArgs) ToDirectorySourceJsonnetPtrOutputWithContext(ctx context.Context) DirectorySourceJsonnetPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DirectorySourceJsonnetOutput).ToDirectorySourceJsonnetPtrOutputWithContext(ctx)
+}
+
+// DirectorySourceJsonnetPtrInput is an input type that accepts DirectorySourceJsonnetArgs, DirectorySourceJsonnetPtr and DirectorySourceJsonnetPtrOutput values.
+// You can construct a concrete instance of `DirectorySourceJsonnetPtrInput` via:
+//
+//          DirectorySourceJsonnetArgs{...}
+//
+//  or:
+//
+//          nil
+type DirectorySourceJsonnetPtrInput interface {
+	pulumi.Input
+
+	ToDirectorySourceJsonnetPtrOutput() DirectorySourceJsonnetPtrOutput
+	ToDirectorySourceJsonnetPtrOutputWithContext(context.Context) DirectorySourceJsonnetPtrOutput
+}
+
+type directorySourceJsonnetPtrType DirectorySourceJsonnetArgs
+
+func DirectorySourceJsonnetPtr(v *DirectorySourceJsonnetArgs) DirectorySourceJsonnetPtrInput {
+	return (*directorySourceJsonnetPtrType)(v)
+}
+
+func (*directorySourceJsonnetPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**DirectorySourceJsonnet)(nil)).Elem()
+}
+
+func (i *directorySourceJsonnetPtrType) ToDirectorySourceJsonnetPtrOutput() DirectorySourceJsonnetPtrOutput {
+	return i.ToDirectorySourceJsonnetPtrOutputWithContext(context.Background())
+}
+
+func (i *directorySourceJsonnetPtrType) ToDirectorySourceJsonnetPtrOutputWithContext(ctx context.Context) DirectorySourceJsonnetPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(DirectorySourceJsonnetPtrOutput)
+}
+
+type DirectorySourceJsonnetOutput struct{ *pulumi.OutputState }
+
+func (DirectorySourceJsonnetOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*DirectorySourceJsonnet)(nil)).Elem()
+}
+
+func (o DirectorySourceJsonnetOutput) ToDirectorySourceJsonnetOutput() DirectorySourceJsonnetOutput {
+	return o
+}
+
+func (o DirectorySourceJsonnetOutput) ToDirectorySourceJsonnetOutputWithContext(ctx context.Context) DirectorySourceJsonnetOutput {
+	return o
+}
+
+func (o DirectorySourceJsonnetOutput) ToDirectorySourceJsonnetPtrOutput() DirectorySourceJsonnetPtrOutput {
+	return o.ToDirectorySourceJsonnetPtrOutputWithContext(context.Background())
+}
+
+func (o DirectorySourceJsonnetOutput) ToDirectorySourceJsonnetPtrOutputWithContext(ctx context.Context) DirectorySourceJsonnetPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v DirectorySourceJsonnet) *DirectorySourceJsonnet {
+		return &v
+	}).(DirectorySourceJsonnetPtrOutput)
+}
+
+func (o DirectorySourceJsonnetOutput) TLAs() JsonnetVarArrayOutput {
+	return o.ApplyT(func(v DirectorySourceJsonnet) []JsonnetVar { return v.TLAs }).(JsonnetVarArrayOutput)
+}
+
+func (o DirectorySourceJsonnetOutput) ExtVars() JsonnetVarArrayOutput {
+	return o.ApplyT(func(v DirectorySourceJsonnet) []JsonnetVar { return v.ExtVars }).(JsonnetVarArrayOutput)
+}
+
+func (o DirectorySourceJsonnetOutput) Libs() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v DirectorySourceJsonnet) []string { return v.Libs }).(pulumi.StringArrayOutput)
+}
+
+type DirectorySourceJsonnetPtrOutput struct{ *pulumi.OutputState }
+
+func (DirectorySourceJsonnetPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**DirectorySourceJsonnet)(nil)).Elem()
+}
+
+func (o DirectorySourceJsonnetPtrOutput) ToDirectorySourceJsonnetPtrOutput() DirectorySourceJsonnetPtrOutput {
+	return o
+}
+
+func (o DirectorySourceJsonnetPtrOutput) ToDirectorySourceJsonnetPtrOutputWithContext(ctx context.Context) DirectorySourceJsonnetPtrOutput {
+	return o
+}
+
+func (o DirectorySourceJsonnetPtrOutput) Elem() DirectorySourceJsonnetOutput {
+	return o.ApplyT(func(v *DirectorySourceJsonnet) DirectorySourceJsonnet {
+		if v != nil {
+			return *v
+		}
+		var ret DirectorySourceJsonnet
+		return ret
+	}).(DirectorySourceJsonnetOutput)
+}
+
+func (o DirectorySourceJsonnetPtrOutput) TLAs() JsonnetVarArrayOutput {
+	return o.ApplyT(func(v *DirectorySourceJsonnet) []JsonnetVar {
+		if v == nil {
+			return nil
+		}
+		return v.TLAs
+	}).(JsonnetVarArrayOutput)
+}
+
+func (o DirectorySourceJsonnetPtrOutput) ExtVars() JsonnetVarArrayOutput {
+	return o.ApplyT(func(v *DirectorySourceJsonnet) []JsonnetVar {
+		if v == nil {
+			return nil
+		}
+		return v.ExtVars
+	}).(JsonnetVarArrayOutput)
+}
+
+func (o DirectorySourceJsonnetPtrOutput) Libs() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *DirectorySourceJsonnet) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Libs
+	}).(pulumi.StringArrayOutput)
 }
 
 // Configuration for an EKS node group
@@ -249,13 +1890,2420 @@ func (o EksNodeGroupArrayOutput) Index(i pulumi.IntInput) EksNodeGroupOutput {
 	}).(EksNodeGroupOutput)
 }
 
+// Configuration for a helm release
+type HelmReleaseConfig struct {
+	// Optional for each implementation, empty by default
+	Values map[string]string `pulumi:"values"`
+	// Optional for each implementation, empty by default
+	ValuesFiles []string `pulumi:"valuesFiles"`
+	// Optional for each implementation, defaults specific to each helm chart
+	Version *string `pulumi:"version"`
+}
+
+// HelmReleaseConfigInput is an input type that accepts HelmReleaseConfigArgs and HelmReleaseConfigOutput values.
+// You can construct a concrete instance of `HelmReleaseConfigInput` via:
+//
+//          HelmReleaseConfigArgs{...}
+type HelmReleaseConfigInput interface {
+	pulumi.Input
+
+	ToHelmReleaseConfigOutput() HelmReleaseConfigOutput
+	ToHelmReleaseConfigOutputWithContext(context.Context) HelmReleaseConfigOutput
+}
+
+// Configuration for a helm release
+type HelmReleaseConfigArgs struct {
+	// Optional for each implementation, empty by default
+	Values pulumi.StringMapInput `pulumi:"values"`
+	// Optional for each implementation, empty by default
+	ValuesFiles pulumi.StringArrayInput `pulumi:"valuesFiles"`
+	// Optional for each implementation, defaults specific to each helm chart
+	Version pulumi.StringPtrInput `pulumi:"version"`
+}
+
+func (HelmReleaseConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*HelmReleaseConfig)(nil)).Elem()
+}
+
+func (i HelmReleaseConfigArgs) ToHelmReleaseConfigOutput() HelmReleaseConfigOutput {
+	return i.ToHelmReleaseConfigOutputWithContext(context.Background())
+}
+
+func (i HelmReleaseConfigArgs) ToHelmReleaseConfigOutputWithContext(ctx context.Context) HelmReleaseConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(HelmReleaseConfigOutput)
+}
+
+func (i HelmReleaseConfigArgs) ToHelmReleaseConfigPtrOutput() HelmReleaseConfigPtrOutput {
+	return i.ToHelmReleaseConfigPtrOutputWithContext(context.Background())
+}
+
+func (i HelmReleaseConfigArgs) ToHelmReleaseConfigPtrOutputWithContext(ctx context.Context) HelmReleaseConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(HelmReleaseConfigOutput).ToHelmReleaseConfigPtrOutputWithContext(ctx)
+}
+
+// HelmReleaseConfigPtrInput is an input type that accepts HelmReleaseConfigArgs, HelmReleaseConfigPtr and HelmReleaseConfigPtrOutput values.
+// You can construct a concrete instance of `HelmReleaseConfigPtrInput` via:
+//
+//          HelmReleaseConfigArgs{...}
+//
+//  or:
+//
+//          nil
+type HelmReleaseConfigPtrInput interface {
+	pulumi.Input
+
+	ToHelmReleaseConfigPtrOutput() HelmReleaseConfigPtrOutput
+	ToHelmReleaseConfigPtrOutputWithContext(context.Context) HelmReleaseConfigPtrOutput
+}
+
+type helmReleaseConfigPtrType HelmReleaseConfigArgs
+
+func HelmReleaseConfigPtr(v *HelmReleaseConfigArgs) HelmReleaseConfigPtrInput {
+	return (*helmReleaseConfigPtrType)(v)
+}
+
+func (*helmReleaseConfigPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**HelmReleaseConfig)(nil)).Elem()
+}
+
+func (i *helmReleaseConfigPtrType) ToHelmReleaseConfigPtrOutput() HelmReleaseConfigPtrOutput {
+	return i.ToHelmReleaseConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *helmReleaseConfigPtrType) ToHelmReleaseConfigPtrOutputWithContext(ctx context.Context) HelmReleaseConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(HelmReleaseConfigPtrOutput)
+}
+
+// Configuration for a helm release
+type HelmReleaseConfigOutput struct{ *pulumi.OutputState }
+
+func (HelmReleaseConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*HelmReleaseConfig)(nil)).Elem()
+}
+
+func (o HelmReleaseConfigOutput) ToHelmReleaseConfigOutput() HelmReleaseConfigOutput {
+	return o
+}
+
+func (o HelmReleaseConfigOutput) ToHelmReleaseConfigOutputWithContext(ctx context.Context) HelmReleaseConfigOutput {
+	return o
+}
+
+func (o HelmReleaseConfigOutput) ToHelmReleaseConfigPtrOutput() HelmReleaseConfigPtrOutput {
+	return o.ToHelmReleaseConfigPtrOutputWithContext(context.Background())
+}
+
+func (o HelmReleaseConfigOutput) ToHelmReleaseConfigPtrOutputWithContext(ctx context.Context) HelmReleaseConfigPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v HelmReleaseConfig) *HelmReleaseConfig {
+		return &v
+	}).(HelmReleaseConfigPtrOutput)
+}
+
+// Optional for each implementation, empty by default
+func (o HelmReleaseConfigOutput) Values() pulumi.StringMapOutput {
+	return o.ApplyT(func(v HelmReleaseConfig) map[string]string { return v.Values }).(pulumi.StringMapOutput)
+}
+
+// Optional for each implementation, empty by default
+func (o HelmReleaseConfigOutput) ValuesFiles() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v HelmReleaseConfig) []string { return v.ValuesFiles }).(pulumi.StringArrayOutput)
+}
+
+// Optional for each implementation, defaults specific to each helm chart
+func (o HelmReleaseConfigOutput) Version() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v HelmReleaseConfig) *string { return v.Version }).(pulumi.StringPtrOutput)
+}
+
+type HelmReleaseConfigPtrOutput struct{ *pulumi.OutputState }
+
+func (HelmReleaseConfigPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**HelmReleaseConfig)(nil)).Elem()
+}
+
+func (o HelmReleaseConfigPtrOutput) ToHelmReleaseConfigPtrOutput() HelmReleaseConfigPtrOutput {
+	return o
+}
+
+func (o HelmReleaseConfigPtrOutput) ToHelmReleaseConfigPtrOutputWithContext(ctx context.Context) HelmReleaseConfigPtrOutput {
+	return o
+}
+
+func (o HelmReleaseConfigPtrOutput) Elem() HelmReleaseConfigOutput {
+	return o.ApplyT(func(v *HelmReleaseConfig) HelmReleaseConfig {
+		if v != nil {
+			return *v
+		}
+		var ret HelmReleaseConfig
+		return ret
+	}).(HelmReleaseConfigOutput)
+}
+
+// Optional for each implementation, empty by default
+func (o HelmReleaseConfigPtrOutput) Values() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *HelmReleaseConfig) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.Values
+	}).(pulumi.StringMapOutput)
+}
+
+// Optional for each implementation, empty by default
+func (o HelmReleaseConfigPtrOutput) ValuesFiles() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *HelmReleaseConfig) []string {
+		if v == nil {
+			return nil
+		}
+		return v.ValuesFiles
+	}).(pulumi.StringArrayOutput)
+}
+
+// Optional for each implementation, defaults specific to each helm chart
+func (o HelmReleaseConfigPtrOutput) Version() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *HelmReleaseConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Version
+	}).(pulumi.StringPtrOutput)
+}
+
+type HelmSource struct {
+	FileParameters          []HelmSourceFileParameter `pulumi:"fileParameters"`
+	IgnoreMissingValueFiles *bool                     `pulumi:"ignoreMissingValueFiles"`
+	Parameters              []HelmSourceParameter     `pulumi:"parameters"`
+	PassCredentials         *bool                     `pulumi:"passCredentials"`
+	ReleaseName             *string                   `pulumi:"releaseName"`
+	SkipCrds                *string                   `pulumi:"skipCrds"`
+	ValueFiles              []string                  `pulumi:"valueFiles"`
+	Values                  *string                   `pulumi:"values"`
+	Version                 *string                   `pulumi:"version"`
+}
+
+// HelmSourceInput is an input type that accepts HelmSourceArgs and HelmSourceOutput values.
+// You can construct a concrete instance of `HelmSourceInput` via:
+//
+//          HelmSourceArgs{...}
+type HelmSourceInput interface {
+	pulumi.Input
+
+	ToHelmSourceOutput() HelmSourceOutput
+	ToHelmSourceOutputWithContext(context.Context) HelmSourceOutput
+}
+
+type HelmSourceArgs struct {
+	FileParameters          HelmSourceFileParameterArrayInput `pulumi:"fileParameters"`
+	IgnoreMissingValueFiles pulumi.BoolPtrInput               `pulumi:"ignoreMissingValueFiles"`
+	Parameters              HelmSourceParameterArrayInput     `pulumi:"parameters"`
+	PassCredentials         pulumi.BoolPtrInput               `pulumi:"passCredentials"`
+	ReleaseName             pulumi.StringPtrInput             `pulumi:"releaseName"`
+	SkipCrds                pulumi.StringPtrInput             `pulumi:"skipCrds"`
+	ValueFiles              pulumi.StringArrayInput           `pulumi:"valueFiles"`
+	Values                  pulumi.StringPtrInput             `pulumi:"values"`
+	Version                 pulumi.StringPtrInput             `pulumi:"version"`
+}
+
+func (HelmSourceArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*HelmSource)(nil)).Elem()
+}
+
+func (i HelmSourceArgs) ToHelmSourceOutput() HelmSourceOutput {
+	return i.ToHelmSourceOutputWithContext(context.Background())
+}
+
+func (i HelmSourceArgs) ToHelmSourceOutputWithContext(ctx context.Context) HelmSourceOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(HelmSourceOutput)
+}
+
+func (i HelmSourceArgs) ToHelmSourcePtrOutput() HelmSourcePtrOutput {
+	return i.ToHelmSourcePtrOutputWithContext(context.Background())
+}
+
+func (i HelmSourceArgs) ToHelmSourcePtrOutputWithContext(ctx context.Context) HelmSourcePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(HelmSourceOutput).ToHelmSourcePtrOutputWithContext(ctx)
+}
+
+// HelmSourcePtrInput is an input type that accepts HelmSourceArgs, HelmSourcePtr and HelmSourcePtrOutput values.
+// You can construct a concrete instance of `HelmSourcePtrInput` via:
+//
+//          HelmSourceArgs{...}
+//
+//  or:
+//
+//          nil
+type HelmSourcePtrInput interface {
+	pulumi.Input
+
+	ToHelmSourcePtrOutput() HelmSourcePtrOutput
+	ToHelmSourcePtrOutputWithContext(context.Context) HelmSourcePtrOutput
+}
+
+type helmSourcePtrType HelmSourceArgs
+
+func HelmSourcePtr(v *HelmSourceArgs) HelmSourcePtrInput {
+	return (*helmSourcePtrType)(v)
+}
+
+func (*helmSourcePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**HelmSource)(nil)).Elem()
+}
+
+func (i *helmSourcePtrType) ToHelmSourcePtrOutput() HelmSourcePtrOutput {
+	return i.ToHelmSourcePtrOutputWithContext(context.Background())
+}
+
+func (i *helmSourcePtrType) ToHelmSourcePtrOutputWithContext(ctx context.Context) HelmSourcePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(HelmSourcePtrOutput)
+}
+
+type HelmSourceOutput struct{ *pulumi.OutputState }
+
+func (HelmSourceOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*HelmSource)(nil)).Elem()
+}
+
+func (o HelmSourceOutput) ToHelmSourceOutput() HelmSourceOutput {
+	return o
+}
+
+func (o HelmSourceOutput) ToHelmSourceOutputWithContext(ctx context.Context) HelmSourceOutput {
+	return o
+}
+
+func (o HelmSourceOutput) ToHelmSourcePtrOutput() HelmSourcePtrOutput {
+	return o.ToHelmSourcePtrOutputWithContext(context.Background())
+}
+
+func (o HelmSourceOutput) ToHelmSourcePtrOutputWithContext(ctx context.Context) HelmSourcePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v HelmSource) *HelmSource {
+		return &v
+	}).(HelmSourcePtrOutput)
+}
+
+func (o HelmSourceOutput) FileParameters() HelmSourceFileParameterArrayOutput {
+	return o.ApplyT(func(v HelmSource) []HelmSourceFileParameter { return v.FileParameters }).(HelmSourceFileParameterArrayOutput)
+}
+
+func (o HelmSourceOutput) IgnoreMissingValueFiles() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v HelmSource) *bool { return v.IgnoreMissingValueFiles }).(pulumi.BoolPtrOutput)
+}
+
+func (o HelmSourceOutput) Parameters() HelmSourceParameterArrayOutput {
+	return o.ApplyT(func(v HelmSource) []HelmSourceParameter { return v.Parameters }).(HelmSourceParameterArrayOutput)
+}
+
+func (o HelmSourceOutput) PassCredentials() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v HelmSource) *bool { return v.PassCredentials }).(pulumi.BoolPtrOutput)
+}
+
+func (o HelmSourceOutput) ReleaseName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v HelmSource) *string { return v.ReleaseName }).(pulumi.StringPtrOutput)
+}
+
+func (o HelmSourceOutput) SkipCrds() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v HelmSource) *string { return v.SkipCrds }).(pulumi.StringPtrOutput)
+}
+
+func (o HelmSourceOutput) ValueFiles() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v HelmSource) []string { return v.ValueFiles }).(pulumi.StringArrayOutput)
+}
+
+func (o HelmSourceOutput) Values() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v HelmSource) *string { return v.Values }).(pulumi.StringPtrOutput)
+}
+
+func (o HelmSourceOutput) Version() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v HelmSource) *string { return v.Version }).(pulumi.StringPtrOutput)
+}
+
+type HelmSourcePtrOutput struct{ *pulumi.OutputState }
+
+func (HelmSourcePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**HelmSource)(nil)).Elem()
+}
+
+func (o HelmSourcePtrOutput) ToHelmSourcePtrOutput() HelmSourcePtrOutput {
+	return o
+}
+
+func (o HelmSourcePtrOutput) ToHelmSourcePtrOutputWithContext(ctx context.Context) HelmSourcePtrOutput {
+	return o
+}
+
+func (o HelmSourcePtrOutput) Elem() HelmSourceOutput {
+	return o.ApplyT(func(v *HelmSource) HelmSource {
+		if v != nil {
+			return *v
+		}
+		var ret HelmSource
+		return ret
+	}).(HelmSourceOutput)
+}
+
+func (o HelmSourcePtrOutput) FileParameters() HelmSourceFileParameterArrayOutput {
+	return o.ApplyT(func(v *HelmSource) []HelmSourceFileParameter {
+		if v == nil {
+			return nil
+		}
+		return v.FileParameters
+	}).(HelmSourceFileParameterArrayOutput)
+}
+
+func (o HelmSourcePtrOutput) IgnoreMissingValueFiles() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *HelmSource) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.IgnoreMissingValueFiles
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o HelmSourcePtrOutput) Parameters() HelmSourceParameterArrayOutput {
+	return o.ApplyT(func(v *HelmSource) []HelmSourceParameter {
+		if v == nil {
+			return nil
+		}
+		return v.Parameters
+	}).(HelmSourceParameterArrayOutput)
+}
+
+func (o HelmSourcePtrOutput) PassCredentials() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *HelmSource) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.PassCredentials
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o HelmSourcePtrOutput) ReleaseName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *HelmSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.ReleaseName
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o HelmSourcePtrOutput) SkipCrds() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *HelmSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SkipCrds
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o HelmSourcePtrOutput) ValueFiles() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *HelmSource) []string {
+		if v == nil {
+			return nil
+		}
+		return v.ValueFiles
+	}).(pulumi.StringArrayOutput)
+}
+
+func (o HelmSourcePtrOutput) Values() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *HelmSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Values
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o HelmSourcePtrOutput) Version() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *HelmSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Version
+	}).(pulumi.StringPtrOutput)
+}
+
+type HelmSourceFileParameter struct {
+	Name *string `pulumi:"name"`
+	Path *string `pulumi:"path"`
+}
+
+// HelmSourceFileParameterInput is an input type that accepts HelmSourceFileParameterArgs and HelmSourceFileParameterOutput values.
+// You can construct a concrete instance of `HelmSourceFileParameterInput` via:
+//
+//          HelmSourceFileParameterArgs{...}
+type HelmSourceFileParameterInput interface {
+	pulumi.Input
+
+	ToHelmSourceFileParameterOutput() HelmSourceFileParameterOutput
+	ToHelmSourceFileParameterOutputWithContext(context.Context) HelmSourceFileParameterOutput
+}
+
+type HelmSourceFileParameterArgs struct {
+	Name pulumi.StringPtrInput `pulumi:"name"`
+	Path pulumi.StringPtrInput `pulumi:"path"`
+}
+
+func (HelmSourceFileParameterArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*HelmSourceFileParameter)(nil)).Elem()
+}
+
+func (i HelmSourceFileParameterArgs) ToHelmSourceFileParameterOutput() HelmSourceFileParameterOutput {
+	return i.ToHelmSourceFileParameterOutputWithContext(context.Background())
+}
+
+func (i HelmSourceFileParameterArgs) ToHelmSourceFileParameterOutputWithContext(ctx context.Context) HelmSourceFileParameterOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(HelmSourceFileParameterOutput)
+}
+
+// HelmSourceFileParameterArrayInput is an input type that accepts HelmSourceFileParameterArray and HelmSourceFileParameterArrayOutput values.
+// You can construct a concrete instance of `HelmSourceFileParameterArrayInput` via:
+//
+//          HelmSourceFileParameterArray{ HelmSourceFileParameterArgs{...} }
+type HelmSourceFileParameterArrayInput interface {
+	pulumi.Input
+
+	ToHelmSourceFileParameterArrayOutput() HelmSourceFileParameterArrayOutput
+	ToHelmSourceFileParameterArrayOutputWithContext(context.Context) HelmSourceFileParameterArrayOutput
+}
+
+type HelmSourceFileParameterArray []HelmSourceFileParameterInput
+
+func (HelmSourceFileParameterArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]HelmSourceFileParameter)(nil)).Elem()
+}
+
+func (i HelmSourceFileParameterArray) ToHelmSourceFileParameterArrayOutput() HelmSourceFileParameterArrayOutput {
+	return i.ToHelmSourceFileParameterArrayOutputWithContext(context.Background())
+}
+
+func (i HelmSourceFileParameterArray) ToHelmSourceFileParameterArrayOutputWithContext(ctx context.Context) HelmSourceFileParameterArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(HelmSourceFileParameterArrayOutput)
+}
+
+type HelmSourceFileParameterOutput struct{ *pulumi.OutputState }
+
+func (HelmSourceFileParameterOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*HelmSourceFileParameter)(nil)).Elem()
+}
+
+func (o HelmSourceFileParameterOutput) ToHelmSourceFileParameterOutput() HelmSourceFileParameterOutput {
+	return o
+}
+
+func (o HelmSourceFileParameterOutput) ToHelmSourceFileParameterOutputWithContext(ctx context.Context) HelmSourceFileParameterOutput {
+	return o
+}
+
+func (o HelmSourceFileParameterOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v HelmSourceFileParameter) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o HelmSourceFileParameterOutput) Path() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v HelmSourceFileParameter) *string { return v.Path }).(pulumi.StringPtrOutput)
+}
+
+type HelmSourceFileParameterArrayOutput struct{ *pulumi.OutputState }
+
+func (HelmSourceFileParameterArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]HelmSourceFileParameter)(nil)).Elem()
+}
+
+func (o HelmSourceFileParameterArrayOutput) ToHelmSourceFileParameterArrayOutput() HelmSourceFileParameterArrayOutput {
+	return o
+}
+
+func (o HelmSourceFileParameterArrayOutput) ToHelmSourceFileParameterArrayOutputWithContext(ctx context.Context) HelmSourceFileParameterArrayOutput {
+	return o
+}
+
+func (o HelmSourceFileParameterArrayOutput) Index(i pulumi.IntInput) HelmSourceFileParameterOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) HelmSourceFileParameter {
+		return vs[0].([]HelmSourceFileParameter)[vs[1].(int)]
+	}).(HelmSourceFileParameterOutput)
+}
+
+type HelmSourceParameter struct {
+	ForceString *bool   `pulumi:"forceString"`
+	Name        *string `pulumi:"name"`
+	Value       *string `pulumi:"value"`
+}
+
+// HelmSourceParameterInput is an input type that accepts HelmSourceParameterArgs and HelmSourceParameterOutput values.
+// You can construct a concrete instance of `HelmSourceParameterInput` via:
+//
+//          HelmSourceParameterArgs{...}
+type HelmSourceParameterInput interface {
+	pulumi.Input
+
+	ToHelmSourceParameterOutput() HelmSourceParameterOutput
+	ToHelmSourceParameterOutputWithContext(context.Context) HelmSourceParameterOutput
+}
+
+type HelmSourceParameterArgs struct {
+	ForceString pulumi.BoolPtrInput   `pulumi:"forceString"`
+	Name        pulumi.StringPtrInput `pulumi:"name"`
+	Value       pulumi.StringPtrInput `pulumi:"value"`
+}
+
+func (HelmSourceParameterArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*HelmSourceParameter)(nil)).Elem()
+}
+
+func (i HelmSourceParameterArgs) ToHelmSourceParameterOutput() HelmSourceParameterOutput {
+	return i.ToHelmSourceParameterOutputWithContext(context.Background())
+}
+
+func (i HelmSourceParameterArgs) ToHelmSourceParameterOutputWithContext(ctx context.Context) HelmSourceParameterOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(HelmSourceParameterOutput)
+}
+
+// HelmSourceParameterArrayInput is an input type that accepts HelmSourceParameterArray and HelmSourceParameterArrayOutput values.
+// You can construct a concrete instance of `HelmSourceParameterArrayInput` via:
+//
+//          HelmSourceParameterArray{ HelmSourceParameterArgs{...} }
+type HelmSourceParameterArrayInput interface {
+	pulumi.Input
+
+	ToHelmSourceParameterArrayOutput() HelmSourceParameterArrayOutput
+	ToHelmSourceParameterArrayOutputWithContext(context.Context) HelmSourceParameterArrayOutput
+}
+
+type HelmSourceParameterArray []HelmSourceParameterInput
+
+func (HelmSourceParameterArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]HelmSourceParameter)(nil)).Elem()
+}
+
+func (i HelmSourceParameterArray) ToHelmSourceParameterArrayOutput() HelmSourceParameterArrayOutput {
+	return i.ToHelmSourceParameterArrayOutputWithContext(context.Background())
+}
+
+func (i HelmSourceParameterArray) ToHelmSourceParameterArrayOutputWithContext(ctx context.Context) HelmSourceParameterArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(HelmSourceParameterArrayOutput)
+}
+
+type HelmSourceParameterOutput struct{ *pulumi.OutputState }
+
+func (HelmSourceParameterOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*HelmSourceParameter)(nil)).Elem()
+}
+
+func (o HelmSourceParameterOutput) ToHelmSourceParameterOutput() HelmSourceParameterOutput {
+	return o
+}
+
+func (o HelmSourceParameterOutput) ToHelmSourceParameterOutputWithContext(ctx context.Context) HelmSourceParameterOutput {
+	return o
+}
+
+func (o HelmSourceParameterOutput) ForceString() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v HelmSourceParameter) *bool { return v.ForceString }).(pulumi.BoolPtrOutput)
+}
+
+func (o HelmSourceParameterOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v HelmSourceParameter) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o HelmSourceParameterOutput) Value() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v HelmSourceParameter) *string { return v.Value }).(pulumi.StringPtrOutput)
+}
+
+type HelmSourceParameterArrayOutput struct{ *pulumi.OutputState }
+
+func (HelmSourceParameterArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]HelmSourceParameter)(nil)).Elem()
+}
+
+func (o HelmSourceParameterArrayOutput) ToHelmSourceParameterArrayOutput() HelmSourceParameterArrayOutput {
+	return o
+}
+
+func (o HelmSourceParameterArrayOutput) ToHelmSourceParameterArrayOutputWithContext(ctx context.Context) HelmSourceParameterArrayOutput {
+	return o
+}
+
+func (o HelmSourceParameterArrayOutput) Index(i pulumi.IntInput) HelmSourceParameterOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) HelmSourceParameter {
+		return vs[0].([]HelmSourceParameter)[vs[1].(int)]
+	}).(HelmSourceParameterOutput)
+}
+
+type IAMIdentityConfig struct {
+	// Required, ARN of IAM role to use in configmap
+	Arn *string `pulumi:"arn"`
+	// Required, permission groups to add role to. Ex: system:masters
+	PermissionGroups []string `pulumi:"permissionGroups"`
+	// Optional username field, defaults to role name
+	Username *string `pulumi:"username"`
+}
+
+// IAMIdentityConfigInput is an input type that accepts IAMIdentityConfigArgs and IAMIdentityConfigOutput values.
+// You can construct a concrete instance of `IAMIdentityConfigInput` via:
+//
+//          IAMIdentityConfigArgs{...}
+type IAMIdentityConfigInput interface {
+	pulumi.Input
+
+	ToIAMIdentityConfigOutput() IAMIdentityConfigOutput
+	ToIAMIdentityConfigOutputWithContext(context.Context) IAMIdentityConfigOutput
+}
+
+type IAMIdentityConfigArgs struct {
+	// Required, ARN of IAM role to use in configmap
+	Arn pulumi.StringPtrInput `pulumi:"arn"`
+	// Required, permission groups to add role to. Ex: system:masters
+	PermissionGroups pulumi.StringArrayInput `pulumi:"permissionGroups"`
+	// Optional username field, defaults to role name
+	Username pulumi.StringPtrInput `pulumi:"username"`
+}
+
+func (IAMIdentityConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*IAMIdentityConfig)(nil)).Elem()
+}
+
+func (i IAMIdentityConfigArgs) ToIAMIdentityConfigOutput() IAMIdentityConfigOutput {
+	return i.ToIAMIdentityConfigOutputWithContext(context.Background())
+}
+
+func (i IAMIdentityConfigArgs) ToIAMIdentityConfigOutputWithContext(ctx context.Context) IAMIdentityConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(IAMIdentityConfigOutput)
+}
+
+// IAMIdentityConfigArrayInput is an input type that accepts IAMIdentityConfigArray and IAMIdentityConfigArrayOutput values.
+// You can construct a concrete instance of `IAMIdentityConfigArrayInput` via:
+//
+//          IAMIdentityConfigArray{ IAMIdentityConfigArgs{...} }
+type IAMIdentityConfigArrayInput interface {
+	pulumi.Input
+
+	ToIAMIdentityConfigArrayOutput() IAMIdentityConfigArrayOutput
+	ToIAMIdentityConfigArrayOutputWithContext(context.Context) IAMIdentityConfigArrayOutput
+}
+
+type IAMIdentityConfigArray []IAMIdentityConfigInput
+
+func (IAMIdentityConfigArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]IAMIdentityConfig)(nil)).Elem()
+}
+
+func (i IAMIdentityConfigArray) ToIAMIdentityConfigArrayOutput() IAMIdentityConfigArrayOutput {
+	return i.ToIAMIdentityConfigArrayOutputWithContext(context.Background())
+}
+
+func (i IAMIdentityConfigArray) ToIAMIdentityConfigArrayOutputWithContext(ctx context.Context) IAMIdentityConfigArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(IAMIdentityConfigArrayOutput)
+}
+
+type IAMIdentityConfigOutput struct{ *pulumi.OutputState }
+
+func (IAMIdentityConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*IAMIdentityConfig)(nil)).Elem()
+}
+
+func (o IAMIdentityConfigOutput) ToIAMIdentityConfigOutput() IAMIdentityConfigOutput {
+	return o
+}
+
+func (o IAMIdentityConfigOutput) ToIAMIdentityConfigOutputWithContext(ctx context.Context) IAMIdentityConfigOutput {
+	return o
+}
+
+// Required, ARN of IAM role to use in configmap
+func (o IAMIdentityConfigOutput) Arn() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v IAMIdentityConfig) *string { return v.Arn }).(pulumi.StringPtrOutput)
+}
+
+// Required, permission groups to add role to. Ex: system:masters
+func (o IAMIdentityConfigOutput) PermissionGroups() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v IAMIdentityConfig) []string { return v.PermissionGroups }).(pulumi.StringArrayOutput)
+}
+
+// Optional username field, defaults to role name
+func (o IAMIdentityConfigOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v IAMIdentityConfig) *string { return v.Username }).(pulumi.StringPtrOutput)
+}
+
+type IAMIdentityConfigArrayOutput struct{ *pulumi.OutputState }
+
+func (IAMIdentityConfigArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]IAMIdentityConfig)(nil)).Elem()
+}
+
+func (o IAMIdentityConfigArrayOutput) ToIAMIdentityConfigArrayOutput() IAMIdentityConfigArrayOutput {
+	return o
+}
+
+func (o IAMIdentityConfigArrayOutput) ToIAMIdentityConfigArrayOutputWithContext(ctx context.Context) IAMIdentityConfigArrayOutput {
+	return o
+}
+
+func (o IAMIdentityConfigArrayOutput) Index(i pulumi.IntInput) IAMIdentityConfigOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) IAMIdentityConfig {
+		return vs[0].([]IAMIdentityConfig)[vs[1].(int)]
+	}).(IAMIdentityConfigOutput)
+}
+
+type JsonnetVar struct {
+	Code  *bool   `pulumi:"code"`
+	Name  *string `pulumi:"name"`
+	Value *string `pulumi:"value"`
+}
+
+// JsonnetVarInput is an input type that accepts JsonnetVarArgs and JsonnetVarOutput values.
+// You can construct a concrete instance of `JsonnetVarInput` via:
+//
+//          JsonnetVarArgs{...}
+type JsonnetVarInput interface {
+	pulumi.Input
+
+	ToJsonnetVarOutput() JsonnetVarOutput
+	ToJsonnetVarOutputWithContext(context.Context) JsonnetVarOutput
+}
+
+type JsonnetVarArgs struct {
+	Code  pulumi.BoolPtrInput   `pulumi:"code"`
+	Name  pulumi.StringPtrInput `pulumi:"name"`
+	Value pulumi.StringPtrInput `pulumi:"value"`
+}
+
+func (JsonnetVarArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*JsonnetVar)(nil)).Elem()
+}
+
+func (i JsonnetVarArgs) ToJsonnetVarOutput() JsonnetVarOutput {
+	return i.ToJsonnetVarOutputWithContext(context.Background())
+}
+
+func (i JsonnetVarArgs) ToJsonnetVarOutputWithContext(ctx context.Context) JsonnetVarOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(JsonnetVarOutput)
+}
+
+// JsonnetVarArrayInput is an input type that accepts JsonnetVarArray and JsonnetVarArrayOutput values.
+// You can construct a concrete instance of `JsonnetVarArrayInput` via:
+//
+//          JsonnetVarArray{ JsonnetVarArgs{...} }
+type JsonnetVarArrayInput interface {
+	pulumi.Input
+
+	ToJsonnetVarArrayOutput() JsonnetVarArrayOutput
+	ToJsonnetVarArrayOutputWithContext(context.Context) JsonnetVarArrayOutput
+}
+
+type JsonnetVarArray []JsonnetVarInput
+
+func (JsonnetVarArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]JsonnetVar)(nil)).Elem()
+}
+
+func (i JsonnetVarArray) ToJsonnetVarArrayOutput() JsonnetVarArrayOutput {
+	return i.ToJsonnetVarArrayOutputWithContext(context.Background())
+}
+
+func (i JsonnetVarArray) ToJsonnetVarArrayOutputWithContext(ctx context.Context) JsonnetVarArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(JsonnetVarArrayOutput)
+}
+
+type JsonnetVarOutput struct{ *pulumi.OutputState }
+
+func (JsonnetVarOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*JsonnetVar)(nil)).Elem()
+}
+
+func (o JsonnetVarOutput) ToJsonnetVarOutput() JsonnetVarOutput {
+	return o
+}
+
+func (o JsonnetVarOutput) ToJsonnetVarOutputWithContext(ctx context.Context) JsonnetVarOutput {
+	return o
+}
+
+func (o JsonnetVarOutput) Code() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v JsonnetVar) *bool { return v.Code }).(pulumi.BoolPtrOutput)
+}
+
+func (o JsonnetVarOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v JsonnetVar) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o JsonnetVarOutput) Value() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v JsonnetVar) *string { return v.Value }).(pulumi.StringPtrOutput)
+}
+
+type JsonnetVarArrayOutput struct{ *pulumi.OutputState }
+
+func (JsonnetVarArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]JsonnetVar)(nil)).Elem()
+}
+
+func (o JsonnetVarArrayOutput) ToJsonnetVarArrayOutput() JsonnetVarArrayOutput {
+	return o
+}
+
+func (o JsonnetVarArrayOutput) ToJsonnetVarArrayOutputWithContext(ctx context.Context) JsonnetVarArrayOutput {
+	return o
+}
+
+func (o JsonnetVarArrayOutput) Index(i pulumi.IntInput) JsonnetVarOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) JsonnetVar {
+		return vs[0].([]JsonnetVar)[vs[1].(int)]
+	}).(JsonnetVarOutput)
+}
+
+type KustomizeSource struct {
+	CommonAnnotations      map[string]string `pulumi:"commonAnnotations"`
+	CommonLabels           map[string]string `pulumi:"commonLabels"`
+	ForceCommonAnnotations *bool             `pulumi:"forceCommonAnnotations"`
+	ForceCommonLabels      *bool             `pulumi:"forceCommonLabels"`
+	Images                 []string          `pulumi:"images"`
+	NamePrefix             *string           `pulumi:"namePrefix"`
+	NameSuffix             *string           `pulumi:"nameSuffix"`
+	Version                *string           `pulumi:"version"`
+}
+
+// KustomizeSourceInput is an input type that accepts KustomizeSourceArgs and KustomizeSourceOutput values.
+// You can construct a concrete instance of `KustomizeSourceInput` via:
+//
+//          KustomizeSourceArgs{...}
+type KustomizeSourceInput interface {
+	pulumi.Input
+
+	ToKustomizeSourceOutput() KustomizeSourceOutput
+	ToKustomizeSourceOutputWithContext(context.Context) KustomizeSourceOutput
+}
+
+type KustomizeSourceArgs struct {
+	CommonAnnotations      pulumi.StringMapInput   `pulumi:"commonAnnotations"`
+	CommonLabels           pulumi.StringMapInput   `pulumi:"commonLabels"`
+	ForceCommonAnnotations pulumi.BoolPtrInput     `pulumi:"forceCommonAnnotations"`
+	ForceCommonLabels      pulumi.BoolPtrInput     `pulumi:"forceCommonLabels"`
+	Images                 pulumi.StringArrayInput `pulumi:"images"`
+	NamePrefix             pulumi.StringPtrInput   `pulumi:"namePrefix"`
+	NameSuffix             pulumi.StringPtrInput   `pulumi:"nameSuffix"`
+	Version                pulumi.StringPtrInput   `pulumi:"version"`
+}
+
+func (KustomizeSourceArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*KustomizeSource)(nil)).Elem()
+}
+
+func (i KustomizeSourceArgs) ToKustomizeSourceOutput() KustomizeSourceOutput {
+	return i.ToKustomizeSourceOutputWithContext(context.Background())
+}
+
+func (i KustomizeSourceArgs) ToKustomizeSourceOutputWithContext(ctx context.Context) KustomizeSourceOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KustomizeSourceOutput)
+}
+
+func (i KustomizeSourceArgs) ToKustomizeSourcePtrOutput() KustomizeSourcePtrOutput {
+	return i.ToKustomizeSourcePtrOutputWithContext(context.Background())
+}
+
+func (i KustomizeSourceArgs) ToKustomizeSourcePtrOutputWithContext(ctx context.Context) KustomizeSourcePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KustomizeSourceOutput).ToKustomizeSourcePtrOutputWithContext(ctx)
+}
+
+// KustomizeSourcePtrInput is an input type that accepts KustomizeSourceArgs, KustomizeSourcePtr and KustomizeSourcePtrOutput values.
+// You can construct a concrete instance of `KustomizeSourcePtrInput` via:
+//
+//          KustomizeSourceArgs{...}
+//
+//  or:
+//
+//          nil
+type KustomizeSourcePtrInput interface {
+	pulumi.Input
+
+	ToKustomizeSourcePtrOutput() KustomizeSourcePtrOutput
+	ToKustomizeSourcePtrOutputWithContext(context.Context) KustomizeSourcePtrOutput
+}
+
+type kustomizeSourcePtrType KustomizeSourceArgs
+
+func KustomizeSourcePtr(v *KustomizeSourceArgs) KustomizeSourcePtrInput {
+	return (*kustomizeSourcePtrType)(v)
+}
+
+func (*kustomizeSourcePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**KustomizeSource)(nil)).Elem()
+}
+
+func (i *kustomizeSourcePtrType) ToKustomizeSourcePtrOutput() KustomizeSourcePtrOutput {
+	return i.ToKustomizeSourcePtrOutputWithContext(context.Background())
+}
+
+func (i *kustomizeSourcePtrType) ToKustomizeSourcePtrOutputWithContext(ctx context.Context) KustomizeSourcePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(KustomizeSourcePtrOutput)
+}
+
+type KustomizeSourceOutput struct{ *pulumi.OutputState }
+
+func (KustomizeSourceOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*KustomizeSource)(nil)).Elem()
+}
+
+func (o KustomizeSourceOutput) ToKustomizeSourceOutput() KustomizeSourceOutput {
+	return o
+}
+
+func (o KustomizeSourceOutput) ToKustomizeSourceOutputWithContext(ctx context.Context) KustomizeSourceOutput {
+	return o
+}
+
+func (o KustomizeSourceOutput) ToKustomizeSourcePtrOutput() KustomizeSourcePtrOutput {
+	return o.ToKustomizeSourcePtrOutputWithContext(context.Background())
+}
+
+func (o KustomizeSourceOutput) ToKustomizeSourcePtrOutputWithContext(ctx context.Context) KustomizeSourcePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v KustomizeSource) *KustomizeSource {
+		return &v
+	}).(KustomizeSourcePtrOutput)
+}
+
+func (o KustomizeSourceOutput) CommonAnnotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KustomizeSource) map[string]string { return v.CommonAnnotations }).(pulumi.StringMapOutput)
+}
+
+func (o KustomizeSourceOutput) CommonLabels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v KustomizeSource) map[string]string { return v.CommonLabels }).(pulumi.StringMapOutput)
+}
+
+func (o KustomizeSourceOutput) ForceCommonAnnotations() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KustomizeSource) *bool { return v.ForceCommonAnnotations }).(pulumi.BoolPtrOutput)
+}
+
+func (o KustomizeSourceOutput) ForceCommonLabels() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v KustomizeSource) *bool { return v.ForceCommonLabels }).(pulumi.BoolPtrOutput)
+}
+
+func (o KustomizeSourceOutput) Images() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v KustomizeSource) []string { return v.Images }).(pulumi.StringArrayOutput)
+}
+
+func (o KustomizeSourceOutput) NamePrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KustomizeSource) *string { return v.NamePrefix }).(pulumi.StringPtrOutput)
+}
+
+func (o KustomizeSourceOutput) NameSuffix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KustomizeSource) *string { return v.NameSuffix }).(pulumi.StringPtrOutput)
+}
+
+func (o KustomizeSourceOutput) Version() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v KustomizeSource) *string { return v.Version }).(pulumi.StringPtrOutput)
+}
+
+type KustomizeSourcePtrOutput struct{ *pulumi.OutputState }
+
+func (KustomizeSourcePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**KustomizeSource)(nil)).Elem()
+}
+
+func (o KustomizeSourcePtrOutput) ToKustomizeSourcePtrOutput() KustomizeSourcePtrOutput {
+	return o
+}
+
+func (o KustomizeSourcePtrOutput) ToKustomizeSourcePtrOutputWithContext(ctx context.Context) KustomizeSourcePtrOutput {
+	return o
+}
+
+func (o KustomizeSourcePtrOutput) Elem() KustomizeSourceOutput {
+	return o.ApplyT(func(v *KustomizeSource) KustomizeSource {
+		if v != nil {
+			return *v
+		}
+		var ret KustomizeSource
+		return ret
+	}).(KustomizeSourceOutput)
+}
+
+func (o KustomizeSourcePtrOutput) CommonAnnotations() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KustomizeSource) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.CommonAnnotations
+	}).(pulumi.StringMapOutput)
+}
+
+func (o KustomizeSourcePtrOutput) CommonLabels() pulumi.StringMapOutput {
+	return o.ApplyT(func(v *KustomizeSource) map[string]string {
+		if v == nil {
+			return nil
+		}
+		return v.CommonLabels
+	}).(pulumi.StringMapOutput)
+}
+
+func (o KustomizeSourcePtrOutput) ForceCommonAnnotations() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KustomizeSource) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ForceCommonAnnotations
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o KustomizeSourcePtrOutput) ForceCommonLabels() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *KustomizeSource) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.ForceCommonLabels
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o KustomizeSourcePtrOutput) Images() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v *KustomizeSource) []string {
+		if v == nil {
+			return nil
+		}
+		return v.Images
+	}).(pulumi.StringArrayOutput)
+}
+
+func (o KustomizeSourcePtrOutput) NamePrefix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KustomizeSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.NamePrefix
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KustomizeSourcePtrOutput) NameSuffix() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KustomizeSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.NameSuffix
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o KustomizeSourcePtrOutput) Version() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *KustomizeSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Version
+	}).(pulumi.StringPtrOutput)
+}
+
+// Configuration for platform application
+type PlatformApplicationConfig struct {
+	// Optional, value of certmanager dns resolver secret
+	CertManagerDnsSolverSecret *string `pulumi:"certManagerDnsSolverSecret"`
+	// Optional, sync policy of platform application config.
+	SyncPolicy *ArgocdApplicationSyncPolicy `pulumi:"syncPolicy"`
+	// Optional, target revision of platform application config. Deafult: >=1.0.0-alpha
+	TargetRevision *string `pulumi:"targetRevision"`
+	// Optional, platform application values
+	Values *string `pulumi:"values"`
+}
+
+// PlatformApplicationConfigInput is an input type that accepts PlatformApplicationConfigArgs and PlatformApplicationConfigOutput values.
+// You can construct a concrete instance of `PlatformApplicationConfigInput` via:
+//
+//          PlatformApplicationConfigArgs{...}
+type PlatformApplicationConfigInput interface {
+	pulumi.Input
+
+	ToPlatformApplicationConfigOutput() PlatformApplicationConfigOutput
+	ToPlatformApplicationConfigOutputWithContext(context.Context) PlatformApplicationConfigOutput
+}
+
+// Configuration for platform application
+type PlatformApplicationConfigArgs struct {
+	// Optional, value of certmanager dns resolver secret
+	CertManagerDnsSolverSecret pulumi.StringPtrInput `pulumi:"certManagerDnsSolverSecret"`
+	// Optional, sync policy of platform application config.
+	SyncPolicy ArgocdApplicationSyncPolicyPtrInput `pulumi:"syncPolicy"`
+	// Optional, target revision of platform application config. Deafult: >=1.0.0-alpha
+	TargetRevision pulumi.StringPtrInput `pulumi:"targetRevision"`
+	// Optional, platform application values
+	Values pulumi.StringPtrInput `pulumi:"values"`
+}
+
+func (PlatformApplicationConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*PlatformApplicationConfig)(nil)).Elem()
+}
+
+func (i PlatformApplicationConfigArgs) ToPlatformApplicationConfigOutput() PlatformApplicationConfigOutput {
+	return i.ToPlatformApplicationConfigOutputWithContext(context.Background())
+}
+
+func (i PlatformApplicationConfigArgs) ToPlatformApplicationConfigOutputWithContext(ctx context.Context) PlatformApplicationConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PlatformApplicationConfigOutput)
+}
+
+func (i PlatformApplicationConfigArgs) ToPlatformApplicationConfigPtrOutput() PlatformApplicationConfigPtrOutput {
+	return i.ToPlatformApplicationConfigPtrOutputWithContext(context.Background())
+}
+
+func (i PlatformApplicationConfigArgs) ToPlatformApplicationConfigPtrOutputWithContext(ctx context.Context) PlatformApplicationConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PlatformApplicationConfigOutput).ToPlatformApplicationConfigPtrOutputWithContext(ctx)
+}
+
+// PlatformApplicationConfigPtrInput is an input type that accepts PlatformApplicationConfigArgs, PlatformApplicationConfigPtr and PlatformApplicationConfigPtrOutput values.
+// You can construct a concrete instance of `PlatformApplicationConfigPtrInput` via:
+//
+//          PlatformApplicationConfigArgs{...}
+//
+//  or:
+//
+//          nil
+type PlatformApplicationConfigPtrInput interface {
+	pulumi.Input
+
+	ToPlatformApplicationConfigPtrOutput() PlatformApplicationConfigPtrOutput
+	ToPlatformApplicationConfigPtrOutputWithContext(context.Context) PlatformApplicationConfigPtrOutput
+}
+
+type platformApplicationConfigPtrType PlatformApplicationConfigArgs
+
+func PlatformApplicationConfigPtr(v *PlatformApplicationConfigArgs) PlatformApplicationConfigPtrInput {
+	return (*platformApplicationConfigPtrType)(v)
+}
+
+func (*platformApplicationConfigPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**PlatformApplicationConfig)(nil)).Elem()
+}
+
+func (i *platformApplicationConfigPtrType) ToPlatformApplicationConfigPtrOutput() PlatformApplicationConfigPtrOutput {
+	return i.ToPlatformApplicationConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *platformApplicationConfigPtrType) ToPlatformApplicationConfigPtrOutputWithContext(ctx context.Context) PlatformApplicationConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PlatformApplicationConfigPtrOutput)
+}
+
+// Configuration for platform application
+type PlatformApplicationConfigOutput struct{ *pulumi.OutputState }
+
+func (PlatformApplicationConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*PlatformApplicationConfig)(nil)).Elem()
+}
+
+func (o PlatformApplicationConfigOutput) ToPlatformApplicationConfigOutput() PlatformApplicationConfigOutput {
+	return o
+}
+
+func (o PlatformApplicationConfigOutput) ToPlatformApplicationConfigOutputWithContext(ctx context.Context) PlatformApplicationConfigOutput {
+	return o
+}
+
+func (o PlatformApplicationConfigOutput) ToPlatformApplicationConfigPtrOutput() PlatformApplicationConfigPtrOutput {
+	return o.ToPlatformApplicationConfigPtrOutputWithContext(context.Background())
+}
+
+func (o PlatformApplicationConfigOutput) ToPlatformApplicationConfigPtrOutputWithContext(ctx context.Context) PlatformApplicationConfigPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v PlatformApplicationConfig) *PlatformApplicationConfig {
+		return &v
+	}).(PlatformApplicationConfigPtrOutput)
+}
+
+// Optional, value of certmanager dns resolver secret
+func (o PlatformApplicationConfigOutput) CertManagerDnsSolverSecret() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v PlatformApplicationConfig) *string { return v.CertManagerDnsSolverSecret }).(pulumi.StringPtrOutput)
+}
+
+// Optional, sync policy of platform application config.
+func (o PlatformApplicationConfigOutput) SyncPolicy() ArgocdApplicationSyncPolicyPtrOutput {
+	return o.ApplyT(func(v PlatformApplicationConfig) *ArgocdApplicationSyncPolicy { return v.SyncPolicy }).(ArgocdApplicationSyncPolicyPtrOutput)
+}
+
+// Optional, target revision of platform application config. Deafult: >=1.0.0-alpha
+func (o PlatformApplicationConfigOutput) TargetRevision() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v PlatformApplicationConfig) *string { return v.TargetRevision }).(pulumi.StringPtrOutput)
+}
+
+// Optional, platform application values
+func (o PlatformApplicationConfigOutput) Values() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v PlatformApplicationConfig) *string { return v.Values }).(pulumi.StringPtrOutput)
+}
+
+type PlatformApplicationConfigPtrOutput struct{ *pulumi.OutputState }
+
+func (PlatformApplicationConfigPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**PlatformApplicationConfig)(nil)).Elem()
+}
+
+func (o PlatformApplicationConfigPtrOutput) ToPlatformApplicationConfigPtrOutput() PlatformApplicationConfigPtrOutput {
+	return o
+}
+
+func (o PlatformApplicationConfigPtrOutput) ToPlatformApplicationConfigPtrOutputWithContext(ctx context.Context) PlatformApplicationConfigPtrOutput {
+	return o
+}
+
+func (o PlatformApplicationConfigPtrOutput) Elem() PlatformApplicationConfigOutput {
+	return o.ApplyT(func(v *PlatformApplicationConfig) PlatformApplicationConfig {
+		if v != nil {
+			return *v
+		}
+		var ret PlatformApplicationConfig
+		return ret
+	}).(PlatformApplicationConfigOutput)
+}
+
+// Optional, value of certmanager dns resolver secret
+func (o PlatformApplicationConfigPtrOutput) CertManagerDnsSolverSecret() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *PlatformApplicationConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.CertManagerDnsSolverSecret
+	}).(pulumi.StringPtrOutput)
+}
+
+// Optional, sync policy of platform application config.
+func (o PlatformApplicationConfigPtrOutput) SyncPolicy() ArgocdApplicationSyncPolicyPtrOutput {
+	return o.ApplyT(func(v *PlatformApplicationConfig) *ArgocdApplicationSyncPolicy {
+		if v == nil {
+			return nil
+		}
+		return v.SyncPolicy
+	}).(ArgocdApplicationSyncPolicyPtrOutput)
+}
+
+// Optional, target revision of platform application config. Deafult: >=1.0.0-alpha
+func (o PlatformApplicationConfigPtrOutput) TargetRevision() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *PlatformApplicationConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.TargetRevision
+	}).(pulumi.StringPtrOutput)
+}
+
+// Optional, platform application values
+func (o PlatformApplicationConfigPtrOutput) Values() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *PlatformApplicationConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Values
+	}).(pulumi.StringPtrOutput)
+}
+
+type PluginSource struct {
+	Env  []PluginSourceEnv `pulumi:"env"`
+	Name *string           `pulumi:"name"`
+}
+
+// PluginSourceInput is an input type that accepts PluginSourceArgs and PluginSourceOutput values.
+// You can construct a concrete instance of `PluginSourceInput` via:
+//
+//          PluginSourceArgs{...}
+type PluginSourceInput interface {
+	pulumi.Input
+
+	ToPluginSourceOutput() PluginSourceOutput
+	ToPluginSourceOutputWithContext(context.Context) PluginSourceOutput
+}
+
+type PluginSourceArgs struct {
+	Env  PluginSourceEnvArrayInput `pulumi:"env"`
+	Name pulumi.StringPtrInput     `pulumi:"name"`
+}
+
+func (PluginSourceArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*PluginSource)(nil)).Elem()
+}
+
+func (i PluginSourceArgs) ToPluginSourceOutput() PluginSourceOutput {
+	return i.ToPluginSourceOutputWithContext(context.Background())
+}
+
+func (i PluginSourceArgs) ToPluginSourceOutputWithContext(ctx context.Context) PluginSourceOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PluginSourceOutput)
+}
+
+func (i PluginSourceArgs) ToPluginSourcePtrOutput() PluginSourcePtrOutput {
+	return i.ToPluginSourcePtrOutputWithContext(context.Background())
+}
+
+func (i PluginSourceArgs) ToPluginSourcePtrOutputWithContext(ctx context.Context) PluginSourcePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PluginSourceOutput).ToPluginSourcePtrOutputWithContext(ctx)
+}
+
+// PluginSourcePtrInput is an input type that accepts PluginSourceArgs, PluginSourcePtr and PluginSourcePtrOutput values.
+// You can construct a concrete instance of `PluginSourcePtrInput` via:
+//
+//          PluginSourceArgs{...}
+//
+//  or:
+//
+//          nil
+type PluginSourcePtrInput interface {
+	pulumi.Input
+
+	ToPluginSourcePtrOutput() PluginSourcePtrOutput
+	ToPluginSourcePtrOutputWithContext(context.Context) PluginSourcePtrOutput
+}
+
+type pluginSourcePtrType PluginSourceArgs
+
+func PluginSourcePtr(v *PluginSourceArgs) PluginSourcePtrInput {
+	return (*pluginSourcePtrType)(v)
+}
+
+func (*pluginSourcePtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**PluginSource)(nil)).Elem()
+}
+
+func (i *pluginSourcePtrType) ToPluginSourcePtrOutput() PluginSourcePtrOutput {
+	return i.ToPluginSourcePtrOutputWithContext(context.Background())
+}
+
+func (i *pluginSourcePtrType) ToPluginSourcePtrOutputWithContext(ctx context.Context) PluginSourcePtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PluginSourcePtrOutput)
+}
+
+type PluginSourceOutput struct{ *pulumi.OutputState }
+
+func (PluginSourceOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*PluginSource)(nil)).Elem()
+}
+
+func (o PluginSourceOutput) ToPluginSourceOutput() PluginSourceOutput {
+	return o
+}
+
+func (o PluginSourceOutput) ToPluginSourceOutputWithContext(ctx context.Context) PluginSourceOutput {
+	return o
+}
+
+func (o PluginSourceOutput) ToPluginSourcePtrOutput() PluginSourcePtrOutput {
+	return o.ToPluginSourcePtrOutputWithContext(context.Background())
+}
+
+func (o PluginSourceOutput) ToPluginSourcePtrOutputWithContext(ctx context.Context) PluginSourcePtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v PluginSource) *PluginSource {
+		return &v
+	}).(PluginSourcePtrOutput)
+}
+
+func (o PluginSourceOutput) Env() PluginSourceEnvArrayOutput {
+	return o.ApplyT(func(v PluginSource) []PluginSourceEnv { return v.Env }).(PluginSourceEnvArrayOutput)
+}
+
+func (o PluginSourceOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v PluginSource) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+type PluginSourcePtrOutput struct{ *pulumi.OutputState }
+
+func (PluginSourcePtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**PluginSource)(nil)).Elem()
+}
+
+func (o PluginSourcePtrOutput) ToPluginSourcePtrOutput() PluginSourcePtrOutput {
+	return o
+}
+
+func (o PluginSourcePtrOutput) ToPluginSourcePtrOutputWithContext(ctx context.Context) PluginSourcePtrOutput {
+	return o
+}
+
+func (o PluginSourcePtrOutput) Elem() PluginSourceOutput {
+	return o.ApplyT(func(v *PluginSource) PluginSource {
+		if v != nil {
+			return *v
+		}
+		var ret PluginSource
+		return ret
+	}).(PluginSourceOutput)
+}
+
+func (o PluginSourcePtrOutput) Env() PluginSourceEnvArrayOutput {
+	return o.ApplyT(func(v *PluginSource) []PluginSourceEnv {
+		if v == nil {
+			return nil
+		}
+		return v.Env
+	}).(PluginSourceEnvArrayOutput)
+}
+
+func (o PluginSourcePtrOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *PluginSource) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Name
+	}).(pulumi.StringPtrOutput)
+}
+
+type PluginSourceEnv struct {
+	Name  *string `pulumi:"name"`
+	Value *string `pulumi:"value"`
+}
+
+// PluginSourceEnvInput is an input type that accepts PluginSourceEnvArgs and PluginSourceEnvOutput values.
+// You can construct a concrete instance of `PluginSourceEnvInput` via:
+//
+//          PluginSourceEnvArgs{...}
+type PluginSourceEnvInput interface {
+	pulumi.Input
+
+	ToPluginSourceEnvOutput() PluginSourceEnvOutput
+	ToPluginSourceEnvOutputWithContext(context.Context) PluginSourceEnvOutput
+}
+
+type PluginSourceEnvArgs struct {
+	Name  pulumi.StringPtrInput `pulumi:"name"`
+	Value pulumi.StringPtrInput `pulumi:"value"`
+}
+
+func (PluginSourceEnvArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*PluginSourceEnv)(nil)).Elem()
+}
+
+func (i PluginSourceEnvArgs) ToPluginSourceEnvOutput() PluginSourceEnvOutput {
+	return i.ToPluginSourceEnvOutputWithContext(context.Background())
+}
+
+func (i PluginSourceEnvArgs) ToPluginSourceEnvOutputWithContext(ctx context.Context) PluginSourceEnvOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PluginSourceEnvOutput)
+}
+
+// PluginSourceEnvArrayInput is an input type that accepts PluginSourceEnvArray and PluginSourceEnvArrayOutput values.
+// You can construct a concrete instance of `PluginSourceEnvArrayInput` via:
+//
+//          PluginSourceEnvArray{ PluginSourceEnvArgs{...} }
+type PluginSourceEnvArrayInput interface {
+	pulumi.Input
+
+	ToPluginSourceEnvArrayOutput() PluginSourceEnvArrayOutput
+	ToPluginSourceEnvArrayOutputWithContext(context.Context) PluginSourceEnvArrayOutput
+}
+
+type PluginSourceEnvArray []PluginSourceEnvInput
+
+func (PluginSourceEnvArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]PluginSourceEnv)(nil)).Elem()
+}
+
+func (i PluginSourceEnvArray) ToPluginSourceEnvArrayOutput() PluginSourceEnvArrayOutput {
+	return i.ToPluginSourceEnvArrayOutputWithContext(context.Background())
+}
+
+func (i PluginSourceEnvArray) ToPluginSourceEnvArrayOutputWithContext(ctx context.Context) PluginSourceEnvArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PluginSourceEnvArrayOutput)
+}
+
+type PluginSourceEnvOutput struct{ *pulumi.OutputState }
+
+func (PluginSourceEnvOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*PluginSourceEnv)(nil)).Elem()
+}
+
+func (o PluginSourceEnvOutput) ToPluginSourceEnvOutput() PluginSourceEnvOutput {
+	return o
+}
+
+func (o PluginSourceEnvOutput) ToPluginSourceEnvOutputWithContext(ctx context.Context) PluginSourceEnvOutput {
+	return o
+}
+
+func (o PluginSourceEnvOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v PluginSourceEnv) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+func (o PluginSourceEnvOutput) Value() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v PluginSourceEnv) *string { return v.Value }).(pulumi.StringPtrOutput)
+}
+
+type PluginSourceEnvArrayOutput struct{ *pulumi.OutputState }
+
+func (PluginSourceEnvArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]PluginSourceEnv)(nil)).Elem()
+}
+
+func (o PluginSourceEnvArrayOutput) ToPluginSourceEnvArrayOutput() PluginSourceEnvArrayOutput {
+	return o
+}
+
+func (o PluginSourceEnvArrayOutput) ToPluginSourceEnvArrayOutputWithContext(ctx context.Context) PluginSourceEnvArrayOutput {
+	return o
+}
+
+func (o PluginSourceEnvArrayOutput) Index(i pulumi.IntInput) PluginSourceEnvOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) PluginSourceEnv {
+		return vs[0].([]PluginSourceEnv)[vs[1].(int)]
+	}).(PluginSourceEnvOutput)
+}
+
+// Configuration for a Prometheus remoteWrite config secret.
+type PrometheusRemoteWriteConfig struct {
+	// Required, basic auth password.
+	BasicAuthPassword *string `pulumi:"basicAuthPassword"`
+	// Optional, basic auth username. Default: <stack name>
+	BasicAuthUsername *string `pulumi:"basicAuthUsername"`
+	// Optional, basic auth secret name. Default: prometheus-remote-write-basic-auth
+	SecretName *string `pulumi:"secretName"`
+}
+
+// PrometheusRemoteWriteConfigInput is an input type that accepts PrometheusRemoteWriteConfigArgs and PrometheusRemoteWriteConfigOutput values.
+// You can construct a concrete instance of `PrometheusRemoteWriteConfigInput` via:
+//
+//          PrometheusRemoteWriteConfigArgs{...}
+type PrometheusRemoteWriteConfigInput interface {
+	pulumi.Input
+
+	ToPrometheusRemoteWriteConfigOutput() PrometheusRemoteWriteConfigOutput
+	ToPrometheusRemoteWriteConfigOutputWithContext(context.Context) PrometheusRemoteWriteConfigOutput
+}
+
+// Configuration for a Prometheus remoteWrite config secret.
+type PrometheusRemoteWriteConfigArgs struct {
+	// Required, basic auth password.
+	BasicAuthPassword pulumi.StringPtrInput `pulumi:"basicAuthPassword"`
+	// Optional, basic auth username. Default: <stack name>
+	BasicAuthUsername pulumi.StringPtrInput `pulumi:"basicAuthUsername"`
+	// Optional, basic auth secret name. Default: prometheus-remote-write-basic-auth
+	SecretName pulumi.StringPtrInput `pulumi:"secretName"`
+}
+
+func (PrometheusRemoteWriteConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*PrometheusRemoteWriteConfig)(nil)).Elem()
+}
+
+func (i PrometheusRemoteWriteConfigArgs) ToPrometheusRemoteWriteConfigOutput() PrometheusRemoteWriteConfigOutput {
+	return i.ToPrometheusRemoteWriteConfigOutputWithContext(context.Background())
+}
+
+func (i PrometheusRemoteWriteConfigArgs) ToPrometheusRemoteWriteConfigOutputWithContext(ctx context.Context) PrometheusRemoteWriteConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PrometheusRemoteWriteConfigOutput)
+}
+
+func (i PrometheusRemoteWriteConfigArgs) ToPrometheusRemoteWriteConfigPtrOutput() PrometheusRemoteWriteConfigPtrOutput {
+	return i.ToPrometheusRemoteWriteConfigPtrOutputWithContext(context.Background())
+}
+
+func (i PrometheusRemoteWriteConfigArgs) ToPrometheusRemoteWriteConfigPtrOutputWithContext(ctx context.Context) PrometheusRemoteWriteConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PrometheusRemoteWriteConfigOutput).ToPrometheusRemoteWriteConfigPtrOutputWithContext(ctx)
+}
+
+// PrometheusRemoteWriteConfigPtrInput is an input type that accepts PrometheusRemoteWriteConfigArgs, PrometheusRemoteWriteConfigPtr and PrometheusRemoteWriteConfigPtrOutput values.
+// You can construct a concrete instance of `PrometheusRemoteWriteConfigPtrInput` via:
+//
+//          PrometheusRemoteWriteConfigArgs{...}
+//
+//  or:
+//
+//          nil
+type PrometheusRemoteWriteConfigPtrInput interface {
+	pulumi.Input
+
+	ToPrometheusRemoteWriteConfigPtrOutput() PrometheusRemoteWriteConfigPtrOutput
+	ToPrometheusRemoteWriteConfigPtrOutputWithContext(context.Context) PrometheusRemoteWriteConfigPtrOutput
+}
+
+type prometheusRemoteWriteConfigPtrType PrometheusRemoteWriteConfigArgs
+
+func PrometheusRemoteWriteConfigPtr(v *PrometheusRemoteWriteConfigArgs) PrometheusRemoteWriteConfigPtrInput {
+	return (*prometheusRemoteWriteConfigPtrType)(v)
+}
+
+func (*prometheusRemoteWriteConfigPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**PrometheusRemoteWriteConfig)(nil)).Elem()
+}
+
+func (i *prometheusRemoteWriteConfigPtrType) ToPrometheusRemoteWriteConfigPtrOutput() PrometheusRemoteWriteConfigPtrOutput {
+	return i.ToPrometheusRemoteWriteConfigPtrOutputWithContext(context.Background())
+}
+
+func (i *prometheusRemoteWriteConfigPtrType) ToPrometheusRemoteWriteConfigPtrOutputWithContext(ctx context.Context) PrometheusRemoteWriteConfigPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(PrometheusRemoteWriteConfigPtrOutput)
+}
+
+// Configuration for a Prometheus remoteWrite config secret.
+type PrometheusRemoteWriteConfigOutput struct{ *pulumi.OutputState }
+
+func (PrometheusRemoteWriteConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*PrometheusRemoteWriteConfig)(nil)).Elem()
+}
+
+func (o PrometheusRemoteWriteConfigOutput) ToPrometheusRemoteWriteConfigOutput() PrometheusRemoteWriteConfigOutput {
+	return o
+}
+
+func (o PrometheusRemoteWriteConfigOutput) ToPrometheusRemoteWriteConfigOutputWithContext(ctx context.Context) PrometheusRemoteWriteConfigOutput {
+	return o
+}
+
+func (o PrometheusRemoteWriteConfigOutput) ToPrometheusRemoteWriteConfigPtrOutput() PrometheusRemoteWriteConfigPtrOutput {
+	return o.ToPrometheusRemoteWriteConfigPtrOutputWithContext(context.Background())
+}
+
+func (o PrometheusRemoteWriteConfigOutput) ToPrometheusRemoteWriteConfigPtrOutputWithContext(ctx context.Context) PrometheusRemoteWriteConfigPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v PrometheusRemoteWriteConfig) *PrometheusRemoteWriteConfig {
+		return &v
+	}).(PrometheusRemoteWriteConfigPtrOutput)
+}
+
+// Required, basic auth password.
+func (o PrometheusRemoteWriteConfigOutput) BasicAuthPassword() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v PrometheusRemoteWriteConfig) *string { return v.BasicAuthPassword }).(pulumi.StringPtrOutput)
+}
+
+// Optional, basic auth username. Default: <stack name>
+func (o PrometheusRemoteWriteConfigOutput) BasicAuthUsername() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v PrometheusRemoteWriteConfig) *string { return v.BasicAuthUsername }).(pulumi.StringPtrOutput)
+}
+
+// Optional, basic auth secret name. Default: prometheus-remote-write-basic-auth
+func (o PrometheusRemoteWriteConfigOutput) SecretName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v PrometheusRemoteWriteConfig) *string { return v.SecretName }).(pulumi.StringPtrOutput)
+}
+
+type PrometheusRemoteWriteConfigPtrOutput struct{ *pulumi.OutputState }
+
+func (PrometheusRemoteWriteConfigPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**PrometheusRemoteWriteConfig)(nil)).Elem()
+}
+
+func (o PrometheusRemoteWriteConfigPtrOutput) ToPrometheusRemoteWriteConfigPtrOutput() PrometheusRemoteWriteConfigPtrOutput {
+	return o
+}
+
+func (o PrometheusRemoteWriteConfigPtrOutput) ToPrometheusRemoteWriteConfigPtrOutputWithContext(ctx context.Context) PrometheusRemoteWriteConfigPtrOutput {
+	return o
+}
+
+func (o PrometheusRemoteWriteConfigPtrOutput) Elem() PrometheusRemoteWriteConfigOutput {
+	return o.ApplyT(func(v *PrometheusRemoteWriteConfig) PrometheusRemoteWriteConfig {
+		if v != nil {
+			return *v
+		}
+		var ret PrometheusRemoteWriteConfig
+		return ret
+	}).(PrometheusRemoteWriteConfigOutput)
+}
+
+// Required, basic auth password.
+func (o PrometheusRemoteWriteConfigPtrOutput) BasicAuthPassword() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *PrometheusRemoteWriteConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.BasicAuthPassword
+	}).(pulumi.StringPtrOutput)
+}
+
+// Optional, basic auth username. Default: <stack name>
+func (o PrometheusRemoteWriteConfigPtrOutput) BasicAuthUsername() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *PrometheusRemoteWriteConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.BasicAuthUsername
+	}).(pulumi.StringPtrOutput)
+}
+
+// Optional, basic auth secret name. Default: prometheus-remote-write-basic-auth
+func (o PrometheusRemoteWriteConfigPtrOutput) SecretName() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *PrometheusRemoteWriteConfig) *string {
+		if v == nil {
+			return nil
+		}
+		return v.SecretName
+	}).(pulumi.StringPtrOutput)
+}
+
+type RetryBackoff struct {
+	Duration    *string `pulumi:"duration"`
+	Factor      *int    `pulumi:"factor"`
+	MaxDuration *string `pulumi:"maxDuration"`
+}
+
+// RetryBackoffInput is an input type that accepts RetryBackoffArgs and RetryBackoffOutput values.
+// You can construct a concrete instance of `RetryBackoffInput` via:
+//
+//          RetryBackoffArgs{...}
+type RetryBackoffInput interface {
+	pulumi.Input
+
+	ToRetryBackoffOutput() RetryBackoffOutput
+	ToRetryBackoffOutputWithContext(context.Context) RetryBackoffOutput
+}
+
+type RetryBackoffArgs struct {
+	Duration    pulumi.StringPtrInput `pulumi:"duration"`
+	Factor      pulumi.IntPtrInput    `pulumi:"factor"`
+	MaxDuration pulumi.StringPtrInput `pulumi:"maxDuration"`
+}
+
+func (RetryBackoffArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*RetryBackoff)(nil)).Elem()
+}
+
+func (i RetryBackoffArgs) ToRetryBackoffOutput() RetryBackoffOutput {
+	return i.ToRetryBackoffOutputWithContext(context.Background())
+}
+
+func (i RetryBackoffArgs) ToRetryBackoffOutputWithContext(ctx context.Context) RetryBackoffOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RetryBackoffOutput)
+}
+
+func (i RetryBackoffArgs) ToRetryBackoffPtrOutput() RetryBackoffPtrOutput {
+	return i.ToRetryBackoffPtrOutputWithContext(context.Background())
+}
+
+func (i RetryBackoffArgs) ToRetryBackoffPtrOutputWithContext(ctx context.Context) RetryBackoffPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RetryBackoffOutput).ToRetryBackoffPtrOutputWithContext(ctx)
+}
+
+// RetryBackoffPtrInput is an input type that accepts RetryBackoffArgs, RetryBackoffPtr and RetryBackoffPtrOutput values.
+// You can construct a concrete instance of `RetryBackoffPtrInput` via:
+//
+//          RetryBackoffArgs{...}
+//
+//  or:
+//
+//          nil
+type RetryBackoffPtrInput interface {
+	pulumi.Input
+
+	ToRetryBackoffPtrOutput() RetryBackoffPtrOutput
+	ToRetryBackoffPtrOutputWithContext(context.Context) RetryBackoffPtrOutput
+}
+
+type retryBackoffPtrType RetryBackoffArgs
+
+func RetryBackoffPtr(v *RetryBackoffArgs) RetryBackoffPtrInput {
+	return (*retryBackoffPtrType)(v)
+}
+
+func (*retryBackoffPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**RetryBackoff)(nil)).Elem()
+}
+
+func (i *retryBackoffPtrType) ToRetryBackoffPtrOutput() RetryBackoffPtrOutput {
+	return i.ToRetryBackoffPtrOutputWithContext(context.Background())
+}
+
+func (i *retryBackoffPtrType) ToRetryBackoffPtrOutputWithContext(ctx context.Context) RetryBackoffPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(RetryBackoffPtrOutput)
+}
+
+type RetryBackoffOutput struct{ *pulumi.OutputState }
+
+func (RetryBackoffOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*RetryBackoff)(nil)).Elem()
+}
+
+func (o RetryBackoffOutput) ToRetryBackoffOutput() RetryBackoffOutput {
+	return o
+}
+
+func (o RetryBackoffOutput) ToRetryBackoffOutputWithContext(ctx context.Context) RetryBackoffOutput {
+	return o
+}
+
+func (o RetryBackoffOutput) ToRetryBackoffPtrOutput() RetryBackoffPtrOutput {
+	return o.ToRetryBackoffPtrOutputWithContext(context.Background())
+}
+
+func (o RetryBackoffOutput) ToRetryBackoffPtrOutputWithContext(ctx context.Context) RetryBackoffPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v RetryBackoff) *RetryBackoff {
+		return &v
+	}).(RetryBackoffPtrOutput)
+}
+
+func (o RetryBackoffOutput) Duration() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RetryBackoff) *string { return v.Duration }).(pulumi.StringPtrOutput)
+}
+
+func (o RetryBackoffOutput) Factor() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v RetryBackoff) *int { return v.Factor }).(pulumi.IntPtrOutput)
+}
+
+func (o RetryBackoffOutput) MaxDuration() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v RetryBackoff) *string { return v.MaxDuration }).(pulumi.StringPtrOutput)
+}
+
+type RetryBackoffPtrOutput struct{ *pulumi.OutputState }
+
+func (RetryBackoffPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**RetryBackoff)(nil)).Elem()
+}
+
+func (o RetryBackoffPtrOutput) ToRetryBackoffPtrOutput() RetryBackoffPtrOutput {
+	return o
+}
+
+func (o RetryBackoffPtrOutput) ToRetryBackoffPtrOutputWithContext(ctx context.Context) RetryBackoffPtrOutput {
+	return o
+}
+
+func (o RetryBackoffPtrOutput) Elem() RetryBackoffOutput {
+	return o.ApplyT(func(v *RetryBackoff) RetryBackoff {
+		if v != nil {
+			return *v
+		}
+		var ret RetryBackoff
+		return ret
+	}).(RetryBackoffOutput)
+}
+
+func (o RetryBackoffPtrOutput) Duration() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RetryBackoff) *string {
+		if v == nil {
+			return nil
+		}
+		return v.Duration
+	}).(pulumi.StringPtrOutput)
+}
+
+func (o RetryBackoffPtrOutput) Factor() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *RetryBackoff) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Factor
+	}).(pulumi.IntPtrOutput)
+}
+
+func (o RetryBackoffPtrOutput) MaxDuration() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v *RetryBackoff) *string {
+		if v == nil {
+			return nil
+		}
+		return v.MaxDuration
+	}).(pulumi.StringPtrOutput)
+}
+
+// Configuration of SSO IAM Roles to auto discover.
+type SSORolePermissionSetConfig struct {
+	// Name of the permission set. Will use for autodiscovery using regex "AWSReservedSSO_<name>_.*"
+	Name *string `pulumi:"name"`
+	// List of permission groups to add to each identity. Ex: system:masters
+	PermissionGroups []string `pulumi:"permissionGroups"`
+	// Optional username field, defaults to the name of the SSO role.
+	Username *string `pulumi:"username"`
+}
+
+// SSORolePermissionSetConfigInput is an input type that accepts SSORolePermissionSetConfigArgs and SSORolePermissionSetConfigOutput values.
+// You can construct a concrete instance of `SSORolePermissionSetConfigInput` via:
+//
+//          SSORolePermissionSetConfigArgs{...}
+type SSORolePermissionSetConfigInput interface {
+	pulumi.Input
+
+	ToSSORolePermissionSetConfigOutput() SSORolePermissionSetConfigOutput
+	ToSSORolePermissionSetConfigOutputWithContext(context.Context) SSORolePermissionSetConfigOutput
+}
+
+// Configuration of SSO IAM Roles to auto discover.
+type SSORolePermissionSetConfigArgs struct {
+	// Name of the permission set. Will use for autodiscovery using regex "AWSReservedSSO_<name>_.*"
+	Name pulumi.StringPtrInput `pulumi:"name"`
+	// List of permission groups to add to each identity. Ex: system:masters
+	PermissionGroups pulumi.StringArrayInput `pulumi:"permissionGroups"`
+	// Optional username field, defaults to the name of the SSO role.
+	Username pulumi.StringPtrInput `pulumi:"username"`
+}
+
+func (SSORolePermissionSetConfigArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*SSORolePermissionSetConfig)(nil)).Elem()
+}
+
+func (i SSORolePermissionSetConfigArgs) ToSSORolePermissionSetConfigOutput() SSORolePermissionSetConfigOutput {
+	return i.ToSSORolePermissionSetConfigOutputWithContext(context.Background())
+}
+
+func (i SSORolePermissionSetConfigArgs) ToSSORolePermissionSetConfigOutputWithContext(ctx context.Context) SSORolePermissionSetConfigOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SSORolePermissionSetConfigOutput)
+}
+
+// SSORolePermissionSetConfigArrayInput is an input type that accepts SSORolePermissionSetConfigArray and SSORolePermissionSetConfigArrayOutput values.
+// You can construct a concrete instance of `SSORolePermissionSetConfigArrayInput` via:
+//
+//          SSORolePermissionSetConfigArray{ SSORolePermissionSetConfigArgs{...} }
+type SSORolePermissionSetConfigArrayInput interface {
+	pulumi.Input
+
+	ToSSORolePermissionSetConfigArrayOutput() SSORolePermissionSetConfigArrayOutput
+	ToSSORolePermissionSetConfigArrayOutputWithContext(context.Context) SSORolePermissionSetConfigArrayOutput
+}
+
+type SSORolePermissionSetConfigArray []SSORolePermissionSetConfigInput
+
+func (SSORolePermissionSetConfigArray) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]SSORolePermissionSetConfig)(nil)).Elem()
+}
+
+func (i SSORolePermissionSetConfigArray) ToSSORolePermissionSetConfigArrayOutput() SSORolePermissionSetConfigArrayOutput {
+	return i.ToSSORolePermissionSetConfigArrayOutputWithContext(context.Background())
+}
+
+func (i SSORolePermissionSetConfigArray) ToSSORolePermissionSetConfigArrayOutputWithContext(ctx context.Context) SSORolePermissionSetConfigArrayOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SSORolePermissionSetConfigArrayOutput)
+}
+
+// Configuration of SSO IAM Roles to auto discover.
+type SSORolePermissionSetConfigOutput struct{ *pulumi.OutputState }
+
+func (SSORolePermissionSetConfigOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*SSORolePermissionSetConfig)(nil)).Elem()
+}
+
+func (o SSORolePermissionSetConfigOutput) ToSSORolePermissionSetConfigOutput() SSORolePermissionSetConfigOutput {
+	return o
+}
+
+func (o SSORolePermissionSetConfigOutput) ToSSORolePermissionSetConfigOutputWithContext(ctx context.Context) SSORolePermissionSetConfigOutput {
+	return o
+}
+
+// Name of the permission set. Will use for autodiscovery using regex "AWSReservedSSO_<name>_.*"
+func (o SSORolePermissionSetConfigOutput) Name() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v SSORolePermissionSetConfig) *string { return v.Name }).(pulumi.StringPtrOutput)
+}
+
+// List of permission groups to add to each identity. Ex: system:masters
+func (o SSORolePermissionSetConfigOutput) PermissionGroups() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v SSORolePermissionSetConfig) []string { return v.PermissionGroups }).(pulumi.StringArrayOutput)
+}
+
+// Optional username field, defaults to the name of the SSO role.
+func (o SSORolePermissionSetConfigOutput) Username() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v SSORolePermissionSetConfig) *string { return v.Username }).(pulumi.StringPtrOutput)
+}
+
+type SSORolePermissionSetConfigArrayOutput struct{ *pulumi.OutputState }
+
+func (SSORolePermissionSetConfigArrayOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*[]SSORolePermissionSetConfig)(nil)).Elem()
+}
+
+func (o SSORolePermissionSetConfigArrayOutput) ToSSORolePermissionSetConfigArrayOutput() SSORolePermissionSetConfigArrayOutput {
+	return o
+}
+
+func (o SSORolePermissionSetConfigArrayOutput) ToSSORolePermissionSetConfigArrayOutputWithContext(ctx context.Context) SSORolePermissionSetConfigArrayOutput {
+	return o
+}
+
+func (o SSORolePermissionSetConfigArrayOutput) Index(i pulumi.IntInput) SSORolePermissionSetConfigOutput {
+	return pulumi.All(o, i).ApplyT(func(vs []interface{}) SSORolePermissionSetConfig {
+		return vs[0].([]SSORolePermissionSetConfig)[vs[1].(int)]
+	}).(SSORolePermissionSetConfigOutput)
+}
+
+type SyncPolicyAutomated struct {
+	AllowEmpty *bool `pulumi:"allowEmpty"`
+	Prune      *bool `pulumi:"prune"`
+	SelfHeal   *bool `pulumi:"selfHeal"`
+}
+
+// SyncPolicyAutomatedInput is an input type that accepts SyncPolicyAutomatedArgs and SyncPolicyAutomatedOutput values.
+// You can construct a concrete instance of `SyncPolicyAutomatedInput` via:
+//
+//          SyncPolicyAutomatedArgs{...}
+type SyncPolicyAutomatedInput interface {
+	pulumi.Input
+
+	ToSyncPolicyAutomatedOutput() SyncPolicyAutomatedOutput
+	ToSyncPolicyAutomatedOutputWithContext(context.Context) SyncPolicyAutomatedOutput
+}
+
+type SyncPolicyAutomatedArgs struct {
+	AllowEmpty pulumi.BoolPtrInput `pulumi:"allowEmpty"`
+	Prune      pulumi.BoolPtrInput `pulumi:"prune"`
+	SelfHeal   pulumi.BoolPtrInput `pulumi:"selfHeal"`
+}
+
+func (SyncPolicyAutomatedArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*SyncPolicyAutomated)(nil)).Elem()
+}
+
+func (i SyncPolicyAutomatedArgs) ToSyncPolicyAutomatedOutput() SyncPolicyAutomatedOutput {
+	return i.ToSyncPolicyAutomatedOutputWithContext(context.Background())
+}
+
+func (i SyncPolicyAutomatedArgs) ToSyncPolicyAutomatedOutputWithContext(ctx context.Context) SyncPolicyAutomatedOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SyncPolicyAutomatedOutput)
+}
+
+func (i SyncPolicyAutomatedArgs) ToSyncPolicyAutomatedPtrOutput() SyncPolicyAutomatedPtrOutput {
+	return i.ToSyncPolicyAutomatedPtrOutputWithContext(context.Background())
+}
+
+func (i SyncPolicyAutomatedArgs) ToSyncPolicyAutomatedPtrOutputWithContext(ctx context.Context) SyncPolicyAutomatedPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SyncPolicyAutomatedOutput).ToSyncPolicyAutomatedPtrOutputWithContext(ctx)
+}
+
+// SyncPolicyAutomatedPtrInput is an input type that accepts SyncPolicyAutomatedArgs, SyncPolicyAutomatedPtr and SyncPolicyAutomatedPtrOutput values.
+// You can construct a concrete instance of `SyncPolicyAutomatedPtrInput` via:
+//
+//          SyncPolicyAutomatedArgs{...}
+//
+//  or:
+//
+//          nil
+type SyncPolicyAutomatedPtrInput interface {
+	pulumi.Input
+
+	ToSyncPolicyAutomatedPtrOutput() SyncPolicyAutomatedPtrOutput
+	ToSyncPolicyAutomatedPtrOutputWithContext(context.Context) SyncPolicyAutomatedPtrOutput
+}
+
+type syncPolicyAutomatedPtrType SyncPolicyAutomatedArgs
+
+func SyncPolicyAutomatedPtr(v *SyncPolicyAutomatedArgs) SyncPolicyAutomatedPtrInput {
+	return (*syncPolicyAutomatedPtrType)(v)
+}
+
+func (*syncPolicyAutomatedPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**SyncPolicyAutomated)(nil)).Elem()
+}
+
+func (i *syncPolicyAutomatedPtrType) ToSyncPolicyAutomatedPtrOutput() SyncPolicyAutomatedPtrOutput {
+	return i.ToSyncPolicyAutomatedPtrOutputWithContext(context.Background())
+}
+
+func (i *syncPolicyAutomatedPtrType) ToSyncPolicyAutomatedPtrOutputWithContext(ctx context.Context) SyncPolicyAutomatedPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SyncPolicyAutomatedPtrOutput)
+}
+
+type SyncPolicyAutomatedOutput struct{ *pulumi.OutputState }
+
+func (SyncPolicyAutomatedOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*SyncPolicyAutomated)(nil)).Elem()
+}
+
+func (o SyncPolicyAutomatedOutput) ToSyncPolicyAutomatedOutput() SyncPolicyAutomatedOutput {
+	return o
+}
+
+func (o SyncPolicyAutomatedOutput) ToSyncPolicyAutomatedOutputWithContext(ctx context.Context) SyncPolicyAutomatedOutput {
+	return o
+}
+
+func (o SyncPolicyAutomatedOutput) ToSyncPolicyAutomatedPtrOutput() SyncPolicyAutomatedPtrOutput {
+	return o.ToSyncPolicyAutomatedPtrOutputWithContext(context.Background())
+}
+
+func (o SyncPolicyAutomatedOutput) ToSyncPolicyAutomatedPtrOutputWithContext(ctx context.Context) SyncPolicyAutomatedPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v SyncPolicyAutomated) *SyncPolicyAutomated {
+		return &v
+	}).(SyncPolicyAutomatedPtrOutput)
+}
+
+func (o SyncPolicyAutomatedOutput) AllowEmpty() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v SyncPolicyAutomated) *bool { return v.AllowEmpty }).(pulumi.BoolPtrOutput)
+}
+
+func (o SyncPolicyAutomatedOutput) Prune() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v SyncPolicyAutomated) *bool { return v.Prune }).(pulumi.BoolPtrOutput)
+}
+
+func (o SyncPolicyAutomatedOutput) SelfHeal() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v SyncPolicyAutomated) *bool { return v.SelfHeal }).(pulumi.BoolPtrOutput)
+}
+
+type SyncPolicyAutomatedPtrOutput struct{ *pulumi.OutputState }
+
+func (SyncPolicyAutomatedPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**SyncPolicyAutomated)(nil)).Elem()
+}
+
+func (o SyncPolicyAutomatedPtrOutput) ToSyncPolicyAutomatedPtrOutput() SyncPolicyAutomatedPtrOutput {
+	return o
+}
+
+func (o SyncPolicyAutomatedPtrOutput) ToSyncPolicyAutomatedPtrOutputWithContext(ctx context.Context) SyncPolicyAutomatedPtrOutput {
+	return o
+}
+
+func (o SyncPolicyAutomatedPtrOutput) Elem() SyncPolicyAutomatedOutput {
+	return o.ApplyT(func(v *SyncPolicyAutomated) SyncPolicyAutomated {
+		if v != nil {
+			return *v
+		}
+		var ret SyncPolicyAutomated
+		return ret
+	}).(SyncPolicyAutomatedOutput)
+}
+
+func (o SyncPolicyAutomatedPtrOutput) AllowEmpty() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *SyncPolicyAutomated) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.AllowEmpty
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o SyncPolicyAutomatedPtrOutput) Prune() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *SyncPolicyAutomated) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.Prune
+	}).(pulumi.BoolPtrOutput)
+}
+
+func (o SyncPolicyAutomatedPtrOutput) SelfHeal() pulumi.BoolPtrOutput {
+	return o.ApplyT(func(v *SyncPolicyAutomated) *bool {
+		if v == nil {
+			return nil
+		}
+		return v.SelfHeal
+	}).(pulumi.BoolPtrOutput)
+}
+
+type SyncPolicyRetry struct {
+	Backoff *RetryBackoff `pulumi:"backoff"`
+	Limit   *int          `pulumi:"limit"`
+}
+
+// SyncPolicyRetryInput is an input type that accepts SyncPolicyRetryArgs and SyncPolicyRetryOutput values.
+// You can construct a concrete instance of `SyncPolicyRetryInput` via:
+//
+//          SyncPolicyRetryArgs{...}
+type SyncPolicyRetryInput interface {
+	pulumi.Input
+
+	ToSyncPolicyRetryOutput() SyncPolicyRetryOutput
+	ToSyncPolicyRetryOutputWithContext(context.Context) SyncPolicyRetryOutput
+}
+
+type SyncPolicyRetryArgs struct {
+	Backoff RetryBackoffPtrInput `pulumi:"backoff"`
+	Limit   pulumi.IntPtrInput   `pulumi:"limit"`
+}
+
+func (SyncPolicyRetryArgs) ElementType() reflect.Type {
+	return reflect.TypeOf((*SyncPolicyRetry)(nil)).Elem()
+}
+
+func (i SyncPolicyRetryArgs) ToSyncPolicyRetryOutput() SyncPolicyRetryOutput {
+	return i.ToSyncPolicyRetryOutputWithContext(context.Background())
+}
+
+func (i SyncPolicyRetryArgs) ToSyncPolicyRetryOutputWithContext(ctx context.Context) SyncPolicyRetryOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SyncPolicyRetryOutput)
+}
+
+func (i SyncPolicyRetryArgs) ToSyncPolicyRetryPtrOutput() SyncPolicyRetryPtrOutput {
+	return i.ToSyncPolicyRetryPtrOutputWithContext(context.Background())
+}
+
+func (i SyncPolicyRetryArgs) ToSyncPolicyRetryPtrOutputWithContext(ctx context.Context) SyncPolicyRetryPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SyncPolicyRetryOutput).ToSyncPolicyRetryPtrOutputWithContext(ctx)
+}
+
+// SyncPolicyRetryPtrInput is an input type that accepts SyncPolicyRetryArgs, SyncPolicyRetryPtr and SyncPolicyRetryPtrOutput values.
+// You can construct a concrete instance of `SyncPolicyRetryPtrInput` via:
+//
+//          SyncPolicyRetryArgs{...}
+//
+//  or:
+//
+//          nil
+type SyncPolicyRetryPtrInput interface {
+	pulumi.Input
+
+	ToSyncPolicyRetryPtrOutput() SyncPolicyRetryPtrOutput
+	ToSyncPolicyRetryPtrOutputWithContext(context.Context) SyncPolicyRetryPtrOutput
+}
+
+type syncPolicyRetryPtrType SyncPolicyRetryArgs
+
+func SyncPolicyRetryPtr(v *SyncPolicyRetryArgs) SyncPolicyRetryPtrInput {
+	return (*syncPolicyRetryPtrType)(v)
+}
+
+func (*syncPolicyRetryPtrType) ElementType() reflect.Type {
+	return reflect.TypeOf((**SyncPolicyRetry)(nil)).Elem()
+}
+
+func (i *syncPolicyRetryPtrType) ToSyncPolicyRetryPtrOutput() SyncPolicyRetryPtrOutput {
+	return i.ToSyncPolicyRetryPtrOutputWithContext(context.Background())
+}
+
+func (i *syncPolicyRetryPtrType) ToSyncPolicyRetryPtrOutputWithContext(ctx context.Context) SyncPolicyRetryPtrOutput {
+	return pulumi.ToOutputWithContext(ctx, i).(SyncPolicyRetryPtrOutput)
+}
+
+type SyncPolicyRetryOutput struct{ *pulumi.OutputState }
+
+func (SyncPolicyRetryOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((*SyncPolicyRetry)(nil)).Elem()
+}
+
+func (o SyncPolicyRetryOutput) ToSyncPolicyRetryOutput() SyncPolicyRetryOutput {
+	return o
+}
+
+func (o SyncPolicyRetryOutput) ToSyncPolicyRetryOutputWithContext(ctx context.Context) SyncPolicyRetryOutput {
+	return o
+}
+
+func (o SyncPolicyRetryOutput) ToSyncPolicyRetryPtrOutput() SyncPolicyRetryPtrOutput {
+	return o.ToSyncPolicyRetryPtrOutputWithContext(context.Background())
+}
+
+func (o SyncPolicyRetryOutput) ToSyncPolicyRetryPtrOutputWithContext(ctx context.Context) SyncPolicyRetryPtrOutput {
+	return o.ApplyTWithContext(ctx, func(_ context.Context, v SyncPolicyRetry) *SyncPolicyRetry {
+		return &v
+	}).(SyncPolicyRetryPtrOutput)
+}
+
+func (o SyncPolicyRetryOutput) Backoff() RetryBackoffPtrOutput {
+	return o.ApplyT(func(v SyncPolicyRetry) *RetryBackoff { return v.Backoff }).(RetryBackoffPtrOutput)
+}
+
+func (o SyncPolicyRetryOutput) Limit() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v SyncPolicyRetry) *int { return v.Limit }).(pulumi.IntPtrOutput)
+}
+
+type SyncPolicyRetryPtrOutput struct{ *pulumi.OutputState }
+
+func (SyncPolicyRetryPtrOutput) ElementType() reflect.Type {
+	return reflect.TypeOf((**SyncPolicyRetry)(nil)).Elem()
+}
+
+func (o SyncPolicyRetryPtrOutput) ToSyncPolicyRetryPtrOutput() SyncPolicyRetryPtrOutput {
+	return o
+}
+
+func (o SyncPolicyRetryPtrOutput) ToSyncPolicyRetryPtrOutputWithContext(ctx context.Context) SyncPolicyRetryPtrOutput {
+	return o
+}
+
+func (o SyncPolicyRetryPtrOutput) Elem() SyncPolicyRetryOutput {
+	return o.ApplyT(func(v *SyncPolicyRetry) SyncPolicyRetry {
+		if v != nil {
+			return *v
+		}
+		var ret SyncPolicyRetry
+		return ret
+	}).(SyncPolicyRetryOutput)
+}
+
+func (o SyncPolicyRetryPtrOutput) Backoff() RetryBackoffPtrOutput {
+	return o.ApplyT(func(v *SyncPolicyRetry) *RetryBackoff {
+		if v == nil {
+			return nil
+		}
+		return v.Backoff
+	}).(RetryBackoffPtrOutput)
+}
+
+func (o SyncPolicyRetryPtrOutput) Limit() pulumi.IntPtrOutput {
+	return o.ApplyT(func(v *SyncPolicyRetry) *int {
+		if v == nil {
+			return nil
+		}
+		return v.Limit
+	}).(pulumi.IntPtrOutput)
+}
+
 func init() {
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationInput)(nil)).Elem(), ArgocdApplicationArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationPtrInput)(nil)).Elem(), ArgocdApplicationArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationIgnoreDifferencesInput)(nil)).Elem(), ArgocdApplicationIgnoreDifferencesArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationIgnoreDifferencesArrayInput)(nil)).Elem(), ArgocdApplicationIgnoreDifferencesArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationSpecInput)(nil)).Elem(), ArgocdApplicationSpecArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationSpecPtrInput)(nil)).Elem(), ArgocdApplicationSpecArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationSpecDestinationInput)(nil)).Elem(), ArgocdApplicationSpecDestinationArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationSpecDestinationPtrInput)(nil)).Elem(), ArgocdApplicationSpecDestinationArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationSpecSourceInput)(nil)).Elem(), ArgocdApplicationSpecSourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationSpecSourcePtrInput)(nil)).Elem(), ArgocdApplicationSpecSourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationSyncPolicyInput)(nil)).Elem(), ArgocdApplicationSyncPolicyArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*ArgocdApplicationSyncPolicyPtrInput)(nil)).Elem(), ArgocdApplicationSyncPolicyArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*AuthConfigMapConfigInput)(nil)).Elem(), AuthConfigMapConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*AuthConfigMapConfigPtrInput)(nil)).Elem(), AuthConfigMapConfigArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*AvailabilityZoneInput)(nil)).Elem(), AvailabilityZoneArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*AvailabilityZoneArrayInput)(nil)).Elem(), AvailabilityZoneArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*DirectorySourceInput)(nil)).Elem(), DirectorySourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*DirectorySourcePtrInput)(nil)).Elem(), DirectorySourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*DirectorySourceJsonnetInput)(nil)).Elem(), DirectorySourceJsonnetArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*DirectorySourceJsonnetPtrInput)(nil)).Elem(), DirectorySourceJsonnetArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*EksNodeGroupInput)(nil)).Elem(), EksNodeGroupArgs{})
 	pulumi.RegisterInputType(reflect.TypeOf((*EksNodeGroupArrayInput)(nil)).Elem(), EksNodeGroupArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*HelmReleaseConfigInput)(nil)).Elem(), HelmReleaseConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*HelmReleaseConfigPtrInput)(nil)).Elem(), HelmReleaseConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*HelmSourceInput)(nil)).Elem(), HelmSourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*HelmSourcePtrInput)(nil)).Elem(), HelmSourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*HelmSourceFileParameterInput)(nil)).Elem(), HelmSourceFileParameterArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*HelmSourceFileParameterArrayInput)(nil)).Elem(), HelmSourceFileParameterArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*HelmSourceParameterInput)(nil)).Elem(), HelmSourceParameterArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*HelmSourceParameterArrayInput)(nil)).Elem(), HelmSourceParameterArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*IAMIdentityConfigInput)(nil)).Elem(), IAMIdentityConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*IAMIdentityConfigArrayInput)(nil)).Elem(), IAMIdentityConfigArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*JsonnetVarInput)(nil)).Elem(), JsonnetVarArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*JsonnetVarArrayInput)(nil)).Elem(), JsonnetVarArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KustomizeSourceInput)(nil)).Elem(), KustomizeSourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*KustomizeSourcePtrInput)(nil)).Elem(), KustomizeSourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*PlatformApplicationConfigInput)(nil)).Elem(), PlatformApplicationConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*PlatformApplicationConfigPtrInput)(nil)).Elem(), PlatformApplicationConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*PluginSourceInput)(nil)).Elem(), PluginSourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*PluginSourcePtrInput)(nil)).Elem(), PluginSourceArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*PluginSourceEnvInput)(nil)).Elem(), PluginSourceEnvArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*PluginSourceEnvArrayInput)(nil)).Elem(), PluginSourceEnvArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*PrometheusRemoteWriteConfigInput)(nil)).Elem(), PrometheusRemoteWriteConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*PrometheusRemoteWriteConfigPtrInput)(nil)).Elem(), PrometheusRemoteWriteConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RetryBackoffInput)(nil)).Elem(), RetryBackoffArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*RetryBackoffPtrInput)(nil)).Elem(), RetryBackoffArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SSORolePermissionSetConfigInput)(nil)).Elem(), SSORolePermissionSetConfigArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SSORolePermissionSetConfigArrayInput)(nil)).Elem(), SSORolePermissionSetConfigArray{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SyncPolicyAutomatedInput)(nil)).Elem(), SyncPolicyAutomatedArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SyncPolicyAutomatedPtrInput)(nil)).Elem(), SyncPolicyAutomatedArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SyncPolicyRetryInput)(nil)).Elem(), SyncPolicyRetryArgs{})
+	pulumi.RegisterInputType(reflect.TypeOf((*SyncPolicyRetryPtrInput)(nil)).Elem(), SyncPolicyRetryArgs{})
+	pulumi.RegisterOutputType(ArgocdApplicationOutput{})
+	pulumi.RegisterOutputType(ArgocdApplicationPtrOutput{})
+	pulumi.RegisterOutputType(ArgocdApplicationIgnoreDifferencesOutput{})
+	pulumi.RegisterOutputType(ArgocdApplicationIgnoreDifferencesArrayOutput{})
+	pulumi.RegisterOutputType(ArgocdApplicationSpecOutput{})
+	pulumi.RegisterOutputType(ArgocdApplicationSpecPtrOutput{})
+	pulumi.RegisterOutputType(ArgocdApplicationSpecDestinationOutput{})
+	pulumi.RegisterOutputType(ArgocdApplicationSpecDestinationPtrOutput{})
+	pulumi.RegisterOutputType(ArgocdApplicationSpecSourceOutput{})
+	pulumi.RegisterOutputType(ArgocdApplicationSpecSourcePtrOutput{})
+	pulumi.RegisterOutputType(ArgocdApplicationSyncPolicyOutput{})
+	pulumi.RegisterOutputType(ArgocdApplicationSyncPolicyPtrOutput{})
+	pulumi.RegisterOutputType(AuthConfigMapConfigOutput{})
+	pulumi.RegisterOutputType(AuthConfigMapConfigPtrOutput{})
 	pulumi.RegisterOutputType(AvailabilityZoneOutput{})
 	pulumi.RegisterOutputType(AvailabilityZoneArrayOutput{})
+	pulumi.RegisterOutputType(DirectorySourceOutput{})
+	pulumi.RegisterOutputType(DirectorySourcePtrOutput{})
+	pulumi.RegisterOutputType(DirectorySourceJsonnetOutput{})
+	pulumi.RegisterOutputType(DirectorySourceJsonnetPtrOutput{})
 	pulumi.RegisterOutputType(EksNodeGroupOutput{})
 	pulumi.RegisterOutputType(EksNodeGroupArrayOutput{})
+	pulumi.RegisterOutputType(HelmReleaseConfigOutput{})
+	pulumi.RegisterOutputType(HelmReleaseConfigPtrOutput{})
+	pulumi.RegisterOutputType(HelmSourceOutput{})
+	pulumi.RegisterOutputType(HelmSourcePtrOutput{})
+	pulumi.RegisterOutputType(HelmSourceFileParameterOutput{})
+	pulumi.RegisterOutputType(HelmSourceFileParameterArrayOutput{})
+	pulumi.RegisterOutputType(HelmSourceParameterOutput{})
+	pulumi.RegisterOutputType(HelmSourceParameterArrayOutput{})
+	pulumi.RegisterOutputType(IAMIdentityConfigOutput{})
+	pulumi.RegisterOutputType(IAMIdentityConfigArrayOutput{})
+	pulumi.RegisterOutputType(JsonnetVarOutput{})
+	pulumi.RegisterOutputType(JsonnetVarArrayOutput{})
+	pulumi.RegisterOutputType(KustomizeSourceOutput{})
+	pulumi.RegisterOutputType(KustomizeSourcePtrOutput{})
+	pulumi.RegisterOutputType(PlatformApplicationConfigOutput{})
+	pulumi.RegisterOutputType(PlatformApplicationConfigPtrOutput{})
+	pulumi.RegisterOutputType(PluginSourceOutput{})
+	pulumi.RegisterOutputType(PluginSourcePtrOutput{})
+	pulumi.RegisterOutputType(PluginSourceEnvOutput{})
+	pulumi.RegisterOutputType(PluginSourceEnvArrayOutput{})
+	pulumi.RegisterOutputType(PrometheusRemoteWriteConfigOutput{})
+	pulumi.RegisterOutputType(PrometheusRemoteWriteConfigPtrOutput{})
+	pulumi.RegisterOutputType(RetryBackoffOutput{})
+	pulumi.RegisterOutputType(RetryBackoffPtrOutput{})
+	pulumi.RegisterOutputType(SSORolePermissionSetConfigOutput{})
+	pulumi.RegisterOutputType(SSORolePermissionSetConfigArrayOutput{})
+	pulumi.RegisterOutputType(SyncPolicyAutomatedOutput{})
+	pulumi.RegisterOutputType(SyncPolicyAutomatedPtrOutput{})
+	pulumi.RegisterOutputType(SyncPolicyRetryOutput{})
+	pulumi.RegisterOutputType(SyncPolicyRetryPtrOutput{})
 }
