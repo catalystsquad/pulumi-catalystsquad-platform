@@ -32,6 +32,11 @@ jobs:
             @semantic-release/exec
             @semantic-release/git
             @semantic-release/github
+      # create an extra tag for the SDK go module
+      - uses: rickstaa/action-create-tag@v1
+        name: Create SDK tag
+        with:
+          tag: "sdk/${{ steps.release.outputs.new_release_version }}"
   releases-matrix:
     needs: [ semantic-release ]
     if: needs.semantic-release.outputs.new_release_published == 'true'
