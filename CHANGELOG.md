@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.1.1...v1.2.0) (2022-05-05)
+
+
+### Features
+
+* initial boostrap cluster and argocd app components ([#8](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/8)) ([3985e77](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/3985e775ec6edea054b3e3069ba8b33f5e0d82bb))
+
 ## [1.1.1](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.1.0...v1.1.1) (2022-05-03)
 
 
