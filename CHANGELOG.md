@@ -1,3 +1,11 @@
+## [1.2.1](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.2.0...v1.2.1) (2022-05-06)
+
+
+### Bug Fixes
+
+* add eks kubeconfig generation ([#10](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/10)) ([5965524](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/5965524059da243def34e1f17f5a9d7ac67c9cbd))
+* **no-release:** add extra tag for sdk ([#9](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/9)) ([ec5c95e](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/ec5c95e55707b8a7942a7f3925ade34784d6cba2))
+
 # [1.2.0](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.1.1...v1.2.0) (2022-05-05)
 
 
