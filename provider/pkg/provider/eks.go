@@ -35,6 +35,10 @@ type EksArgs struct {
 	EnabledClusterLogTypes []string `pulumi:"enabledClusterLogTypes"`
 	// Required, list of subnet IDs to deploy the cluster and nodegroups to.
 	SubnetIDs pulumi.StringArrayInput `pulumi:"subnetIDs"`
+	// Optional, assume role arn to add to the kubeconfig.
+	KubeConfigAssumeRoleArn string `pulumi:"kubeConfigAssumeRoleArn"`
+	// Optional, AWS profile to add to the kubeconfig.
+	KubeConfigAwsProfile string `pulumi:"kubeConfigAwsProfile"`
 }
 
 // EksNodeGroup allows configuring multiple nodegroups
@@ -55,8 +59,9 @@ type EksNodeGroup struct {
 type Eks struct {
 	pulumi.ResourceState
 
-	EksCluster   *eks.Cluster               `pulumi:"eksCluster"`
+	Cluster      *eks.Cluster               `pulumi:"cluster"`
 	OidcProvider *iam.OpenIdConnectProvider `pulumi:"oidcProvider"`
+	KubeConfig   pulumi.StringOutput        `pulumi:"kubeConfig"`
 }
 
 // https://github.com/hashicorp/terraform-provider-aws/issues/10104#issuecomment-545264374
@@ -334,13 +339,32 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 		}
 	}
 
+	kubeConfig := pulumi.All(eksCluster.Endpoint, eksCluster.CertificateAuthority.Data().Elem(), eksCluster.Name).ApplyT(
+		func(input []interface{}) (string, error) {
+			// generate a kubeconfig as defined here
+			// https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html
+			kubeConfig := fmt.Sprintf(eksDefaultKubeConfig, input[0], input[1], input[2])
+			// append additional configuration if supplied, because pulumi aws
+			// provider configuration isn't supplied to the aws cli
+			if args.KubeConfigAssumeRoleArn != "" {
+				kubeConfig = kubeConfig + fmt.Sprintf(kubeConfigArgsRoleArn, args.KubeConfigAssumeRoleArn)
+			}
+			if args.KubeConfigAwsProfile != "" {
+				kubeConfig = kubeConfig + fmt.Sprintf(kubeConfigArgsAwsProfile, args.KubeConfigAwsProfile)
+			}
+			return kubeConfig, nil
+		},
+	).(pulumi.StringOutput)
+
 	// set outputs for component
-	component.EksCluster = eksCluster
+	component.Cluster = eksCluster
 	component.OidcProvider = oidcProvider
+	component.KubeConfig = kubeConfig
 
 	err = ctx.RegisterResourceOutputs(component, pulumi.Map{
-		"eksCluster":   eksCluster,
+		"cluster":      eksCluster,
 		"oidcProvider": oidcProvider,
+		"kubeConfig":   kubeConfig,
 	})
 	if err != nil {
 		return nil, err

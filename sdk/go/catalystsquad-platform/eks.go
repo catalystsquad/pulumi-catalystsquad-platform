@@ -8,11 +8,17 @@ import (
 	"reflect"
 
 	"github.com/pkg/errors"
+	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/eks"
+	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/iam"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 type Eks struct {
 	pulumi.ResourceState
+
+	Cluster      eks.ClusterOutput               `pulumi:"cluster"`
+	KubeConfig   pulumi.StringOutput             `pulumi:"kubeConfig"`
+	OidcProvider iam.OpenIdConnectProviderOutput `pulumi:"oidcProvider"`
 }
 
 // NewEks registers a new resource with the given unique name, arguments, and options.
@@ -52,6 +58,10 @@ type eksArgs struct {
 	EnabledClusterLogTypes *string `pulumi:"enabledClusterLogTypes"`
 	// Optional, k8s version of the EKS cluster. Default: 1.22.6
 	K8sVersion *string `pulumi:"k8sVersion"`
+	// Optional, assume role arn to add to the kubeconfig.
+	KubeConfigAssumeRoleArn *string `pulumi:"kubeConfigAssumeRoleArn"`
+	// Optional, AWS profile to add to the kubeconfig.
+	KubeConfigAwsProfile *string `pulumi:"kubeConfigAwsProfile"`
 	// Required, list of nodegroup configurations to create.
 	NodeGroupConfig []EksNodeGroup `pulumi:"nodeGroupConfig"`
 	// Optional, k8s version of all node groups. Allows for upgrading the control plane before upgrading nodegroups. Default: <k8sVersion>
@@ -76,6 +86,10 @@ type EksArgs struct {
 	EnabledClusterLogTypes pulumi.StringPtrInput
 	// Optional, k8s version of the EKS cluster. Default: 1.22.6
 	K8sVersion pulumi.StringPtrInput
+	// Optional, assume role arn to add to the kubeconfig.
+	KubeConfigAssumeRoleArn pulumi.StringPtrInput
+	// Optional, AWS profile to add to the kubeconfig.
+	KubeConfigAwsProfile pulumi.StringPtrInput
 	// Required, list of nodegroup configurations to create.
 	NodeGroupConfig EksNodeGroupArrayInput
 	// Optional, k8s version of all node groups. Allows for upgrading the control plane before upgrading nodegroups. Default: <k8sVersion>
