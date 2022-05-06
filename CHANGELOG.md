@@ -1,3 +1,11 @@
+## [1.2.2](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.2.1...v1.2.2) (2022-05-06)
+
+
+### Bug Fixes
+
+* add condition to sdk tag creation ([#11](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/11)) ([0e2daa4](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/0e2daa44fae9175081f00042c8e1465c970a1922))
+* add full stack, bootstrap examples, update mods ([#12](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/12)) ([94c0571](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/94c0571b2e3c8431e7f3042a985b420f467d8dc3))
+
 ## [1.2.1](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.2.0...v1.2.1) (2022-05-06)
 
 
