@@ -6,8 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/pulumi/pulumi-aws/sdk/v4/go/aws/eks"
-	"github.com/pulumi/pulumi-aws/sdk/v4/go/aws/iam"
+	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/eks"
+	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/iam"
 	"github.com/pulumi/pulumi-command/sdk/go/command/local"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 

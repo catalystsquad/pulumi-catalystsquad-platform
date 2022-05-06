@@ -1,0 +1,4 @@
+name: simple-bootstrap-cluster-go
+runtime: go
+description: An example implementation of the Catalyst Squad Platform BootstrapCluster
+  component
