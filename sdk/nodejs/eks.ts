@@ -5,6 +5,8 @@ import * as pulumi from "@pulumi/pulumi";
 import { input as inputs, output as outputs } from "./types";
 import * as utilities from "./utilities";
 
+import * as pulumiAws from "@pulumi/aws";
+
 export class Eks extends pulumi.ComponentResource {
     /** @internal */
     public static readonly __pulumiType = 'catalystsquad-platform:index:Eks';
@@ -20,6 +22,9 @@ export class Eks extends pulumi.ComponentResource {
         return obj['__pulumiType'] === Eks.__pulumiType;
     }
 
+    public /*out*/ readonly cluster!: pulumi.Output<pulumiAws.eks.Cluster>;
+    public /*out*/ readonly kubeConfig!: pulumi.Output<string>;
+    public /*out*/ readonly oidcProvider!: pulumi.Output<pulumiAws.iam.OpenIdConnectProvider>;
 
     /**
      * Create a Eks resource with the given unique name, arguments, and options.
@@ -45,10 +50,18 @@ export class Eks extends pulumi.ComponentResource {
             resourceInputs["enableECRAccess"] = args ? args.enableECRAccess : undefined;
             resourceInputs["enabledClusterLogTypes"] = args ? args.enabledClusterLogTypes : undefined;
             resourceInputs["k8sVersion"] = args ? args.k8sVersion : undefined;
+            resourceInputs["kubeConfigAssumeRoleArn"] = args ? args.kubeConfigAssumeRoleArn : undefined;
+            resourceInputs["kubeConfigAwsProfile"] = args ? args.kubeConfigAwsProfile : undefined;
             resourceInputs["nodeGroupConfig"] = args ? args.nodeGroupConfig : undefined;
             resourceInputs["nodeGroupVersion"] = args ? args.nodeGroupVersion : undefined;
             resourceInputs["subnetIDs"] = args ? args.subnetIDs : undefined;
+            resourceInputs["cluster"] = undefined /*out*/;
+            resourceInputs["kubeConfig"] = undefined /*out*/;
+            resourceInputs["oidcProvider"] = undefined /*out*/;
         } else {
+            resourceInputs["cluster"] = undefined /*out*/;
+            resourceInputs["kubeConfig"] = undefined /*out*/;
+            resourceInputs["oidcProvider"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
         super(Eks.__pulumiType, name, resourceInputs, opts, true /*remote*/);
@@ -87,6 +100,14 @@ export interface EksArgs {
      * Optional, k8s version of the EKS cluster. Default: 1.22.6
      */
     k8sVersion?: pulumi.Input<string>;
+    /**
+     * Optional, assume role arn to add to the kubeconfig.
+     */
+    kubeConfigAssumeRoleArn?: pulumi.Input<string>;
+    /**
+     * Optional, AWS profile to add to the kubeconfig.
+     */
+    kubeConfigAwsProfile?: pulumi.Input<string>;
     /**
      * Required, list of nodegroup configurations to create.
      */

@@ -8,6 +8,7 @@ import pulumi.runtime
 from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from ._inputs import *
+import pulumi_aws
 
 __all__ = ['EksArgs', 'Eks']
 
@@ -23,6 +24,8 @@ class EksArgs:
                  enable_ecr_access: Optional[pulumi.Input[bool]] = None,
                  enabled_cluster_log_types: Optional[pulumi.Input[str]] = None,
                  k8s_version: Optional[pulumi.Input[str]] = None,
+                 kube_config_assume_role_arn: Optional[pulumi.Input[str]] = None,
+                 kube_config_aws_profile: Optional[pulumi.Input[str]] = None,
                  node_group_version: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a Eks resource.
@@ -35,6 +38,8 @@ class EksArgs:
         :param pulumi.Input[bool] enable_ecr_access: Optional, whether to enable ECR access policy on nodegroups. Default: true
         :param pulumi.Input[str] enabled_cluster_log_types: Optional, list of log types to enable on the cluster. Default: []
         :param pulumi.Input[str] k8s_version: Optional, k8s version of the EKS cluster. Default: 1.22.6
+        :param pulumi.Input[str] kube_config_assume_role_arn: Optional, assume role arn to add to the kubeconfig.
+        :param pulumi.Input[str] kube_config_aws_profile: Optional, AWS profile to add to the kubeconfig.
         :param pulumi.Input[str] node_group_version: Optional, k8s version of all node groups. Allows for upgrading the control plane before upgrading nodegroups. Default: <k8sVersion>
         """
         pulumi.set(__self__, "node_group_config", node_group_config)
@@ -53,6 +58,10 @@ class EksArgs:
             pulumi.set(__self__, "enabled_cluster_log_types", enabled_cluster_log_types)
         if k8s_version is not None:
             pulumi.set(__self__, "k8s_version", k8s_version)
+        if kube_config_assume_role_arn is not None:
+            pulumi.set(__self__, "kube_config_assume_role_arn", kube_config_assume_role_arn)
+        if kube_config_aws_profile is not None:
+            pulumi.set(__self__, "kube_config_aws_profile", kube_config_aws_profile)
         if node_group_version is not None:
             pulumi.set(__self__, "node_group_version", node_group_version)
 
@@ -165,6 +174,30 @@ class EksArgs:
         pulumi.set(self, "k8s_version", value)
 
     @property
+    @pulumi.getter(name="kubeConfigAssumeRoleArn")
+    def kube_config_assume_role_arn(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, assume role arn to add to the kubeconfig.
+        """
+        return pulumi.get(self, "kube_config_assume_role_arn")
+
+    @kube_config_assume_role_arn.setter
+    def kube_config_assume_role_arn(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "kube_config_assume_role_arn", value)
+
+    @property
+    @pulumi.getter(name="kubeConfigAwsProfile")
+    def kube_config_aws_profile(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, AWS profile to add to the kubeconfig.
+        """
+        return pulumi.get(self, "kube_config_aws_profile")
+
+    @kube_config_aws_profile.setter
+    def kube_config_aws_profile(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "kube_config_aws_profile", value)
+
+    @property
     @pulumi.getter(name="nodeGroupVersion")
     def node_group_version(self) -> Optional[pulumi.Input[str]]:
         """
@@ -189,6 +222,8 @@ class Eks(pulumi.ComponentResource):
                  enable_ecr_access: Optional[pulumi.Input[bool]] = None,
                  enabled_cluster_log_types: Optional[pulumi.Input[str]] = None,
                  k8s_version: Optional[pulumi.Input[str]] = None,
+                 kube_config_assume_role_arn: Optional[pulumi.Input[str]] = None,
+                 kube_config_aws_profile: Optional[pulumi.Input[str]] = None,
                  node_group_config: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['EksNodeGroupArgs']]]]] = None,
                  node_group_version: Optional[pulumi.Input[str]] = None,
                  subnet_ids: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -204,6 +239,8 @@ class Eks(pulumi.ComponentResource):
         :param pulumi.Input[bool] enable_ecr_access: Optional, whether to enable ECR access policy on nodegroups. Default: true
         :param pulumi.Input[str] enabled_cluster_log_types: Optional, list of log types to enable on the cluster. Default: []
         :param pulumi.Input[str] k8s_version: Optional, k8s version of the EKS cluster. Default: 1.22.6
+        :param pulumi.Input[str] kube_config_assume_role_arn: Optional, assume role arn to add to the kubeconfig.
+        :param pulumi.Input[str] kube_config_aws_profile: Optional, AWS profile to add to the kubeconfig.
         :param pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['EksNodeGroupArgs']]]] node_group_config: Required, list of nodegroup configurations to create.
         :param pulumi.Input[str] node_group_version: Optional, k8s version of all node groups. Allows for upgrading the control plane before upgrading nodegroups. Default: <k8sVersion>
         :param pulumi.Input[Sequence[pulumi.Input[str]]] subnet_ids: Required, list of subnet IDs to deploy the cluster and nodegroups to
@@ -238,6 +275,8 @@ class Eks(pulumi.ComponentResource):
                  enable_ecr_access: Optional[pulumi.Input[bool]] = None,
                  enabled_cluster_log_types: Optional[pulumi.Input[str]] = None,
                  k8s_version: Optional[pulumi.Input[str]] = None,
+                 kube_config_assume_role_arn: Optional[pulumi.Input[str]] = None,
+                 kube_config_aws_profile: Optional[pulumi.Input[str]] = None,
                  node_group_config: Optional[pulumi.Input[Sequence[pulumi.Input[pulumi.InputType['EksNodeGroupArgs']]]]] = None,
                  node_group_version: Optional[pulumi.Input[str]] = None,
                  subnet_ids: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None,
@@ -264,6 +303,8 @@ class Eks(pulumi.ComponentResource):
             __props__.__dict__["enable_ecr_access"] = enable_ecr_access
             __props__.__dict__["enabled_cluster_log_types"] = enabled_cluster_log_types
             __props__.__dict__["k8s_version"] = k8s_version
+            __props__.__dict__["kube_config_assume_role_arn"] = kube_config_assume_role_arn
+            __props__.__dict__["kube_config_aws_profile"] = kube_config_aws_profile
             if node_group_config is None and not opts.urn:
                 raise TypeError("Missing required property 'node_group_config'")
             __props__.__dict__["node_group_config"] = node_group_config
@@ -271,10 +312,28 @@ class Eks(pulumi.ComponentResource):
             if subnet_ids is None and not opts.urn:
                 raise TypeError("Missing required property 'subnet_ids'")
             __props__.__dict__["subnet_ids"] = subnet_ids
+            __props__.__dict__["cluster"] = None
+            __props__.__dict__["kube_config"] = None
+            __props__.__dict__["oidc_provider"] = None
         super(Eks, __self__).__init__(
             'catalystsquad-platform:index:Eks',
             resource_name,
             __props__,
             opts,
             remote=True)
+
+    @property
+    @pulumi.getter
+    def cluster(self) -> pulumi.Output['pulumi_aws.eks.Cluster']:
+        return pulumi.get(self, "cluster")
+
+    @property
+    @pulumi.getter(name="kubeConfig")
+    def kube_config(self) -> pulumi.Output[str]:
+        return pulumi.get(self, "kube_config")
+
+    @property
+    @pulumi.getter(name="oidcProvider")
+    def oidc_provider(self) -> pulumi.Output['pulumi_aws.iam.OpenIdConnectProvider']:
+        return pulumi.get(self, "oidc_provider")
 
