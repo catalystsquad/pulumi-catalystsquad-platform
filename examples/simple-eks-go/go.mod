@@ -3,7 +3,7 @@ module simple-eks-go
 go 1.18
 
 require (
-	github.com/catalystsquad/pulumi-catalystsquad-platform/sdk v0.0.0-20220503191003-9318e15d7746
+	github.com/catalystsquad/pulumi-catalystsquad-platform/sdk v0.0.0-20220505231931-ec5c95e55707
 	github.com/pulumi/pulumi/sdk/v3 v3.31.0
 )
 

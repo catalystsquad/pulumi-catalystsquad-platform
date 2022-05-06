@@ -3,7 +3,7 @@ module simple-vpc-go
 go 1.17
 
 require (
-	github.com/catalystsquad/pulumi-catalystsquad-platform/sdk v0.0.0-20220502160931-ee4f738e348a
+	github.com/catalystsquad/pulumi-catalystsquad-platform/sdk v0.0.0-20220505231931-ec5c95e55707
 	github.com/pulumi/pulumi/sdk/v3 v3.28.0
 )
 
@@ -22,6 +22,7 @@ require (
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jbenet/go-context v0.0.0-20150711004518-d14ea06fba99 // indirect
 	github.com/kevinburke/ssh_config v0.0.0-20190725054713-01f96b0aa0cd // indirect
+	github.com/mattn/go-isatty v0.0.14 // indirect
 	github.com/mattn/go-runewidth v0.0.8 // indirect
 	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/go-ps v1.0.0 // indirect
