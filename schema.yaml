@@ -520,9 +520,28 @@ resources:
           type: string
         description: >-
           Required, list of subnet IDs to deploy the cluster and nodegroups to
+      kubeConfigAssumeRoleArn:
+        type: string
+        description: >-
+          Optional, assume role arn to add to the kubeconfig.
+      kubeConfigAwsProfile:
+        type: string
+        description: >-
+          Optional, AWS profile to add to the kubeconfig.
     requiredInputs:
       - subnetIDs
       - nodeGroupConfig
+    properties:
+      cluster:
+        "$ref": "/aws/v5.3.0/schema.json#/resources/aws:eks%2Fcluster:Cluster"
+      oidcProvider:
+        "$ref": "/aws/v5.3.0/schema.json#/resources/aws:iam%2FopenIdConnectProvider:OpenIdConnectProvider"
+      kubeConfig:
+        type: string
+    required:
+      - cluster
+      - oidcProvider
+      - kubeConfig
   catalystsquad-platform:index:ArgocdApp:
     isComponent: true
     inputProperties:

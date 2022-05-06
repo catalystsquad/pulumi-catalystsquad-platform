@@ -12,6 +12,16 @@ namespace Pulumi.CatalystsquadPlatform
     [CatalystsquadPlatformResourceType("catalystsquad-platform:index:Eks")]
     public partial class Eks : Pulumi.ComponentResource
     {
+        [Output("cluster")]
+        public Output<Pulumi.Aws.Eks.Cluster> Cluster { get; private set; } = null!;
+
+        [Output("kubeConfig")]
+        public Output<string> KubeConfig { get; private set; } = null!;
+
+        [Output("oidcProvider")]
+        public Output<Pulumi.Aws.Iam.OpenIdConnectProvider> OidcProvider { get; private set; } = null!;
+
+
         /// <summary>
         /// Create a Eks resource with the given unique name, arguments, and options.
         /// </summary>
@@ -81,6 +91,18 @@ namespace Pulumi.CatalystsquadPlatform
         /// </summary>
         [Input("k8sVersion")]
         public Input<string>? K8sVersion { get; set; }
+
+        /// <summary>
+        /// Optional, assume role arn to add to the kubeconfig.
+        /// </summary>
+        [Input("kubeConfigAssumeRoleArn")]
+        public Input<string>? KubeConfigAssumeRoleArn { get; set; }
+
+        /// <summary>
+        /// Optional, AWS profile to add to the kubeconfig.
+        /// </summary>
+        [Input("kubeConfigAwsProfile")]
+        public Input<string>? KubeConfigAwsProfile { get; set; }
 
         [Input("nodeGroupConfig", required: true)]
         private InputList<Inputs.EksNodeGroupArgs>? _nodeGroupConfig;
