@@ -1,10 +1,21 @@
 # catalystsquad-platform Pulumi Component Provider (Go)
 
-TODO explain things
+The Catalyst Squad Platform is a combination of cloud resources and open-source
+Kubernetes tooling, that enables quickly provisioning a Kubernetes environment
+for deploying production code.
+
+The platform consists of cloud provider networking resources, a Kubernetes
+cluster, and development tooling deployed into Kubernetes. 
+
+- [AWS VPC](#aws-vpc)
+- [AWS EKS cluster](#aws-eks-cluster)
+- [Bootstrap cluster](#bootstrap-cluster)
+- [Argocd application](#argocd-application)
+
 
 ## Prerequisites
 
-- Go 1.15
+- Go 1.17
 - Pulumi CLI
 - Node.js (to build the Node.js SDK)
 - Yarn (to build the Node.js SDK)
@@ -22,13 +33,206 @@ make generate
 
 # Test Go SDK
 $ make install_go_sdk
-$ cd examples/simple-vpc-go
+$ cd examples/complex-full-stack-go
 $ pulumi stack init test
 $ pulumi config set aws:region us-east-1
 $ pulumi up
 ```
 
-# TODO
+## Resources
 
-- [ ] document components
-- [ ] example implementation
+Many component resources included fields that default to the stack name,
+simplifying what is required to be supplied to the resources. Be sure to
+overwrite these fields if this is not desired.
+
+
+### AWS VPC
+
+The VPC component provisions a VPC with an optional set of public and private
+subnets. All that is required is to specify which availability zones and what
+subnet CIDR blocks are desired.
+
+For an example implementation of the VPC component, see [examples/simple-vpc-go/main.go](examples/simple-vpc-go/main.go)
+
+Public subnets will be provisioned with NAT gateways that the private subnets
+will automatically use.
+
+Automatic assignment of necessary tags for operating EKS will be applied to
+private and public subnets. This can be disabled by specifying the
+`enableEksClusterTags` input property. The EKS cluster name will default to the
+stack name, which can be overwritten via the `eksClusterName` input property.
+
+Vpc component input properties:
+
+| input property         | type               | description                                                                      |
+| ---                    | ---                | ---                                                                              |
+| availabilityZoneConfig | []AvailabilityZone | Optional, list of AvailabilityZones to create subnets in. Default: []            |
+| cidr                   | string             | Optional, CIDR block of the VPC. Default: 10.0.0.0/16                            |
+| eksClusterName         | string             | Optional, EKS cluster name, if VPC is used for EKS. Default: <stack name>        |
+| enableEksClusterTags   | boolean            | Optional, whether to enable required EKS cluster tags to subnets.  Default: true |
+| name                   | string             | Optional, Name tag value for VPC resource. Default: <stack name>                 |
+| tags                   | map[string]string  | Optional, tags to add to all resources. Default: {}                              |
+
+
+AvailabilityZone input properties:
+
+| input property    | type   | description                                                                                    |
+| ---               | ---    | ---                                                                                            |
+| azName            | string | Name of the availability zone to deploy subnets to.                                            |
+| privateSubnetCidr | string | CIDR for private subnets in the availability zone. If not supplied, the subnet is not created. |
+| publicSubnetCidr  | string | CIDR for private subnets in the availability zone. If not supplied the subnet is not created.  |
+
+
+### AWS EKS cluster
+
+The EKS component provisions an EKS cluster with optional parameters for
+configuring node groups, enabling access to ECR, and access for the cluster
+autoscaler via IRSA. For a full list of possible configuration, see the input
+properties section.
+
+For an example implementation of the EKS component, see [examples/simple-eks-go/main.go](examples/simple-eks-go/main.go)
+
+Eks component input properties:
+
+| input property                   | type           | description                                                                                                                         |
+| ---                              | ---            | ---                                                                                                                                 |
+| clusterName                      | string         | Optional, name of the EKS cluster. Default: <stack name>                                                                            |
+| k8sVersion                       | string         | Optional, k8s version of the EKS cluster. Default: 1.22.6                                                                           |
+| nodeGroupVersion                 | string         | Optional, k8s version of all node groups. Allows for upgrading the control plane before upgrading nodegroups. Default: <k8sVersion> |
+| nodeGroupConfig                  | []EksNodeGroup | Required, list of nodegroup configurations to create.                                                                               |
+| enableECRAccess                  | boolean        | Optional, whether to enable ECR access policy on nodegroups. Default: true                                                          |
+| enableClusterAutoscalerResources | boolean        | Optional, whether to enable cluster autoscaler IRSA resources. Default: true                                                        |
+| clusterAutoscalerServiceAccount  | string         | Optional, cluster autoscaler service account name for IRSA. Default: cluster-autoscaler                                             |
+| clusterAutoscalerNamespace       | string         | Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler                                                        |
+| enabledClusterLogTypes           | string         | Optional, list of log types to enable on the cluster. Default: []                                                                   |
+| subnetIDs                        | []string       | Required, list of subnet IDs to deploy the cluster and nodegroups to                                                                |
+| kubeConfigAssumeRoleArn          | string         | Optional, assume role arn to add to the kubeconfig.                                                                                 |
+| kubeConfigAwsProfile             | string         | Optional, AWS profile to add to the kubeconfig.                                                                                     |
+
+
+EksNodeGroup input properties:
+
+| input property | type     | description                                          |
+| ---            | ---      | ---                                                  |
+| namePrefix     | string   | Name prefix of node group                            |
+| desiredSize    | integer  | Desired size of node group                           |
+| maxSize        | integer  | Max size of node group                               |
+| minSize        | integer  | Min size of node group                               |
+| instanceTypes: | []string | List of instance types to allow the nodegroup to use |
+
+
+### Bootstrap cluster
+
+The BootstrapCluster component deploys common use-case configuration and
+services to Kubernetes, including the kube-prometheus-stack, argo-cd, the
+catalystsquad [chart-platform-services](https://github.com/catalystsquad/chart-platform-services),
+and management of the EKS auth configmap
+
+Management of the EKS auth configmap includes auto discover of AWS SSO roles
+based on regex, greatly simplifying what needs to be hardcoded, because SSO
+role names have generated random IDs.
+
+
+BootstrapCluster input properties:
+
+| input property                | type                        | description                                                                                                |
+| ---                           | ---                         | ---                                                                                                        |
+| argocdHelmConfig              | HelmReleaseConfig           | Optional, configures the argocd helm release.                                                              |
+| kubePrometheusStackHelmConfig | HelmReleaseConfig           | Optional, configures the kube-prometheus-stack helm release.                                               |
+| eksAuthConfigmapConfig        | AuthConfigMapConfig         | Optional, configures management of the eks auth configmap. Does not manage the configmap if not specified. |
+| prometheusRemoteWriteConfig   | PrometheusRemoteWriteConfig | Optional, configuration for a prometheus remoteWrite secret. Does not deploy if not specified.             |
+| platformApplicationConfig     | PlatformApplicationConfig   | Optional, configures the platform application release. Does not deploy if not specified.                   |
+
+
+HelmReleaseConfig input properties:
+
+| input property | type        | description                                                            |
+| ---            | ---         | ---                                                                    |
+| version        | string      | Optional for each implementation, defaults specific to each helm chart |
+| valuesFiles    | []string    | Optional for each implementation, empty by default                     |
+| values         | map[string] | Optional for each implementation, empty by default                     |
+
+
+AuthConfigMapConfig input properties:
+
+| input property                     | type                         | description                                                                                                                           |
+| ---                                | ---                          | ---                                                                                                                                   |
+| nodeGroupIamRole                   | string                       | IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.                                                  |
+| enableNodeGroupIamRoleAutoDiscover | boolean                      | Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required. |
+| eksClusterName                     | string                       | Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.                                                                  |
+| autoDiscoverSSORoles               | []SSORolePermissionSetConfig | Optional, list of AWS SSO permission set roles to autodiscover.                                                                       |
+| iamRoles                           | []IAMIdentityConfig          | Optional, list of IAM roles to grant access in the auth configmap                                                                     |
+| iamUsers                           | []IAMIdentityConfig          | Optional, list of IAM users to grant access in the auth configmap                                                                     |
+
+
+SSORolePermissionSetConfig input properties:
+
+| input property   | type     | description                                                                                   |
+| ---              | ---      | ---                                                                                           |
+| name             | string   | Name of the permission set. Will use for autodiscovery using regex "AWSReservedSSO_<name>_.*" |
+| permissionGroups | []string | List of permission groups to add to each identity. Ex: system:masters                         |
+| username         | string   | Optional username field, defaults to the name of the SSO role.                                |
+
+
+IAMIdentityConfig input properties:
+
+| input property   | type     | description                                                    |
+| ---              | ---      | ---                                                            |
+| arn              | string   | Required, ARN of IAM role to use in configmap                  |
+| permissionGroups | []string | Required, permission groups to add role to. Ex: system:masters |
+| username         | string   | Optional username field, defaults to role name                 |
+
+
+PrometheusRemoteWriteConfig input properties:
+
+| input property    | type   | description                                                                   |
+| ---               | ---    | ---                                                                           |
+| basicAuthUsername | string | Optional, basic auth username. Default: <stack name>                          |
+| basicAuthPassword | string | Required, basic auth password.                                                |
+| secretName        | string | Optional, basic auth secret name. Default: prometheus-remote-write-basic-auth |
+
+
+PlatformApplicationConfig input properties:
+
+| input property             | type                        | description                                                                      |
+| ---                        | ---                         | ---                                                                              |
+| targetRevision             | string                      | Optional, target revision of platform application config. Deafult: >=1.0.0-alpha |
+| syncPolicy                 | ArgocdApplicationSyncPolicy | Optional, sync policy of platform application config.                            |
+| values                     | string                      | Optional, platform application values                                            |
+| certManagerDnsSolverSecret | string                      | Optional, value of certmanager dns resolver secret                               |
+
+
+### Argocd application
+
+The ArgocdApp component deploys an ArgoCD application custom resource manifest
+to Kubernetes.
+
+ArgocdApp input properties:
+
+| input property | type              | description                                                                                                                   |
+| ---            | ---               | ---                                                                                                                           |
+| name           | string            | Required, name of the Argocd Application                                                                                      |
+| spec           | ArgocdApplication | Required, spec of the Argocd Application                                                                                      |
+| namespace      | string            | Optional, namespace to deploy Argocd Application to. Should be the namespace where the argocd server runs. Default: "argo-cd" |
+| apiVersion     | string            | Optional, apiVersion of the Argocd Application. Default: v1alpha1                                                             |
+
+
+ArgocdApplication input properties:
+
+| input property | type                  | description |
+| ---            | ---                   | ---         |
+| apiVersion     | string                |             |
+| kind           | string                |             |
+| metadata       | map[string]           |             |
+| spec           | ArgocdApplicationSpec |             |
+
+
+ArgocdApplicationSpec input properties:
+
+| input property    | type                                 | description |
+| ---               | ---                                  | ---         |
+| source:           | ArgocdApplicationSpecSource          |             |
+| destination       | ArgocdApplicationSpecDestination     |             |
+| project           | string                               |             |
+| syncPolicy        | ArgocdApplicationSyncPolicy          |             |
+| ignoreDifferences | []ArgocdApplicationIgnoreDifferences |             |
