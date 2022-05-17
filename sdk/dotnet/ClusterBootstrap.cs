@@ -47,12 +47,6 @@ namespace Pulumi.CatalystsquadPlatform
         public Input<Inputs.HelmReleaseConfigArgs>? ArgocdHelmConfig { get; set; }
 
         /// <summary>
-        /// Optional, configures management of the eks auth configmap. Does not manage the configmap if not specified.
-        /// </summary>
-        [Input("eksAuthConfigmapConfig")]
-        public Input<Inputs.AuthConfigMapConfigArgs>? EksAuthConfigmapConfig { get; set; }
-
-        /// <summary>
         /// Optional, configures the kube-prometheus-stack helm release.
         /// </summary>
         [Input("kubePrometheusStackHelmConfig")]

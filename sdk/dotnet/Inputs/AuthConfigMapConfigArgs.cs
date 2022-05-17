@@ -27,18 +27,6 @@ namespace Pulumi.CatalystsquadPlatform.Inputs
             set => _autoDiscoverSSORoles = value;
         }
 
-        /// <summary>
-        /// Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
-        /// </summary>
-        [Input("eksClusterName")]
-        public Input<string>? EksClusterName { get; set; }
-
-        /// <summary>
-        /// Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
-        /// </summary>
-        [Input("enableNodeGroupIamRoleAutoDiscover")]
-        public Input<bool>? EnableNodeGroupIamRoleAutoDiscover { get; set; }
-
         [Input("iamRoles")]
         private InputList<Inputs.IAMIdentityConfigArgs>? _iamRoles;
 
@@ -62,12 +50,6 @@ namespace Pulumi.CatalystsquadPlatform.Inputs
             get => _iamUsers ?? (_iamUsers = new InputList<Inputs.IAMIdentityConfigArgs>());
             set => _iamUsers = value;
         }
-
-        /// <summary>
-        /// IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
-        /// </summary>
-        [Input("nodeGroupIamRole")]
-        public Input<string>? NodeGroupIamRole { get; set; }
 
         public AuthConfigMapConfigArgs()
         {

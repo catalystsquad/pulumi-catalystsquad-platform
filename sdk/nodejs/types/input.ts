@@ -61,14 +61,6 @@ export interface AuthConfigMapConfigArgs {
      */
     autoDiscoverSSORoles?: pulumi.Input<pulumi.Input<inputs.SSORolePermissionSetConfigArgs>[]>;
     /**
-     * Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
-     */
-    eksClusterName?: pulumi.Input<string>;
-    /**
-     * Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
-     */
-    enableNodeGroupIamRoleAutoDiscover?: pulumi.Input<boolean>;
-    /**
      * Optional, list of IAM roles to grant access in the auth configmap
      */
     iamRoles?: pulumi.Input<pulumi.Input<inputs.IAMIdentityConfigArgs>[]>;
@@ -76,10 +68,6 @@ export interface AuthConfigMapConfigArgs {
      * Optional, list of IAM users to grant access in the auth configmap
      */
     iamUsers?: pulumi.Input<pulumi.Input<inputs.IAMIdentityConfigArgs>[]>;
-    /**
-     * IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
-     */
-    nodeGroupIamRole?: pulumi.Input<string>;
 }
 
 /**
@@ -117,11 +105,30 @@ export interface DirectorySourceJsonnetArgs {
  * Configuration for an EKS node group
  */
 export interface EksNodeGroupArgs {
+    /**
+     * Required, initial desired size of nodegroup, ignored after creation
+     */
     desiredSize: pulumi.Input<number>;
+    /**
+     * Required, list of instance types for the nodegroup
+     */
     instanceTypes: pulumi.Input<pulumi.Input<string>[]>;
+    /**
+     * Required, maximum size of nodegroup
+     */
     maxSize: pulumi.Input<number>;
+    /**
+     * Required, minimum size of nodegroup
+     */
     minSize: pulumi.Input<number>;
+    /**
+     * Required, name prefix of the nodegroup
+     */
     namePrefix: pulumi.Input<string>;
+    /**
+     * Optional, list of subnet IDs to deploy the nodegroup in. Defaults to EKS cluster subnets
+     */
+    subnetIDs?: pulumi.Input<pulumi.Input<string>[]>;
 }
 
 /**

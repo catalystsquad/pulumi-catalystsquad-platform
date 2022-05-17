@@ -1079,16 +1079,10 @@ func (o ArgocdApplicationSyncPolicyPtrOutput) SyncOptions() pulumi.StringArrayOu
 type AuthConfigMapConfig struct {
 	// Optional, list of AWS SSO permission set roles to autodiscover.
 	AutoDiscoverSSORoles []SSORolePermissionSetConfig `pulumi:"autoDiscoverSSORoles"`
-	// Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
-	EksClusterName *string `pulumi:"eksClusterName"`
-	// Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
-	EnableNodeGroupIamRoleAutoDiscover *bool `pulumi:"enableNodeGroupIamRoleAutoDiscover"`
 	// Optional, list of IAM roles to grant access in the auth configmap
 	IamRoles []IAMIdentityConfig `pulumi:"iamRoles"`
 	// Optional, list of IAM users to grant access in the auth configmap
 	IamUsers []IAMIdentityConfig `pulumi:"iamUsers"`
-	// IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
-	NodeGroupIamRole *string `pulumi:"nodeGroupIamRole"`
 }
 
 // AuthConfigMapConfigInput is an input type that accepts AuthConfigMapConfigArgs and AuthConfigMapConfigOutput values.
@@ -1106,16 +1100,10 @@ type AuthConfigMapConfigInput interface {
 type AuthConfigMapConfigArgs struct {
 	// Optional, list of AWS SSO permission set roles to autodiscover.
 	AutoDiscoverSSORoles SSORolePermissionSetConfigArrayInput `pulumi:"autoDiscoverSSORoles"`
-	// Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
-	EksClusterName pulumi.StringPtrInput `pulumi:"eksClusterName"`
-	// Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
-	EnableNodeGroupIamRoleAutoDiscover pulumi.BoolPtrInput `pulumi:"enableNodeGroupIamRoleAutoDiscover"`
 	// Optional, list of IAM roles to grant access in the auth configmap
 	IamRoles IAMIdentityConfigArrayInput `pulumi:"iamRoles"`
 	// Optional, list of IAM users to grant access in the auth configmap
 	IamUsers IAMIdentityConfigArrayInput `pulumi:"iamUsers"`
-	// IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
-	NodeGroupIamRole pulumi.StringPtrInput `pulumi:"nodeGroupIamRole"`
 }
 
 func (AuthConfigMapConfigArgs) ElementType() reflect.Type {
@@ -1201,16 +1189,6 @@ func (o AuthConfigMapConfigOutput) AutoDiscoverSSORoles() SSORolePermissionSetCo
 	return o.ApplyT(func(v AuthConfigMapConfig) []SSORolePermissionSetConfig { return v.AutoDiscoverSSORoles }).(SSORolePermissionSetConfigArrayOutput)
 }
 
-// Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
-func (o AuthConfigMapConfigOutput) EksClusterName() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v AuthConfigMapConfig) *string { return v.EksClusterName }).(pulumi.StringPtrOutput)
-}
-
-// Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
-func (o AuthConfigMapConfigOutput) EnableNodeGroupIamRoleAutoDiscover() pulumi.BoolPtrOutput {
-	return o.ApplyT(func(v AuthConfigMapConfig) *bool { return v.EnableNodeGroupIamRoleAutoDiscover }).(pulumi.BoolPtrOutput)
-}
-
 // Optional, list of IAM roles to grant access in the auth configmap
 func (o AuthConfigMapConfigOutput) IamRoles() IAMIdentityConfigArrayOutput {
 	return o.ApplyT(func(v AuthConfigMapConfig) []IAMIdentityConfig { return v.IamRoles }).(IAMIdentityConfigArrayOutput)
@@ -1219,11 +1197,6 @@ func (o AuthConfigMapConfigOutput) IamRoles() IAMIdentityConfigArrayOutput {
 // Optional, list of IAM users to grant access in the auth configmap
 func (o AuthConfigMapConfigOutput) IamUsers() IAMIdentityConfigArrayOutput {
 	return o.ApplyT(func(v AuthConfigMapConfig) []IAMIdentityConfig { return v.IamUsers }).(IAMIdentityConfigArrayOutput)
-}
-
-// IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
-func (o AuthConfigMapConfigOutput) NodeGroupIamRole() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v AuthConfigMapConfig) *string { return v.NodeGroupIamRole }).(pulumi.StringPtrOutput)
 }
 
 type AuthConfigMapConfigPtrOutput struct{ *pulumi.OutputState }
@@ -1260,26 +1233,6 @@ func (o AuthConfigMapConfigPtrOutput) AutoDiscoverSSORoles() SSORolePermissionSe
 	}).(SSORolePermissionSetConfigArrayOutput)
 }
 
-// Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
-func (o AuthConfigMapConfigPtrOutput) EksClusterName() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *AuthConfigMapConfig) *string {
-		if v == nil {
-			return nil
-		}
-		return v.EksClusterName
-	}).(pulumi.StringPtrOutput)
-}
-
-// Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
-func (o AuthConfigMapConfigPtrOutput) EnableNodeGroupIamRoleAutoDiscover() pulumi.BoolPtrOutput {
-	return o.ApplyT(func(v *AuthConfigMapConfig) *bool {
-		if v == nil {
-			return nil
-		}
-		return v.EnableNodeGroupIamRoleAutoDiscover
-	}).(pulumi.BoolPtrOutput)
-}
-
 // Optional, list of IAM roles to grant access in the auth configmap
 func (o AuthConfigMapConfigPtrOutput) IamRoles() IAMIdentityConfigArrayOutput {
 	return o.ApplyT(func(v *AuthConfigMapConfig) []IAMIdentityConfig {
@@ -1298,16 +1251,6 @@ func (o AuthConfigMapConfigPtrOutput) IamUsers() IAMIdentityConfigArrayOutput {
 		}
 		return v.IamUsers
 	}).(IAMIdentityConfigArrayOutput)
-}
-
-// IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
-func (o AuthConfigMapConfigPtrOutput) NodeGroupIamRole() pulumi.StringPtrOutput {
-	return o.ApplyT(func(v *AuthConfigMapConfig) *string {
-		if v == nil {
-			return nil
-		}
-		return v.NodeGroupIamRole
-	}).(pulumi.StringPtrOutput)
 }
 
 // Configuration supplied to AvailabilityZone list in VpcArgs to specify which availability zones to deploy to and what subnet configuration for each availability zone. Supports one private and public subnet per AZ.
@@ -1771,11 +1714,18 @@ func (o DirectorySourceJsonnetPtrOutput) Libs() pulumi.StringArrayOutput {
 
 // Configuration for an EKS node group
 type EksNodeGroup struct {
-	DesiredSize   int      `pulumi:"desiredSize"`
+	// Required, initial desired size of nodegroup, ignored after creation
+	DesiredSize int `pulumi:"desiredSize"`
+	// Required, list of instance types for the nodegroup
 	InstanceTypes []string `pulumi:"instanceTypes"`
-	MaxSize       int      `pulumi:"maxSize"`
-	MinSize       int      `pulumi:"minSize"`
-	NamePrefix    string   `pulumi:"namePrefix"`
+	// Required, maximum size of nodegroup
+	MaxSize int `pulumi:"maxSize"`
+	// Required, minimum size of nodegroup
+	MinSize int `pulumi:"minSize"`
+	// Required, name prefix of the nodegroup
+	NamePrefix string `pulumi:"namePrefix"`
+	// Optional, list of subnet IDs to deploy the nodegroup in. Defaults to EKS cluster subnets
+	SubnetIDs []string `pulumi:"subnetIDs"`
 }
 
 // EksNodeGroupInput is an input type that accepts EksNodeGroupArgs and EksNodeGroupOutput values.
@@ -1791,11 +1741,18 @@ type EksNodeGroupInput interface {
 
 // Configuration for an EKS node group
 type EksNodeGroupArgs struct {
-	DesiredSize   pulumi.IntInput         `pulumi:"desiredSize"`
+	// Required, initial desired size of nodegroup, ignored after creation
+	DesiredSize pulumi.IntInput `pulumi:"desiredSize"`
+	// Required, list of instance types for the nodegroup
 	InstanceTypes pulumi.StringArrayInput `pulumi:"instanceTypes"`
-	MaxSize       pulumi.IntInput         `pulumi:"maxSize"`
-	MinSize       pulumi.IntInput         `pulumi:"minSize"`
-	NamePrefix    pulumi.StringInput      `pulumi:"namePrefix"`
+	// Required, maximum size of nodegroup
+	MaxSize pulumi.IntInput `pulumi:"maxSize"`
+	// Required, minimum size of nodegroup
+	MinSize pulumi.IntInput `pulumi:"minSize"`
+	// Required, name prefix of the nodegroup
+	NamePrefix pulumi.StringInput `pulumi:"namePrefix"`
+	// Optional, list of subnet IDs to deploy the nodegroup in. Defaults to EKS cluster subnets
+	SubnetIDs pulumi.StringArrayInput `pulumi:"subnetIDs"`
 }
 
 func (EksNodeGroupArgs) ElementType() reflect.Type {
@@ -1850,24 +1807,34 @@ func (o EksNodeGroupOutput) ToEksNodeGroupOutputWithContext(ctx context.Context)
 	return o
 }
 
+// Required, initial desired size of nodegroup, ignored after creation
 func (o EksNodeGroupOutput) DesiredSize() pulumi.IntOutput {
 	return o.ApplyT(func(v EksNodeGroup) int { return v.DesiredSize }).(pulumi.IntOutput)
 }
 
+// Required, list of instance types for the nodegroup
 func (o EksNodeGroupOutput) InstanceTypes() pulumi.StringArrayOutput {
 	return o.ApplyT(func(v EksNodeGroup) []string { return v.InstanceTypes }).(pulumi.StringArrayOutput)
 }
 
+// Required, maximum size of nodegroup
 func (o EksNodeGroupOutput) MaxSize() pulumi.IntOutput {
 	return o.ApplyT(func(v EksNodeGroup) int { return v.MaxSize }).(pulumi.IntOutput)
 }
 
+// Required, minimum size of nodegroup
 func (o EksNodeGroupOutput) MinSize() pulumi.IntOutput {
 	return o.ApplyT(func(v EksNodeGroup) int { return v.MinSize }).(pulumi.IntOutput)
 }
 
+// Required, name prefix of the nodegroup
 func (o EksNodeGroupOutput) NamePrefix() pulumi.StringOutput {
 	return o.ApplyT(func(v EksNodeGroup) string { return v.NamePrefix }).(pulumi.StringOutput)
+}
+
+// Optional, list of subnet IDs to deploy the nodegroup in. Defaults to EKS cluster subnets
+func (o EksNodeGroupOutput) SubnetIDs() pulumi.StringArrayOutput {
+	return o.ApplyT(func(v EksNodeGroup) []string { return v.SubnetIDs }).(pulumi.StringArrayOutput)
 }
 
 type EksNodeGroupArrayOutput struct{ *pulumi.OutputState }

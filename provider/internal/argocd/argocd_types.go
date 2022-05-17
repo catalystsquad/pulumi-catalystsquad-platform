@@ -1,4 +1,6 @@
-package provider
+package argocd
+
+import "github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 
 // ArgocdApplication is a struct that marshalls into valid argocd application
 // yaml. We could use the argo types but we have had problems with the yaml
@@ -37,7 +39,7 @@ type HelmSource struct {
 	ValueFiles              []string                  `yaml:"valueFiles,omitempty" pulumi:"valueFiles"`
 	Parameters              []HelmSourceParameter     `yaml:"parameters,omitempty" pulumi:"parameters"`
 	ReleaseName             string                    `yaml:"releaseName,omitempty" pulumi:"releaseName"`
-	Values                  string                    `yaml:"values,omitempty" pulumi:"values"`
+	Values                  pulumi.StringInput        `yaml:"values,omitempty" pulumi:"values"`
 	FileParameters          []HelmSourceFileParameter `yaml:"fileParameters,omitempty" pulumi:"fileParameters"`
 	Version                 string                    `yaml:"version,omitempty" pulumi:"version"`
 	PassCredentials         bool                      `yaml:"passCredentials,omitempty" pulumi:"passCredentials"`

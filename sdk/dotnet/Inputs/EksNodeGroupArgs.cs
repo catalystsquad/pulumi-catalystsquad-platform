@@ -15,25 +15,53 @@ namespace Pulumi.CatalystsquadPlatform.Inputs
     /// </summary>
     public sealed class EksNodeGroupArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Required, initial desired size of nodegroup, ignored after creation
+        /// </summary>
         [Input("desiredSize", required: true)]
         public Input<int> DesiredSize { get; set; } = null!;
 
         [Input("instanceTypes", required: true)]
         private InputList<string>? _instanceTypes;
+
+        /// <summary>
+        /// Required, list of instance types for the nodegroup
+        /// </summary>
         public InputList<string> InstanceTypes
         {
             get => _instanceTypes ?? (_instanceTypes = new InputList<string>());
             set => _instanceTypes = value;
         }
 
+        /// <summary>
+        /// Required, maximum size of nodegroup
+        /// </summary>
         [Input("maxSize", required: true)]
         public Input<int> MaxSize { get; set; } = null!;
 
+        /// <summary>
+        /// Required, minimum size of nodegroup
+        /// </summary>
         [Input("minSize", required: true)]
         public Input<int> MinSize { get; set; } = null!;
 
+        /// <summary>
+        /// Required, name prefix of the nodegroup
+        /// </summary>
         [Input("namePrefix", required: true)]
         public Input<string> NamePrefix { get; set; } = null!;
+
+        [Input("subnetIDs")]
+        private InputList<string>? _subnetIDs;
+
+        /// <summary>
+        /// Optional, list of subnet IDs to deploy the nodegroup in. Defaults to EKS cluster subnets
+        /// </summary>
+        public InputList<string> SubnetIDs
+        {
+            get => _subnetIDs ?? (_subnetIDs = new InputList<string>());
+            set => _subnetIDs = value;
+        }
 
         public EksNodeGroupArgs()
         {

@@ -9,7 +9,7 @@ require (
 	github.com/pulumi/pulumi-command/sdk v0.1.0
 	github.com/pulumi/pulumi-kubernetes/sdk/v3 v3.19.1
 	github.com/pulumi/pulumi/pkg/v3 v3.31.0
-	github.com/pulumi/pulumi/sdk/v3 v3.31.1
+	github.com/pulumi/pulumi/sdk/v3 v3.32.1
 	gopkg.in/yaml.v2 v2.4.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )

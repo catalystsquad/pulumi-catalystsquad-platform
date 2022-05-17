@@ -33,7 +33,6 @@ export class ClusterBootstrap extends pulumi.ComponentResource {
         opts = opts || {};
         if (!opts.id) {
             resourceInputs["argocdHelmConfig"] = args ? args.argocdHelmConfig : undefined;
-            resourceInputs["eksAuthConfigmapConfig"] = args ? args.eksAuthConfigmapConfig : undefined;
             resourceInputs["kubePrometheusStackHelmConfig"] = args ? args.kubePrometheusStackHelmConfig : undefined;
             resourceInputs["platformApplicationConfig"] = args ? args.platformApplicationConfig : undefined;
             resourceInputs["prometheusRemoteWriteConfig"] = args ? args.prometheusRemoteWriteConfig : undefined;
@@ -52,10 +51,6 @@ export interface ClusterBootstrapArgs {
      * Optional, configures the argocd helm release.
      */
     argocdHelmConfig?: pulumi.Input<inputs.HelmReleaseConfigArgs>;
-    /**
-     * Optional, configures management of the eks auth configmap. Does not manage the configmap if not specified.
-     */
-    eksAuthConfigmapConfig?: pulumi.Input<inputs.AuthConfigMapConfigArgs>;
     /**
      * Optional, configures the kube-prometheus-stack helm release.
      */

@@ -15,22 +15,18 @@ __all__ = ['ClusterBootstrapArgs', 'ClusterBootstrap']
 class ClusterBootstrapArgs:
     def __init__(__self__, *,
                  argocd_helm_config: Optional[pulumi.Input['HelmReleaseConfigArgs']] = None,
-                 eks_auth_configmap_config: Optional[pulumi.Input['AuthConfigMapConfigArgs']] = None,
                  kube_prometheus_stack_helm_config: Optional[pulumi.Input['HelmReleaseConfigArgs']] = None,
                  platform_application_config: Optional[pulumi.Input['PlatformApplicationConfigArgs']] = None,
                  prometheus_remote_write_config: Optional[pulumi.Input['PrometheusRemoteWriteConfigArgs']] = None):
         """
         The set of arguments for constructing a ClusterBootstrap resource.
         :param pulumi.Input['HelmReleaseConfigArgs'] argocd_helm_config: Optional, configures the argocd helm release.
-        :param pulumi.Input['AuthConfigMapConfigArgs'] eks_auth_configmap_config: Optional, configures management of the eks auth configmap. Does not manage the configmap if not specified.
         :param pulumi.Input['HelmReleaseConfigArgs'] kube_prometheus_stack_helm_config: Optional, configures the kube-prometheus-stack helm release.
         :param pulumi.Input['PlatformApplicationConfigArgs'] platform_application_config: Optional, configures the platform application release. Does not deploy if not specified.
         :param pulumi.Input['PrometheusRemoteWriteConfigArgs'] prometheus_remote_write_config: Optional, configuration for a prometheus remoteWrite secret. Does not deploy if not specified.
         """
         if argocd_helm_config is not None:
             pulumi.set(__self__, "argocd_helm_config", argocd_helm_config)
-        if eks_auth_configmap_config is not None:
-            pulumi.set(__self__, "eks_auth_configmap_config", eks_auth_configmap_config)
         if kube_prometheus_stack_helm_config is not None:
             pulumi.set(__self__, "kube_prometheus_stack_helm_config", kube_prometheus_stack_helm_config)
         if platform_application_config is not None:
@@ -49,18 +45,6 @@ class ClusterBootstrapArgs:
     @argocd_helm_config.setter
     def argocd_helm_config(self, value: Optional[pulumi.Input['HelmReleaseConfigArgs']]):
         pulumi.set(self, "argocd_helm_config", value)
-
-    @property
-    @pulumi.getter(name="eksAuthConfigmapConfig")
-    def eks_auth_configmap_config(self) -> Optional[pulumi.Input['AuthConfigMapConfigArgs']]:
-        """
-        Optional, configures management of the eks auth configmap. Does not manage the configmap if not specified.
-        """
-        return pulumi.get(self, "eks_auth_configmap_config")
-
-    @eks_auth_configmap_config.setter
-    def eks_auth_configmap_config(self, value: Optional[pulumi.Input['AuthConfigMapConfigArgs']]):
-        pulumi.set(self, "eks_auth_configmap_config", value)
 
     @property
     @pulumi.getter(name="kubePrometheusStackHelmConfig")
@@ -105,7 +89,6 @@ class ClusterBootstrap(pulumi.ComponentResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  argocd_helm_config: Optional[pulumi.Input[pulumi.InputType['HelmReleaseConfigArgs']]] = None,
-                 eks_auth_configmap_config: Optional[pulumi.Input[pulumi.InputType['AuthConfigMapConfigArgs']]] = None,
                  kube_prometheus_stack_helm_config: Optional[pulumi.Input[pulumi.InputType['HelmReleaseConfigArgs']]] = None,
                  platform_application_config: Optional[pulumi.Input[pulumi.InputType['PlatformApplicationConfigArgs']]] = None,
                  prometheus_remote_write_config: Optional[pulumi.Input[pulumi.InputType['PrometheusRemoteWriteConfigArgs']]] = None,
@@ -115,7 +98,6 @@ class ClusterBootstrap(pulumi.ComponentResource):
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
         :param pulumi.Input[pulumi.InputType['HelmReleaseConfigArgs']] argocd_helm_config: Optional, configures the argocd helm release.
-        :param pulumi.Input[pulumi.InputType['AuthConfigMapConfigArgs']] eks_auth_configmap_config: Optional, configures management of the eks auth configmap. Does not manage the configmap if not specified.
         :param pulumi.Input[pulumi.InputType['HelmReleaseConfigArgs']] kube_prometheus_stack_helm_config: Optional, configures the kube-prometheus-stack helm release.
         :param pulumi.Input[pulumi.InputType['PlatformApplicationConfigArgs']] platform_application_config: Optional, configures the platform application release. Does not deploy if not specified.
         :param pulumi.Input[pulumi.InputType['PrometheusRemoteWriteConfigArgs']] prometheus_remote_write_config: Optional, configuration for a prometheus remoteWrite secret. Does not deploy if not specified.
@@ -144,7 +126,6 @@ class ClusterBootstrap(pulumi.ComponentResource):
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
                  argocd_helm_config: Optional[pulumi.Input[pulumi.InputType['HelmReleaseConfigArgs']]] = None,
-                 eks_auth_configmap_config: Optional[pulumi.Input[pulumi.InputType['AuthConfigMapConfigArgs']]] = None,
                  kube_prometheus_stack_helm_config: Optional[pulumi.Input[pulumi.InputType['HelmReleaseConfigArgs']]] = None,
                  platform_application_config: Optional[pulumi.Input[pulumi.InputType['PlatformApplicationConfigArgs']]] = None,
                  prometheus_remote_write_config: Optional[pulumi.Input[pulumi.InputType['PrometheusRemoteWriteConfigArgs']]] = None,
@@ -165,7 +146,6 @@ class ClusterBootstrap(pulumi.ComponentResource):
             __props__ = ClusterBootstrapArgs.__new__(ClusterBootstrapArgs)
 
             __props__.__dict__["argocd_helm_config"] = argocd_helm_config
-            __props__.__dict__["eks_auth_configmap_config"] = eks_auth_configmap_config
             __props__.__dict__["kube_prometheus_stack_helm_config"] = kube_prometheus_stack_helm_config
             __props__.__dict__["platform_application_config"] = platform_application_config
             __props__.__dict__["prometheus_remote_write_config"] = prometheus_remote_write_config

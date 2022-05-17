@@ -32,16 +32,33 @@ types:
     properties:
       namePrefix:
         type: string
+        description: >-
+          Required, name prefix of the nodegroup
       desiredSize:
         type: integer
+        description: >-
+          Required, initial desired size of nodegroup, ignored after creation
       maxSize:
         type: integer
+        description: >-
+          Required, maximum size of nodegroup
       minSize:
         type: integer
+        description: >-
+          Required, minimum size of nodegroup
       instanceTypes:
         type: array
         items:
           type: string
+        description: >-
+          Required, list of instance types for the nodegroup
+      subnetIDs:
+        type: array
+        items:
+          type: string
+        description: >-
+          Optional, list of subnet IDs to deploy the nodegroup in. Defaults to
+          EKS cluster subnets
     required:
       - namePrefix
       - desiredSize
@@ -112,20 +129,6 @@ types:
     type: object
     description: Configuration for the EKS auth configmap
     properties:
-      nodeGroupIamRole:
-        type: string
-        description: >-
-          IAM role of the Nodegroup. Required if nodegroup IAM role
-          autodiscovery not enabled.
-      enableNodeGroupIamRoleAutoDiscover:
-        type: boolean
-        description: >-
-          Whether to attempt Nodegroup IAM role auto-discovery. Required if
-          nodegroup IAM role not supplied. eksClusterName parameter required.
-      eksClusterName:
-        type: string
-        description:
-          Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
       autoDiscoverSSORoles:
         type: array
         items:
@@ -494,6 +497,10 @@ resources:
           "$ref": "#/types/catalystsquad-platform:index:EksNodeGroup"
         description: >-
           Required, list of nodegroup configurations to create.
+      authConfigmapConfig:
+        "$ref": "#/types/catalystsquad-platform:index:AuthConfigMapConfig"
+        description: >-
+          Optional, configures management of the eks auth configmap.
       enableECRAccess:
         type: boolean
         description: >-
@@ -538,6 +545,10 @@ resources:
         "$ref": "/aws/v5.3.0/schema.json#/resources/aws:iam%2FopenIdConnectProvider:OpenIdConnectProvider"
       kubeConfig:
         type: string
+      nodeGroupIAMRoleArn:
+        type: string
+      kubernetesProvider:
+        "$ref": "/kubernetes/v3.0.0/schema.json#/provider"
     required:
       - cluster
       - oidcProvider
@@ -575,11 +586,6 @@ resources:
         "$ref": "#/types/catalystsquad-platform:index:HelmReleaseConfig"
         description: >-
           Optional, configures the kube-prometheus-stack helm release.
-      eksAuthConfigmapConfig:
-        "$ref": "#/types/catalystsquad-platform:index:AuthConfigMapConfig"
-        description: >-
-          Optional, configures management of the eks auth configmap. Does not
-          manage the configmap if not specified.
       prometheusRemoteWriteConfig:
         "$ref": "#/types/catalystsquad-platform:index:PrometheusRemoteWriteConfig"
         description: >-
@@ -598,6 +604,7 @@ language:
     packageReferences:
       Pulumi: 3.*
       Pulumi.Aws: 5.*
+      Pulumi.Kubernetes: 3.*
   go:
     generateResourceContainerTypes: true
     importBasePath: github.com/catalystsquad/pulumi-catalystsquad-platform/sdk/go/catalystsquad-platform
@@ -605,6 +612,7 @@ language:
     dependencies:
       "@pulumi/pulumi": "^3.31.0"
       "@pulumi/aws": "^5.3.0"
+      "@pulumi/kubernetes": "^3.19.1"
     devDependencies:
       typescript: "^3.7.0"
   python:

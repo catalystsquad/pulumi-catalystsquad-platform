@@ -1,7 +1,7 @@
-package provider
+package bootstrap
 
 import (
-	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/eksauth"
+	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/argocd"
 	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/templates"
 	"github.com/pkg/errors"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/core/v1"
@@ -17,9 +17,6 @@ type ClusterBootstrapArgs struct {
 	ArgocdHelmConfig *HelmReleaseConfig `pulumi:"argocdHelmConfig"`
 	// Optional, configures the kube-prometheus-stack helm release.
 	KubePrometheusStackHelmConfig *HelmReleaseConfig `pulumi:"kubePrometheusStackHelmConfig"`
-	// Optional, configures management of the eks auth configmap. Does not
-	// manage the configmap if not specified.
-	EksAuthConfigmapConfig *eksauth.AuthConfigMapConfig `pulumi:"eksAuthConfigmapConfig"`
 	// Optional, configuration for a prometheus remoteWrite secret. Does not
 	// deploy if not specified.
 	PrometheusRemoteWriteConfig *PrometheusRemoteWriteConfig `pulumi:"prometheusRemoteWriteConfig"`
@@ -50,11 +47,11 @@ type PlatformApplicationConfig struct {
 	// Optional, target revision of platform application config. Deafult: >=1.0.0-alpha
 	TargetRevision string `pulumi:"targetRevision"`
 	// Optional, sync policy of platform application config.
-	SyncPolicy *ArgocdApplicationSyncPolicy `pulumi:"syncPolicy"`
+	SyncPolicy *argocd.ArgocdApplicationSyncPolicy `pulumi:"syncPolicy"`
 	// Optional, platform application values
-	Values string `pulumi:"values"`
+	Values pulumi.StringInput `pulumi:"values"`
 	// Optional, value of certmanager dns resolver secret
-	CertManagerDnsSolverSecret string `pulumi:"certManagerDnsSolverSecret"`
+	CertManagerDnsSolverSecret pulumi.StringInput `pulumi:"certManagerDnsSolverSecret"`
 }
 
 // ClusterBootstrap pulumi component resource
@@ -71,13 +68,6 @@ func NewClusterBootstrap(ctx *pulumi.Context, name string, args *ClusterBootstra
 	err := ctx.RegisterComponentResource("catalystsquad-platform:index:ClusterBootstrap", name, component, opts...)
 	if err != nil {
 		return nil, err
-	}
-
-	if args.EksAuthConfigmapConfig != nil {
-		err = eksauth.SyncAuthConfigMap(ctx, *args.EksAuthConfigmapConfig, pulumi.Parent(component))
-		if err != nil {
-			return nil, err
-		}
 	}
 
 	// deploy kube-prometheus-stack remote-write basic auth secret
@@ -242,14 +232,34 @@ func deployPlatformApplicationManifest(ctx *pulumi.Context, parent pulumi.Resour
 
 	// default platform application config
 	targetRevision := ">=1.0.0-alpha"
-	values := ""
-	var syncPolicy ArgocdApplicationSyncPolicy
-
 	if args.TargetRevision != "" {
 		targetRevision = args.TargetRevision
 	}
-	if args.Values != "" {
+
+	var values pulumi.StringInput
+	if args.Values != nil {
 		values = args.Values
+	}
+
+	syncPolicy := argocd.ArgocdApplicationSyncPolicy{
+		Automated: argocd.SyncPolicyAutomated{
+			AllowEmpty: false,
+			Prune:      true,
+			SelfHeal:   true,
+		},
+		Retry: argocd.SyncPolicyRetry{
+			Backoff: argocd.RetryBackoff{
+				Duration:    "5s",
+				Factor:      2,
+				MaxDuration: "3m",
+			},
+			Limit: 3,
+		},
+		SyncOptions: []string{
+			"CreateNamespace=true",
+			"PrunePropagationPolicy=foreground",
+			"PruneLast=true",
+		},
 	}
 	if args.SyncPolicy != nil {
 		syncPolicy = *args.SyncPolicy
@@ -268,14 +278,14 @@ func deployPlatformApplicationManifest(ctx *pulumi.Context, parent pulumi.Resour
 
 	// sync
 	opts = append(opts, pulumi.Parent(parent))
-	resource, err := SyncArgocdApplication(ctx, "cluster-platform-application-services", application, opts...)
+	resource, err := argocd.SyncArgocdApplication(ctx, "cluster-platform-application-services", application, opts...)
 
 	return resource, err
 }
 
 func deployCertManagerDnsSolverSecret(ctx *pulumi.Context, parent pulumi.Resource, args *PlatformApplicationConfig, opts ...pulumi.ResourceOption) error {
 
-	if args.CertManagerDnsSolverSecret != "" {
+	if args.CertManagerDnsSolverSecret != nil {
 		secretValue := args.CertManagerDnsSolverSecret
 
 		opts = append(opts, pulumi.Parent(parent))
@@ -285,7 +295,7 @@ func deployCertManagerDnsSolverSecret(ctx *pulumi.Context, parent pulumi.Resourc
 				Namespace: pulumi.String("cert-manager"),
 			},
 			StringData: pulumi.StringMap{
-				"api-token": pulumi.String(secretValue),
+				"api-token": secretValue,
 			},
 			Type: pulumi.String("Opaque"),
 		}, opts...)
@@ -304,8 +314,8 @@ func stringArrayToAssetOrArchiveArrayOutput(in []string) pulumi.AssetOrArchiveAr
 
 // newApplicationFromBytes transforms yaml formatted byte array into an
 // ArgocdApplication struct
-func newApplicationFromBytes(bytes []byte) (ArgocdApplication, error) {
-	var application ArgocdApplication
+func newApplicationFromBytes(bytes []byte) (argocd.ArgocdApplication, error) {
+	var application argocd.ArgocdApplication
 	// marshall template into map[string]interface{}
 	err := yamlv3.Unmarshal(bytes, &application)
 	return application, err

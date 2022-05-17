@@ -19,6 +19,11 @@ import (
 
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi/provider"
+
+	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/application"
+	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/bootstrap"
+	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/eks"
+	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/vpc"
 )
 
 func construct(ctx *pulumi.Context, typ, name string, inputs provider.ConstructInputs,
@@ -43,13 +48,13 @@ func constructVpc(ctx *pulumi.Context, name string, inputs provider.ConstructInp
 
 	// Copy the raw inputs to VpcArgs. `inputs.CopyTo` uses the types and `pulumi:` tags
 	// on the struct's fields to convert the raw values to the appropriate Input types.
-	args := &VpcArgs{}
+	args := &vpc.VpcArgs{}
 	if err := inputs.CopyTo(args); err != nil {
 		return nil, errors.Wrap(err, "setting args")
 	}
 
 	// Create the component resource.
-	vpc, err := NewVpc(ctx, name, args, options)
+	vpc, err := vpc.NewVpc(ctx, name, args, options)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating component")
 	}
@@ -64,12 +69,12 @@ func constructVpc(ctx *pulumi.Context, name string, inputs provider.ConstructInp
 func constructEks(ctx *pulumi.Context, name string, inputs provider.ConstructInputs,
 	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
 
-	args := &EksArgs{}
+	args := &eks.EksArgs{}
 	if err := inputs.CopyTo(args); err != nil {
 		return nil, errors.Wrap(err, "setting args")
 	}
 
-	eks, err := NewEks(ctx, name, args, options)
+	eks, err := eks.NewEks(ctx, name, args, options)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating component")
 	}
@@ -81,12 +86,12 @@ func constructEks(ctx *pulumi.Context, name string, inputs provider.ConstructInp
 func constructArgocdApp(ctx *pulumi.Context, name string, inputs provider.ConstructInputs,
 	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
 
-	args := &ArgocdAppArgs{}
+	args := &application.ArgocdAppArgs{}
 	if err := inputs.CopyTo(args); err != nil {
 		return nil, errors.Wrap(err, "setting args")
 	}
 
-	app, err := NewArgocdApp(ctx, name, args, options)
+	app, err := application.NewArgocdApp(ctx, name, args, options)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating component")
 	}
@@ -98,12 +103,12 @@ func constructArgocdApp(ctx *pulumi.Context, name string, inputs provider.Constr
 func constructClusterBootstrap(ctx *pulumi.Context, name string, inputs provider.ConstructInputs,
 	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
 
-	args := &ClusterBootstrapArgs{}
+	args := &bootstrap.ClusterBootstrapArgs{}
 	if err := inputs.CopyTo(args); err != nil {
 		return nil, errors.Wrap(err, "setting args")
 	}
 
-	bootstrap, err := NewClusterBootstrap(ctx, name, args, options)
+	bootstrap, err := bootstrap.NewClusterBootstrap(ctx, name, args, options)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating component")
 	}

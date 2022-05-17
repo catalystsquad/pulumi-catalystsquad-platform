@@ -33,8 +33,6 @@ func NewClusterBootstrap(ctx *pulumi.Context,
 type clusterBootstrapArgs struct {
 	// Optional, configures the argocd helm release.
 	ArgocdHelmConfig *HelmReleaseConfig `pulumi:"argocdHelmConfig"`
-	// Optional, configures management of the eks auth configmap. Does not manage the configmap if not specified.
-	EksAuthConfigmapConfig *AuthConfigMapConfig `pulumi:"eksAuthConfigmapConfig"`
 	// Optional, configures the kube-prometheus-stack helm release.
 	KubePrometheusStackHelmConfig *HelmReleaseConfig `pulumi:"kubePrometheusStackHelmConfig"`
 	// Optional, configures the platform application release. Does not deploy if not specified.
@@ -47,8 +45,6 @@ type clusterBootstrapArgs struct {
 type ClusterBootstrapArgs struct {
 	// Optional, configures the argocd helm release.
 	ArgocdHelmConfig HelmReleaseConfigPtrInput
-	// Optional, configures management of the eks auth configmap. Does not manage the configmap if not specified.
-	EksAuthConfigmapConfig AuthConfigMapConfigPtrInput
 	// Optional, configures the kube-prometheus-stack helm release.
 	KubePrometheusStackHelmConfig HelmReleaseConfigPtrInput
 	// Optional, configures the platform application release. Does not deploy if not specified.
