@@ -1,6 +1,7 @@
-package provider
+package bootstrap
 
 import (
+	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/argocd"
 	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/templates"
 	"github.com/pkg/errors"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/core/v1"
@@ -46,7 +47,7 @@ type PlatformApplicationConfig struct {
 	// Optional, target revision of platform application config. Deafult: >=1.0.0-alpha
 	TargetRevision string `pulumi:"targetRevision"`
 	// Optional, sync policy of platform application config.
-	SyncPolicy *ArgocdApplicationSyncPolicy `pulumi:"syncPolicy"`
+	SyncPolicy *argocd.ArgocdApplicationSyncPolicy `pulumi:"syncPolicy"`
 	// Optional, platform application values
 	Values pulumi.StringInput `pulumi:"values"`
 	// Optional, value of certmanager dns resolver secret
@@ -240,14 +241,14 @@ func deployPlatformApplicationManifest(ctx *pulumi.Context, parent pulumi.Resour
 		values = args.Values
 	}
 
-	syncPolicy := ArgocdApplicationSyncPolicy{
-		Automated: SyncPolicyAutomated{
+	syncPolicy := argocd.ArgocdApplicationSyncPolicy{
+		Automated: argocd.SyncPolicyAutomated{
 			AllowEmpty: false,
 			Prune:      true,
 			SelfHeal:   true,
 		},
-		Retry: SyncPolicyRetry{
-			Backoff: RetryBackoff{
+		Retry: argocd.SyncPolicyRetry{
+			Backoff: argocd.RetryBackoff{
 				Duration:    "5s",
 				Factor:      2,
 				MaxDuration: "3m",
@@ -277,7 +278,7 @@ func deployPlatformApplicationManifest(ctx *pulumi.Context, parent pulumi.Resour
 
 	// sync
 	opts = append(opts, pulumi.Parent(parent))
-	resource, err := SyncArgocdApplication(ctx, "cluster-platform-application-services", application, opts...)
+	resource, err := argocd.SyncArgocdApplication(ctx, "cluster-platform-application-services", application, opts...)
 
 	return resource, err
 }
@@ -313,8 +314,8 @@ func stringArrayToAssetOrArchiveArrayOutput(in []string) pulumi.AssetOrArchiveAr
 
 // newApplicationFromBytes transforms yaml formatted byte array into an
 // ArgocdApplication struct
-func newApplicationFromBytes(bytes []byte) (ArgocdApplication, error) {
-	var application ArgocdApplication
+func newApplicationFromBytes(bytes []byte) (argocd.ArgocdApplication, error) {
+	var application argocd.ArgocdApplication
 	// marshall template into map[string]interface{}
 	err := yamlv3.Unmarshal(bytes, &application)
 	return application, err

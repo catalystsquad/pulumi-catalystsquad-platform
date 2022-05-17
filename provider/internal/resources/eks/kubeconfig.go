@@ -1,4 +1,4 @@
-package provider
+package eks
 
 // this thing is so ugly, put it in it's own file
 var eksDefaultKubeConfig string = `apiVersion: v1

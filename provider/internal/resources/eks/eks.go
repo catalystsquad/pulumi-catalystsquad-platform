@@ -1,4 +1,4 @@
-package provider
+package eks
 
 import (
 	"encoding/json"
