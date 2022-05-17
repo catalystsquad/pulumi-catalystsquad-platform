@@ -52,9 +52,9 @@ type PlatformApplicationConfig struct {
 	// Optional, sync policy of platform application config.
 	SyncPolicy *ArgocdApplicationSyncPolicy `pulumi:"syncPolicy"`
 	// Optional, platform application values
-	Values string `pulumi:"values"`
+	Values pulumi.StringInput `pulumi:"values"`
 	// Optional, value of certmanager dns resolver secret
-	CertManagerDnsSolverSecret string `pulumi:"certManagerDnsSolverSecret"`
+	CertManagerDnsSolverSecret pulumi.StringInput `pulumi:"certManagerDnsSolverSecret"`
 }
 
 // ClusterBootstrap pulumi component resource
@@ -242,13 +242,13 @@ func deployPlatformApplicationManifest(ctx *pulumi.Context, parent pulumi.Resour
 
 	// default platform application config
 	targetRevision := ">=1.0.0-alpha"
-	values := ""
+	var values pulumi.StringInput
 	var syncPolicy ArgocdApplicationSyncPolicy
 
 	if args.TargetRevision != "" {
 		targetRevision = args.TargetRevision
 	}
-	if args.Values != "" {
+	if args.Values != nil {
 		values = args.Values
 	}
 	if args.SyncPolicy != nil {
@@ -275,7 +275,7 @@ func deployPlatformApplicationManifest(ctx *pulumi.Context, parent pulumi.Resour
 
 func deployCertManagerDnsSolverSecret(ctx *pulumi.Context, parent pulumi.Resource, args *PlatformApplicationConfig, opts ...pulumi.ResourceOption) error {
 
-	if args.CertManagerDnsSolverSecret != "" {
+	if args.CertManagerDnsSolverSecret != nil {
 		secretValue := args.CertManagerDnsSolverSecret
 
 		opts = append(opts, pulumi.Parent(parent))
@@ -285,7 +285,7 @@ func deployCertManagerDnsSolverSecret(ctx *pulumi.Context, parent pulumi.Resourc
 				Namespace: pulumi.String("cert-manager"),
 			},
 			StringData: pulumi.StringMap{
-				"api-token": pulumi.String(secretValue),
+				"api-token": secretValue,
 			},
 			Type: pulumi.String("Opaque"),
 		}, opts...)
