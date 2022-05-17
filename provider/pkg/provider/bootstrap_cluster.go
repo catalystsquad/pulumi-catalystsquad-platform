@@ -1,7 +1,6 @@
 package provider
 
 import (
-	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/eksauth"
 	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/templates"
 	"github.com/pkg/errors"
 	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/core/v1"
@@ -17,9 +16,6 @@ type ClusterBootstrapArgs struct {
 	ArgocdHelmConfig *HelmReleaseConfig `pulumi:"argocdHelmConfig"`
 	// Optional, configures the kube-prometheus-stack helm release.
 	KubePrometheusStackHelmConfig *HelmReleaseConfig `pulumi:"kubePrometheusStackHelmConfig"`
-	// Optional, configures management of the eks auth configmap. Does not
-	// manage the configmap if not specified.
-	EksAuthConfigmapConfig *eksauth.AuthConfigMapConfig `pulumi:"eksAuthConfigmapConfig"`
 	// Optional, configuration for a prometheus remoteWrite secret. Does not
 	// deploy if not specified.
 	PrometheusRemoteWriteConfig *PrometheusRemoteWriteConfig `pulumi:"prometheusRemoteWriteConfig"`
@@ -71,13 +67,6 @@ func NewClusterBootstrap(ctx *pulumi.Context, name string, args *ClusterBootstra
 	err := ctx.RegisterComponentResource("catalystsquad-platform:index:ClusterBootstrap", name, component, opts...)
 	if err != nil {
 		return nil, err
-	}
-
-	if args.EksAuthConfigmapConfig != nil {
-		err = eksauth.SyncAuthConfigMap(ctx, *args.EksAuthConfigmapConfig, pulumi.Parent(component))
-		if err != nil {
-			return nil, err
-		}
 	}
 
 	// deploy kube-prometheus-stack remote-write basic auth secret
