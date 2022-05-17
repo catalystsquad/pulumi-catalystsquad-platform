@@ -242,14 +242,34 @@ func deployPlatformApplicationManifest(ctx *pulumi.Context, parent pulumi.Resour
 
 	// default platform application config
 	targetRevision := ">=1.0.0-alpha"
-	var values pulumi.StringInput
-	var syncPolicy ArgocdApplicationSyncPolicy
-
 	if args.TargetRevision != "" {
 		targetRevision = args.TargetRevision
 	}
+
+	var values pulumi.StringInput
 	if args.Values != nil {
 		values = args.Values
+	}
+
+	syncPolicy := ArgocdApplicationSyncPolicy{
+		Automated: SyncPolicyAutomated{
+			AllowEmpty: false,
+			Prune:      true,
+			SelfHeal:   true,
+		},
+		Retry: SyncPolicyRetry{
+			Backoff: RetryBackoff{
+				Duration:    "5s",
+				Factor:      2,
+				MaxDuration: "3m",
+			},
+			Limit: 3,
+		},
+		SyncOptions: []string{
+			"CreateNamespace=true",
+			"PrunePropagationPolicy=foreground",
+			"PruneLast=true",
+		},
 	}
 	if args.SyncPolicy != nil {
 		syncPolicy = *args.SyncPolicy
