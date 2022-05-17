@@ -6,9 +6,13 @@ import (
 	"strings"
 
 	"github.com/pkg/errors"
+	"gopkg.in/yaml.v2"
 
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/eks"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/iam"
+	"github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes"
+	corev1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/core/v1"
+	metav1 "github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes/meta/v1"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
@@ -23,6 +27,8 @@ type EksArgs struct {
 	NodeGroupVersion string `pulumi:"nodeGroupVersion"`
 	// Required, list of nodegroup configurations to create.
 	NodeGroupConfig []EksNodeGroup `pulumi:"nodeGroupConfig"`
+	// Optional, configures management of the eks auth configmap.
+	AuthConfigmapConfig *AuthConfigMapConfig `pulumi:"authConfigmapConfig"`
 	// Optional, whether to enable ECR access policy on nodegroups. Default: true
 	EnableECRAccess *bool `pulumi:"enableECRAccess"`
 	// Optional, whether to enable cluster autoscaler IRSA resources. Default: true
@@ -53,20 +59,60 @@ type EksNodeGroup struct {
 	MinSize int `pulumi:"minSize"`
 	// Required, list of instance types for the nodegroup
 	InstanceTypes []string `pulumi:"instanceTypes"`
+	// Optional, list of subnet IDs to deploy the nodegroup in. Defaults to EKS cluster subnets.
+	SubnetIDs pulumi.StringArrayInput `pulumi:"subnetIDs"`
+}
+
+// AuthConfigMapConfig configures the contents of the aws auth configmap. Ref:
+// https://docs.aws.amazon.com/eks/latest/userguide/add-user-role.html
+type AuthConfigMapConfig struct {
+	// required if nodegroup IAM role not supplied
+	EnableNodeGroupIamRoleAutoDiscover bool `pulumi:"enableNodeGroupIamRoleAutoDiscover"`
+	// optional list of AWS SSO permission set roles to autodiscover
+	AutoDiscoverSSORoles []SSORolePermissionSetConfig `pulumi:"autoDiscoverSSORoles"`
+	// optional list of IAM roles and users
+	IAMRoles []IAMIdentityConfig `pulumi:"iamRoles"`
+	IAMUsers []IAMIdentityConfig `pulumi:"iamUsers"`
+}
+
+// SSORolePermissionSetConfig used to configure access for AWS SSO roles in the
+// aws-auth configmap.
+type SSORolePermissionSetConfig struct {
+	// name of permission set to discover for use in configmap
+	Name string `pulumi:"name"`
+	// required groups to add role to
+	PermissionGroups []string `pulumi:"permissionGroups"`
+	// optional username field, defaults to name field
+	Username string `pulumi:"username"`
+}
+
+// IAMIdentityConfig used to configure access for an IAM identity in the
+// aws-auth configmap.
+type IAMIdentityConfig struct {
+	// arn of IAM role to use in configmap
+	Arn string `pulumi:"arn"`
+	// required groups to add role to
+	PermissionGroups []string `pulumi:"permissionGroups"`
+	// optional username field, defaults to role name
+	Username string `pulumi:"username"`
 }
 
 // Eks pulumi component resource
 type Eks struct {
 	pulumi.ResourceState
 
-	Cluster      *eks.Cluster               `pulumi:"cluster"`
-	OidcProvider *iam.OpenIdConnectProvider `pulumi:"oidcProvider"`
-	KubeConfig   pulumi.StringOutput        `pulumi:"kubeConfig"`
+	Cluster             *eks.Cluster               `pulumi:"cluster"`
+	OidcProvider        *iam.OpenIdConnectProvider `pulumi:"oidcProvider"`
+	NodeGroupIAMRoleArn pulumi.StringOutput        `pulumi:"nodeGroupIAMRoleArn"`
+	KubeConfig          pulumi.StringOutput        `pulumi:"kubeConfig"`
+	KubernetesProvider  *kubernetes.Provider       `pulumi:"kubernetesProvider"`
 }
 
 // https://github.com/hashicorp/terraform-provider-aws/issues/10104#issuecomment-545264374
 // TODO: generate this instead
-var awsRootCAThumbprint string = "9e99a48a9960b14926bb7f3b02e22da2b0ab7280"
+const awsRootCAThumbprint string = "9e99a48a9960b14926bb7f3b02e22da2b0ab7280"
+
+var ssoRolePathPrefix string = "/aws-reserved/sso.amazonaws.com/"
 
 // NewEks creates an EKS cluster
 func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.ResourceOption) (*Eks, error) {
@@ -99,6 +145,11 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 	nodeGroupVersion := k8sVersion
 	if args.NodeGroupVersion != "" {
 		nodeGroupVersion = args.NodeGroupVersion
+	}
+
+	authConfigMapConfig := AuthConfigMapConfig{}
+	if args.AuthConfigmapConfig != nil {
+		authConfigMapConfig = *args.AuthConfigmapConfig
 	}
 
 	enableECRAccess := true
@@ -241,22 +292,182 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 		return nil, err
 	}
 
+	// this uses the CertificateAuthorities field instead of the simpler
+	// CertificateAuthority field because after upgrading to v5 of the aws
+	// provider sdk the CertificateAuthority would sometimes return a nil value
+	kubeConfig := pulumi.All(eksCluster.Name, eksCluster.Endpoint, eksCluster.CertificateAuthorities).ApplyT(
+		func(input []interface{}) (string, error) {
+			name := input[0]
+			endpoint := input[1]
+
+			certificateAuthorities, ok := input[2].([]eks.ClusterCertificateAuthority)
+			if !ok {
+				return "", errors.New("unable to type assert eks cluster authorities to []ClusterCertificateAuthority")
+			}
+
+			// set ca to first certificate authority that isn't nil
+			var ca string
+			for _, c := range certificateAuthorities {
+				if c.Data != nil {
+					ca = *c.Data
+					break
+				}
+			}
+
+			// generate a kubeconfig as defined here
+			// https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html
+			kubeConfig := fmt.Sprintf(eksDefaultKubeConfig, endpoint, ca, name)
+			// append additional configuration if supplied, because pulumi aws
+			// provider configuration isn't supplied to the aws cli
+			if args.KubeConfigAssumeRoleArn != "" {
+				kubeConfig = kubeConfig + fmt.Sprintf(kubeConfigArgsRoleArn, args.KubeConfigAssumeRoleArn)
+			}
+			if args.KubeConfigAwsProfile != "" {
+				kubeConfig = kubeConfig + fmt.Sprintf(kubeConfigArgsAwsProfile, args.KubeConfigAwsProfile)
+			}
+			return kubeConfig, nil
+		},
+	).(pulumi.StringOutput)
+
+	// kubernetes pulumi provider to use for creating the aws-auth configmap
+	k8sProvider, err := kubernetes.NewProvider(ctx, "eks-kubernetes-provider", &kubernetes.ProviderArgs{
+		Kubeconfig: kubeConfig,
+	}, pulumi.Parent(component))
+	if err != nil {
+		return nil, err
+	}
+
+	// generate the aws-auth configmap data
+	authConfigMapData := pulumi.All(nodeGroupRole.Arn).ApplyT(func(input []interface{}) (map[string]string, error) {
+		nodegroupRoleArn, ok := input[0].(string)
+		if !ok {
+			return nil, errors.New("unable to type assert nodegroupArn to string")
+		}
+
+		var mapRoles []mapRolesElement
+		var mapUsers []mapUsersElement
+		data := make(map[string]string)
+
+		// add nodegroup iam role to mapRoles
+		mapRoles = append(mapRoles, mapRolesElement{
+			RoleArn:  nodegroupRoleArn,
+			Username: "system:node:{{EC2PrivateDNSName}}",
+			Groups: []string{
+				"system:bootstrappers",
+				"system:nodes",
+			},
+		})
+
+		// add all sso autodiscovery roles
+		for _, ssoRoleConfig := range authConfigMapConfig.AutoDiscoverSSORoles {
+			// default username to the permissionset name
+			username := ssoRoleConfig.Name
+			if ssoRoleConfig.Username != "" {
+				username = ssoRoleConfig.Username
+			}
+
+			roleArn, err := discoverSSORole(ctx, ssoRoleConfig.Name)
+			if err != nil {
+				return nil, err
+			}
+
+			mapRoles = append(mapRoles, mapRolesElement{
+				RoleArn:  removeArnPath(roleArn),
+				Username: username,
+				Groups:   ssoRoleConfig.PermissionGroups,
+			})
+		}
+
+		// add all iam roles
+		for _, roleConfig := range authConfigMapConfig.IAMRoles {
+			// default username to the role name, derived from the role arn
+			username := arnToUsername(roleConfig.Arn)
+			if roleConfig.Username != "" {
+				username = roleConfig.Username
+			}
+
+			mapRoles = append(mapRoles, mapRolesElement{
+				RoleArn:  removeArnPath(roleConfig.Arn),
+				Username: username,
+				Groups:   roleConfig.PermissionGroups,
+			})
+		}
+
+		// add all iam users
+		for _, userConfig := range authConfigMapConfig.IAMUsers {
+			// default username to the role name, derived from the role arn
+			username := arnToUsername(userConfig.Arn)
+			if userConfig.Username != "" {
+				username = userConfig.Username
+			}
+
+			mapUsers = append(mapUsers, mapUsersElement{
+				UserArn:  removeArnPath(userConfig.Arn),
+				Username: username,
+				Groups:   userConfig.PermissionGroups,
+			})
+		}
+
+		mapRolesBytes, err := yaml.Marshal(&mapRoles)
+		if err != nil {
+			return nil, err
+		}
+		data["mapRoles"] = string(mapRolesBytes)
+
+		// omit mapUsers if empty
+		if len(mapUsers) != 0 {
+			mapUsersBytes, err := yaml.Marshal(&mapUsers)
+			if err != nil {
+				return nil, err
+			}
+			data["mapUsers"] = string(mapUsersBytes)
+		}
+
+		return data, nil
+	}).(pulumi.StringMapOutput)
+
+	// create the aws authconfigmap
+	awsAuthConfigMap, err := corev1.NewConfigMap(ctx, "aws-auth-configmap", &corev1.ConfigMapArgs{
+		Data: authConfigMapData,
+		Metadata: &metav1.ObjectMetaArgs{
+			Name:      pulumi.String("aws-auth"),
+			Namespace: pulumi.String("kube-system"),
+		},
+	}, pulumi.Parent(component), pulumi.Providers(k8sProvider))
+
 	// create node groups
 	var nodeGroups []pulumi.Resource
 	for _, nodeGroupConfig := range args.NodeGroupConfig {
-		nodeGroup, err := eks.NewNodeGroup(ctx, fmt.Sprintf("node-group-%s", nodeGroupConfig.NamePrefix), &eks.NodeGroupArgs{
-			ClusterName:         eksCluster.Name,
-			InstanceTypes:       pulumi.ToStringArray(nodeGroupConfig.InstanceTypes),
-			NodeGroupNamePrefix: pulumi.String(nodeGroupConfig.NamePrefix),
-			NodeRoleArn:         pulumi.StringInput(nodeGroupRole.Arn),
-			SubnetIds:           args.SubnetIDs,
-			Version:             pulumi.String(nodeGroupVersion),
-			ScalingConfig: &eks.NodeGroupScalingConfigArgs{
-				DesiredSize: pulumi.Int(nodeGroupConfig.DesiredSize),
-				MaxSize:     pulumi.Int(nodeGroupConfig.MaxSize),
-				MinSize:     pulumi.Int(nodeGroupConfig.MinSize),
+
+		// use eks cluster subnets for the node groups unless subnets were
+		// specified for the nodegroups
+		subnetIDs := args.SubnetIDs
+		if nodeGroupConfig.SubnetIDs != nil {
+			subnetIDs = nodeGroupConfig.SubnetIDs
+		}
+
+		nodeGroup, err := eks.NewNodeGroup(ctx, fmt.Sprintf("node-group-%s", nodeGroupConfig.NamePrefix),
+			&eks.NodeGroupArgs{
+				ClusterName:         eksCluster.Name,
+				InstanceTypes:       pulumi.ToStringArray(nodeGroupConfig.InstanceTypes),
+				NodeGroupNamePrefix: pulumi.String(nodeGroupConfig.NamePrefix),
+				NodeRoleArn:         pulumi.StringInput(nodeGroupRole.Arn),
+				SubnetIds:           subnetIDs,
+				Version:             pulumi.String(nodeGroupVersion),
+				ScalingConfig: &eks.NodeGroupScalingConfigArgs{
+					DesiredSize: pulumi.Int(nodeGroupConfig.DesiredSize),
+					MaxSize:     pulumi.Int(nodeGroupConfig.MaxSize),
+					MinSize:     pulumi.Int(nodeGroupConfig.MinSize),
+				},
 			},
-		}, pulumi.Parent(component), pulumi.IgnoreChanges([]string{"scalingConfig.desiredSize"}))
+			pulumi.Parent(component),
+			// depend on the authconfigmap to be create first, otherwise aws
+			// will create the configmap upon the first nodegroup creation, in
+			// which case pulumi would be unable to create the configmap
+			// because of importing problems. it's easier this way.
+			pulumi.DependsOn([]pulumi.Resource{awsAuthConfigMap}),
+			pulumi.IgnoreChanges([]string{"scalingConfig.desiredSize"}),
+		)
 		if err != nil {
 			return nil, err
 		}
@@ -339,36 +550,73 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 		}
 	}
 
-	kubeConfig := pulumi.All(eksCluster.Endpoint, eksCluster.CertificateAuthority.Data().Elem(), eksCluster.Name).ApplyT(
-		func(input []interface{}) (string, error) {
-			// generate a kubeconfig as defined here
-			// https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html
-			kubeConfig := fmt.Sprintf(eksDefaultKubeConfig, input[0], input[1], input[2])
-			// append additional configuration if supplied, because pulumi aws
-			// provider configuration isn't supplied to the aws cli
-			if args.KubeConfigAssumeRoleArn != "" {
-				kubeConfig = kubeConfig + fmt.Sprintf(kubeConfigArgsRoleArn, args.KubeConfigAssumeRoleArn)
-			}
-			if args.KubeConfigAwsProfile != "" {
-				kubeConfig = kubeConfig + fmt.Sprintf(kubeConfigArgsAwsProfile, args.KubeConfigAwsProfile)
-			}
-			return kubeConfig, nil
-		},
-	).(pulumi.StringOutput)
-
 	// set outputs for component
 	component.Cluster = eksCluster
 	component.OidcProvider = oidcProvider
+	component.NodeGroupIAMRoleArn = nodeGroupRole.Arn
 	component.KubeConfig = kubeConfig
+	component.KubernetesProvider = k8sProvider
 
 	err = ctx.RegisterResourceOutputs(component, pulumi.Map{
-		"cluster":      eksCluster,
-		"oidcProvider": oidcProvider,
-		"kubeConfig":   kubeConfig,
+		"cluster":             eksCluster,
+		"oidcProvider":        oidcProvider,
+		"kubeConfig":          kubeConfig,
+		"nodeGroupIAMRoleArn": nodeGroupRole.Arn,
+		"kubernetesProvider":  k8sProvider,
 	})
 	if err != nil {
 		return nil, err
 	}
 
 	return component, nil
+}
+
+// types for aws auth configmap
+type mapRolesElement struct {
+	Groups   []string `yaml:"groups"`
+	RoleArn  string   `yaml:"rolearn"`
+	Username string   `yaml:"username"`
+}
+
+type mapUsersElement struct {
+	Groups   []string `yaml:"groups"`
+	UserArn  string   `yaml:"userarn"`
+	Username string   `yaml:"username"`
+}
+
+func discoverSSORole(ctx *pulumi.Context, permissionSetName string) (roleArn string, err error) {
+	ssoRoleRegex := fmt.Sprintf("AWSReservedSSO_%s_.*", permissionSetName)
+
+	discoverSSORole, err := iam.GetRoles(ctx, &iam.GetRolesArgs{
+		NameRegex:  pulumi.StringRef(ssoRoleRegex),
+		PathPrefix: &ssoRolePathPrefix,
+	})
+	if err != nil {
+		return
+	}
+
+	// fail if we don't discover just 1 role
+	if len(discoverSSORole.Arns) != 1 {
+		err = errors.New(fmt.Sprintf(
+			"role auto discovery failed, discovered %d",
+			len(discoverSSORole.Arns),
+		))
+		return
+	}
+
+	roleArn = discoverSSORole.Arns[0]
+	return
+}
+
+// auth configmap doesn't support arns with paths, so we have to remove them
+// https://docs.aws.amazon.com/eks/latest/userguide/troubleshooting_iam.html#security-iam-troubleshoot-ConfigMap
+func removeArnPath(arn string) string {
+	a := strings.Split(arn, "/")
+	return strings.Join([]string{a[0], a[len(a)-1]}, "/")
+}
+
+// trim an ARN to use in the aws-auth configmap username field
+func arnToUsername(i string) string {
+	a := strings.Split(i, "/")
+	return a[len(a)-1]
 }
