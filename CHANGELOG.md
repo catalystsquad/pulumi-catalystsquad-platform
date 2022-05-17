@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.2.2...v1.2.3) (2022-05-17)
+
+
+### Bug Fixes
+
+* refactor aws-auth configmap, restructure resources ([#14](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/14)) ([3cdb965](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/3cdb9657ee579bae06060928588f735b77d49dd2))
+
 ## [1.2.2](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.2.1...v1.2.2) (2022-05-06)
 
 
