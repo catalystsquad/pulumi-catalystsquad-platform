@@ -431,32 +431,20 @@ class ArgocdApplicationArgs:
 class AuthConfigMapConfigArgs:
     def __init__(__self__, *,
                  auto_discover_sso_roles: Optional[pulumi.Input[Sequence[pulumi.Input['SSORolePermissionSetConfigArgs']]]] = None,
-                 eks_cluster_name: Optional[pulumi.Input[str]] = None,
-                 enable_node_group_iam_role_auto_discover: Optional[pulumi.Input[bool]] = None,
                  iam_roles: Optional[pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]]] = None,
-                 iam_users: Optional[pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]]] = None,
-                 node_group_iam_role: Optional[pulumi.Input[str]] = None):
+                 iam_users: Optional[pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]]] = None):
         """
         Configuration for the EKS auth configmap
         :param pulumi.Input[Sequence[pulumi.Input['SSORolePermissionSetConfigArgs']]] auto_discover_sso_roles: Optional, list of AWS SSO permission set roles to autodiscover.
-        :param pulumi.Input[str] eks_cluster_name: Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
-        :param pulumi.Input[bool] enable_node_group_iam_role_auto_discover: Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
         :param pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]] iam_roles: Optional, list of IAM roles to grant access in the auth configmap
         :param pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]] iam_users: Optional, list of IAM users to grant access in the auth configmap
-        :param pulumi.Input[str] node_group_iam_role: IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
         """
         if auto_discover_sso_roles is not None:
             pulumi.set(__self__, "auto_discover_sso_roles", auto_discover_sso_roles)
-        if eks_cluster_name is not None:
-            pulumi.set(__self__, "eks_cluster_name", eks_cluster_name)
-        if enable_node_group_iam_role_auto_discover is not None:
-            pulumi.set(__self__, "enable_node_group_iam_role_auto_discover", enable_node_group_iam_role_auto_discover)
         if iam_roles is not None:
             pulumi.set(__self__, "iam_roles", iam_roles)
         if iam_users is not None:
             pulumi.set(__self__, "iam_users", iam_users)
-        if node_group_iam_role is not None:
-            pulumi.set(__self__, "node_group_iam_role", node_group_iam_role)
 
     @property
     @pulumi.getter(name="autoDiscoverSSORoles")
@@ -469,30 +457,6 @@ class AuthConfigMapConfigArgs:
     @auto_discover_sso_roles.setter
     def auto_discover_sso_roles(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['SSORolePermissionSetConfigArgs']]]]):
         pulumi.set(self, "auto_discover_sso_roles", value)
-
-    @property
-    @pulumi.getter(name="eksClusterName")
-    def eks_cluster_name(self) -> Optional[pulumi.Input[str]]:
-        """
-        Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.
-        """
-        return pulumi.get(self, "eks_cluster_name")
-
-    @eks_cluster_name.setter
-    def eks_cluster_name(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "eks_cluster_name", value)
-
-    @property
-    @pulumi.getter(name="enableNodeGroupIamRoleAutoDiscover")
-    def enable_node_group_iam_role_auto_discover(self) -> Optional[pulumi.Input[bool]]:
-        """
-        Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required.
-        """
-        return pulumi.get(self, "enable_node_group_iam_role_auto_discover")
-
-    @enable_node_group_iam_role_auto_discover.setter
-    def enable_node_group_iam_role_auto_discover(self, value: Optional[pulumi.Input[bool]]):
-        pulumi.set(self, "enable_node_group_iam_role_auto_discover", value)
 
     @property
     @pulumi.getter(name="iamRoles")
@@ -517,18 +481,6 @@ class AuthConfigMapConfigArgs:
     @iam_users.setter
     def iam_users(self, value: Optional[pulumi.Input[Sequence[pulumi.Input['IAMIdentityConfigArgs']]]]):
         pulumi.set(self, "iam_users", value)
-
-    @property
-    @pulumi.getter(name="nodeGroupIamRole")
-    def node_group_iam_role(self) -> Optional[pulumi.Input[str]]:
-        """
-        IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.
-        """
-        return pulumi.get(self, "node_group_iam_role")
-
-    @node_group_iam_role.setter
-    def node_group_iam_role(self, value: Optional[pulumi.Input[str]]):
-        pulumi.set(self, "node_group_iam_role", value)
 
 
 @pulumi.input_type
@@ -687,19 +639,31 @@ class EksNodeGroupArgs:
                  instance_types: pulumi.Input[Sequence[pulumi.Input[str]]],
                  max_size: pulumi.Input[int],
                  min_size: pulumi.Input[int],
-                 name_prefix: pulumi.Input[str]):
+                 name_prefix: pulumi.Input[str],
+                 subnet_ids: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]] = None):
         """
         Configuration for an EKS node group
+        :param pulumi.Input[int] desired_size: Required, initial desired size of nodegroup, ignored after creation
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] instance_types: Required, list of instance types for the nodegroup
+        :param pulumi.Input[int] max_size: Required, maximum size of nodegroup
+        :param pulumi.Input[int] min_size: Required, minimum size of nodegroup
+        :param pulumi.Input[str] name_prefix: Required, name prefix of the nodegroup
+        :param pulumi.Input[Sequence[pulumi.Input[str]]] subnet_ids: Optional, list of subnet IDs to deploy the nodegroup in. Defaults to EKS cluster subnets
         """
         pulumi.set(__self__, "desired_size", desired_size)
         pulumi.set(__self__, "instance_types", instance_types)
         pulumi.set(__self__, "max_size", max_size)
         pulumi.set(__self__, "min_size", min_size)
         pulumi.set(__self__, "name_prefix", name_prefix)
+        if subnet_ids is not None:
+            pulumi.set(__self__, "subnet_ids", subnet_ids)
 
     @property
     @pulumi.getter(name="desiredSize")
     def desired_size(self) -> pulumi.Input[int]:
+        """
+        Required, initial desired size of nodegroup, ignored after creation
+        """
         return pulumi.get(self, "desired_size")
 
     @desired_size.setter
@@ -709,6 +673,9 @@ class EksNodeGroupArgs:
     @property
     @pulumi.getter(name="instanceTypes")
     def instance_types(self) -> pulumi.Input[Sequence[pulumi.Input[str]]]:
+        """
+        Required, list of instance types for the nodegroup
+        """
         return pulumi.get(self, "instance_types")
 
     @instance_types.setter
@@ -718,6 +685,9 @@ class EksNodeGroupArgs:
     @property
     @pulumi.getter(name="maxSize")
     def max_size(self) -> pulumi.Input[int]:
+        """
+        Required, maximum size of nodegroup
+        """
         return pulumi.get(self, "max_size")
 
     @max_size.setter
@@ -727,6 +697,9 @@ class EksNodeGroupArgs:
     @property
     @pulumi.getter(name="minSize")
     def min_size(self) -> pulumi.Input[int]:
+        """
+        Required, minimum size of nodegroup
+        """
         return pulumi.get(self, "min_size")
 
     @min_size.setter
@@ -736,11 +709,26 @@ class EksNodeGroupArgs:
     @property
     @pulumi.getter(name="namePrefix")
     def name_prefix(self) -> pulumi.Input[str]:
+        """
+        Required, name prefix of the nodegroup
+        """
         return pulumi.get(self, "name_prefix")
 
     @name_prefix.setter
     def name_prefix(self, value: pulumi.Input[str]):
         pulumi.set(self, "name_prefix", value)
+
+    @property
+    @pulumi.getter(name="subnetIDs")
+    def subnet_ids(self) -> Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]:
+        """
+        Optional, list of subnet IDs to deploy the nodegroup in. Defaults to EKS cluster subnets
+        """
+        return pulumi.get(self, "subnet_ids")
+
+    @subnet_ids.setter
+    def subnet_ids(self, value: Optional[pulumi.Input[Sequence[pulumi.Input[str]]]]):
+        pulumi.set(self, "subnet_ids", value)
 
 
 @pulumi.input_type

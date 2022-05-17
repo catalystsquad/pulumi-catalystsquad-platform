@@ -9,6 +9,7 @@ from typing import Any, Mapping, Optional, Sequence, Union, overload
 from . import _utilities
 from ._inputs import *
 import pulumi_aws
+import pulumi_kubernetes
 
 __all__ = ['EksArgs', 'Eks']
 
@@ -17,6 +18,7 @@ class EksArgs:
     def __init__(__self__, *,
                  node_group_config: pulumi.Input[Sequence[pulumi.Input['EksNodeGroupArgs']]],
                  subnet_ids: pulumi.Input[Sequence[pulumi.Input[str]]],
+                 auth_configmap_config: Optional[pulumi.Input['AuthConfigMapConfigArgs']] = None,
                  cluster_autoscaler_namespace: Optional[pulumi.Input[str]] = None,
                  cluster_autoscaler_service_account: Optional[pulumi.Input[str]] = None,
                  cluster_name: Optional[pulumi.Input[str]] = None,
@@ -31,6 +33,7 @@ class EksArgs:
         The set of arguments for constructing a Eks resource.
         :param pulumi.Input[Sequence[pulumi.Input['EksNodeGroupArgs']]] node_group_config: Required, list of nodegroup configurations to create.
         :param pulumi.Input[Sequence[pulumi.Input[str]]] subnet_ids: Required, list of subnet IDs to deploy the cluster and nodegroups to
+        :param pulumi.Input['AuthConfigMapConfigArgs'] auth_configmap_config: Optional, configures management of the eks auth configmap.
         :param pulumi.Input[str] cluster_autoscaler_namespace: Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler
         :param pulumi.Input[str] cluster_autoscaler_service_account: Optional, cluster autoscaler service account name for IRSA. Default: cluster-autoscaler
         :param pulumi.Input[str] cluster_name: Optional, name of the EKS cluster. Default: <stack name>
@@ -44,6 +47,8 @@ class EksArgs:
         """
         pulumi.set(__self__, "node_group_config", node_group_config)
         pulumi.set(__self__, "subnet_ids", subnet_ids)
+        if auth_configmap_config is not None:
+            pulumi.set(__self__, "auth_configmap_config", auth_configmap_config)
         if cluster_autoscaler_namespace is not None:
             pulumi.set(__self__, "cluster_autoscaler_namespace", cluster_autoscaler_namespace)
         if cluster_autoscaler_service_account is not None:
@@ -88,6 +93,18 @@ class EksArgs:
     @subnet_ids.setter
     def subnet_ids(self, value: pulumi.Input[Sequence[pulumi.Input[str]]]):
         pulumi.set(self, "subnet_ids", value)
+
+    @property
+    @pulumi.getter(name="authConfigmapConfig")
+    def auth_configmap_config(self) -> Optional[pulumi.Input['AuthConfigMapConfigArgs']]:
+        """
+        Optional, configures management of the eks auth configmap.
+        """
+        return pulumi.get(self, "auth_configmap_config")
+
+    @auth_configmap_config.setter
+    def auth_configmap_config(self, value: Optional[pulumi.Input['AuthConfigMapConfigArgs']]):
+        pulumi.set(self, "auth_configmap_config", value)
 
     @property
     @pulumi.getter(name="clusterAutoscalerNamespace")
@@ -215,6 +232,7 @@ class Eks(pulumi.ComponentResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 auth_configmap_config: Optional[pulumi.Input[pulumi.InputType['AuthConfigMapConfigArgs']]] = None,
                  cluster_autoscaler_namespace: Optional[pulumi.Input[str]] = None,
                  cluster_autoscaler_service_account: Optional[pulumi.Input[str]] = None,
                  cluster_name: Optional[pulumi.Input[str]] = None,
@@ -232,6 +250,7 @@ class Eks(pulumi.ComponentResource):
         Create a Eks resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[pulumi.InputType['AuthConfigMapConfigArgs']] auth_configmap_config: Optional, configures management of the eks auth configmap.
         :param pulumi.Input[str] cluster_autoscaler_namespace: Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler
         :param pulumi.Input[str] cluster_autoscaler_service_account: Optional, cluster autoscaler service account name for IRSA. Default: cluster-autoscaler
         :param pulumi.Input[str] cluster_name: Optional, name of the EKS cluster. Default: <stack name>
@@ -268,6 +287,7 @@ class Eks(pulumi.ComponentResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 auth_configmap_config: Optional[pulumi.Input[pulumi.InputType['AuthConfigMapConfigArgs']]] = None,
                  cluster_autoscaler_namespace: Optional[pulumi.Input[str]] = None,
                  cluster_autoscaler_service_account: Optional[pulumi.Input[str]] = None,
                  cluster_name: Optional[pulumi.Input[str]] = None,
@@ -296,6 +316,7 @@ class Eks(pulumi.ComponentResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = EksArgs.__new__(EksArgs)
 
+            __props__.__dict__["auth_configmap_config"] = auth_configmap_config
             __props__.__dict__["cluster_autoscaler_namespace"] = cluster_autoscaler_namespace
             __props__.__dict__["cluster_autoscaler_service_account"] = cluster_autoscaler_service_account
             __props__.__dict__["cluster_name"] = cluster_name
@@ -314,6 +335,8 @@ class Eks(pulumi.ComponentResource):
             __props__.__dict__["subnet_ids"] = subnet_ids
             __props__.__dict__["cluster"] = None
             __props__.__dict__["kube_config"] = None
+            __props__.__dict__["kubernetes_provider"] = None
+            __props__.__dict__["node_group_iam_role_arn"] = None
             __props__.__dict__["oidc_provider"] = None
         super(Eks, __self__).__init__(
             'catalystsquad-platform:index:Eks',
@@ -331,6 +354,16 @@ class Eks(pulumi.ComponentResource):
     @pulumi.getter(name="kubeConfig")
     def kube_config(self) -> pulumi.Output[str]:
         return pulumi.get(self, "kube_config")
+
+    @property
+    @pulumi.getter(name="kubernetesProvider")
+    def kubernetes_provider(self) -> pulumi.Output[Optional['pulumi_kubernetes.Provider']]:
+        return pulumi.get(self, "kubernetes_provider")
+
+    @property
+    @pulumi.getter(name="nodeGroupIAMRoleArn")
+    def node_group_iam_role_arn(self) -> pulumi.Output[Optional[str]]:
+        return pulumi.get(self, "node_group_iam_role_arn")
 
     @property
     @pulumi.getter(name="oidcProvider")

@@ -18,6 +18,12 @@ namespace Pulumi.CatalystsquadPlatform
         [Output("kubeConfig")]
         public Output<string> KubeConfig { get; private set; } = null!;
 
+        [Output("kubernetesProvider")]
+        public Output<Pulumi.Kubernetes.Provider?> KubernetesProvider { get; private set; } = null!;
+
+        [Output("nodeGroupIAMRoleArn")]
+        public Output<string?> NodeGroupIAMRoleArn { get; private set; } = null!;
+
         [Output("oidcProvider")]
         public Output<Pulumi.Aws.Iam.OpenIdConnectProvider> OidcProvider { get; private set; } = null!;
 
@@ -50,6 +56,12 @@ namespace Pulumi.CatalystsquadPlatform
 
     public sealed class EksArgs : Pulumi.ResourceArgs
     {
+        /// <summary>
+        /// Optional, configures management of the eks auth configmap.
+        /// </summary>
+        [Input("authConfigmapConfig")]
+        public Input<Inputs.AuthConfigMapConfigArgs>? AuthConfigmapConfig { get; set; }
+
         /// <summary>
         /// Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler
         /// </summary>

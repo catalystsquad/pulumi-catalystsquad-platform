@@ -6,6 +6,7 @@ import { input as inputs, output as outputs } from "./types";
 import * as utilities from "./utilities";
 
 import * as pulumiAws from "@pulumi/aws";
+import * as pulumiKubernetes from "@pulumi/kubernetes";
 
 export class Eks extends pulumi.ComponentResource {
     /** @internal */
@@ -24,6 +25,8 @@ export class Eks extends pulumi.ComponentResource {
 
     public /*out*/ readonly cluster!: pulumi.Output<pulumiAws.eks.Cluster>;
     public /*out*/ readonly kubeConfig!: pulumi.Output<string>;
+    public /*out*/ readonly kubernetesProvider!: pulumi.Output<pulumiKubernetes.Provider | undefined>;
+    public /*out*/ readonly nodeGroupIAMRoleArn!: pulumi.Output<string | undefined>;
     public /*out*/ readonly oidcProvider!: pulumi.Output<pulumiAws.iam.OpenIdConnectProvider>;
 
     /**
@@ -43,6 +46,7 @@ export class Eks extends pulumi.ComponentResource {
             if ((!args || args.subnetIDs === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'subnetIDs'");
             }
+            resourceInputs["authConfigmapConfig"] = args ? args.authConfigmapConfig : undefined;
             resourceInputs["clusterAutoscalerNamespace"] = args ? args.clusterAutoscalerNamespace : undefined;
             resourceInputs["clusterAutoscalerServiceAccount"] = args ? args.clusterAutoscalerServiceAccount : undefined;
             resourceInputs["clusterName"] = args ? args.clusterName : undefined;
@@ -57,10 +61,14 @@ export class Eks extends pulumi.ComponentResource {
             resourceInputs["subnetIDs"] = args ? args.subnetIDs : undefined;
             resourceInputs["cluster"] = undefined /*out*/;
             resourceInputs["kubeConfig"] = undefined /*out*/;
+            resourceInputs["kubernetesProvider"] = undefined /*out*/;
+            resourceInputs["nodeGroupIAMRoleArn"] = undefined /*out*/;
             resourceInputs["oidcProvider"] = undefined /*out*/;
         } else {
             resourceInputs["cluster"] = undefined /*out*/;
             resourceInputs["kubeConfig"] = undefined /*out*/;
+            resourceInputs["kubernetesProvider"] = undefined /*out*/;
+            resourceInputs["nodeGroupIAMRoleArn"] = undefined /*out*/;
             resourceInputs["oidcProvider"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
@@ -72,6 +80,10 @@ export class Eks extends pulumi.ComponentResource {
  * The set of arguments for constructing a Eks resource.
  */
 export interface EksArgs {
+    /**
+     * Optional, configures management of the eks auth configmap.
+     */
+    authConfigmapConfig?: pulumi.Input<inputs.AuthConfigMapConfigArgs>;
     /**
      * Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler
      */

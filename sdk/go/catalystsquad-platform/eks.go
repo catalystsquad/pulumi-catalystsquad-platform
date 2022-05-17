@@ -10,15 +10,18 @@ import (
 	"github.com/pkg/errors"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/eks"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/iam"
+	"github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes"
 	"github.com/pulumi/pulumi/sdk/v3/go/pulumi"
 )
 
 type Eks struct {
 	pulumi.ResourceState
 
-	Cluster      eks.ClusterOutput               `pulumi:"cluster"`
-	KubeConfig   pulumi.StringOutput             `pulumi:"kubeConfig"`
-	OidcProvider iam.OpenIdConnectProviderOutput `pulumi:"oidcProvider"`
+	Cluster             eks.ClusterOutput               `pulumi:"cluster"`
+	KubeConfig          pulumi.StringOutput             `pulumi:"kubeConfig"`
+	KubernetesProvider  kubernetes.ProviderOutput       `pulumi:"kubernetesProvider"`
+	NodeGroupIAMRoleArn pulumi.StringPtrOutput          `pulumi:"nodeGroupIAMRoleArn"`
+	OidcProvider        iam.OpenIdConnectProviderOutput `pulumi:"oidcProvider"`
 }
 
 // NewEks registers a new resource with the given unique name, arguments, and options.
@@ -44,6 +47,8 @@ func NewEks(ctx *pulumi.Context,
 }
 
 type eksArgs struct {
+	// Optional, configures management of the eks auth configmap.
+	AuthConfigmapConfig *AuthConfigMapConfig `pulumi:"authConfigmapConfig"`
 	// Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler
 	ClusterAutoscalerNamespace *string `pulumi:"clusterAutoscalerNamespace"`
 	// Optional, cluster autoscaler service account name for IRSA. Default: cluster-autoscaler
@@ -72,6 +77,8 @@ type eksArgs struct {
 
 // The set of arguments for constructing a Eks resource.
 type EksArgs struct {
+	// Optional, configures management of the eks auth configmap.
+	AuthConfigmapConfig AuthConfigMapConfigPtrInput
 	// Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler
 	ClusterAutoscalerNamespace pulumi.StringPtrInput
 	// Optional, cluster autoscaler service account name for IRSA. Default: cluster-autoscaler

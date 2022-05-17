@@ -604,6 +604,7 @@ language:
     packageReferences:
       Pulumi: 3.*
       Pulumi.Aws: 5.*
+      Pulumi.Kubernetes: 3.*
   go:
     generateResourceContainerTypes: true
     importBasePath: github.com/catalystsquad/pulumi-catalystsquad-platform/sdk/go/catalystsquad-platform
@@ -611,6 +612,7 @@ language:
     dependencies:
       "@pulumi/pulumi": "^3.31.0"
       "@pulumi/aws": "^5.3.0"
+      "@pulumi/kubernetes": "^3.19.1"
     devDependencies:
       typescript: "^3.7.0"
   python:
