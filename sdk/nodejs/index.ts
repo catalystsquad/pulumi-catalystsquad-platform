@@ -8,6 +8,7 @@ import * as utilities from "./utilities";
 export * from "./argocdApp";
 export * from "./clusterBootstrap";
 export * from "./eks";
+export * from "./observabilityDependencies";
 export * from "./provider";
 export * from "./vpc";
 
@@ -22,6 +23,7 @@ export {
 import { ArgocdApp } from "./argocdApp";
 import { ClusterBootstrap } from "./clusterBootstrap";
 import { Eks } from "./eks";
+import { ObservabilityDependencies } from "./observabilityDependencies";
 import { Vpc } from "./vpc";
 
 const _module = {
@@ -34,6 +36,8 @@ const _module = {
                 return new ClusterBootstrap(name, <any>undefined, { urn })
             case "catalystsquad-platform:index:Eks":
                 return new Eks(name, <any>undefined, { urn })
+            case "catalystsquad-platform:index:ObservabilityDependencies":
+                return new ObservabilityDependencies(name, <any>undefined, { urn })
             case "catalystsquad-platform:index:Vpc":
                 return new Vpc(name, <any>undefined, { urn })
             default:

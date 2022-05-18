@@ -17,6 +17,7 @@
         "clusterBootstrap.ts",
         "eks.ts",
         "index.ts",
+        "observabilityDependencies.ts",
         "provider.ts",
         "types/index.ts",
         "types/input.ts",
