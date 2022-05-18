@@ -110,7 +110,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 		privateSubnetTags[fmt.Sprintf("kubernetes.io/cluster/%s", eksClusterName)] = "owned"
 	}
 
-	vpc, err := ec2.NewVpc(ctx, fmt.Sprintf("%s-vpc", name), &ec2.VpcArgs{
+	vpc, err := ec2.NewVpc(ctx, "vpc", &ec2.VpcArgs{
 		CidrBlock: pulumi.String(vpcCidr),
 		Tags:      pulumi.ToStringMap(vpcTags),
 	}, pulumi.Parent(component))
@@ -119,7 +119,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 	}
 
 	// create internet gateway
-	internetGateway, err := ec2.NewInternetGateway(ctx, fmt.Sprintf("%s-internet-gateway", name), &ec2.InternetGatewayArgs{
+	internetGateway, err := ec2.NewInternetGateway(ctx, "internet-gateway", &ec2.InternetGatewayArgs{
 		VpcId: vpc.ID(),
 	}, pulumi.Parent(component))
 	if err != nil {
@@ -136,7 +136,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 
 		if az.PublicSubnetCidr != "" {
 			// create public subnets
-			publicSubnet, err := ec2.NewSubnet(ctx, fmt.Sprintf("%s-public-subnet-%d", name, i), &ec2.SubnetArgs{
+			publicSubnet, err := ec2.NewSubnet(ctx, fmt.Sprintf("public-subnet-%d", i), &ec2.SubnetArgs{
 				VpcId:            vpc.ID(),
 				CidrBlock:        pulumi.String(az.PublicSubnetCidr),
 				AvailabilityZone: pulumi.String(az.AzName),
@@ -149,7 +149,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 			publicSubnetIDs = append(publicSubnetIDs, publicSubnet.ID().ToStringOutput())
 
 			// create public subnet route tables
-			publicRouteTable, err := ec2.NewRouteTable(ctx, fmt.Sprintf("%s-public-route-table-%d", name, i), &ec2.RouteTableArgs{
+			publicRouteTable, err := ec2.NewRouteTable(ctx, fmt.Sprintf("public-route-table-%d", i), &ec2.RouteTableArgs{
 				VpcId: vpc.ID(),
 			}, pulumi.Parent(component))
 			if err != nil {
@@ -157,7 +157,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 			}
 
 			// default public route
-			_, err = ec2.NewRoute(ctx, fmt.Sprintf("%s-public-route-%d", name, i), &ec2.RouteArgs{
+			_, err = ec2.NewRoute(ctx, fmt.Sprintf("public-route-%d", i), &ec2.RouteArgs{
 				RouteTableId:         publicRouteTable.ID(),
 				DestinationCidrBlock: pulumi.String("0.0.0.0/0"),
 				GatewayId:            internetGateway.ID(),
@@ -167,7 +167,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 			}
 
 			// associate route table to new subnet
-			_, err = ec2.NewRouteTableAssociation(ctx, fmt.Sprintf("%s-public-route-table-association-%d", name, i), &ec2.RouteTableAssociationArgs{
+			_, err = ec2.NewRouteTableAssociation(ctx, fmt.Sprintf("public-route-table-association-%d", i), &ec2.RouteTableAssociationArgs{
 				SubnetId:     publicSubnet.ID(),
 				RouteTableId: publicRouteTable.ID(),
 			}, pulumi.Parent(component))
@@ -176,7 +176,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 			}
 
 			// create nat gateway public ip
-			natGatewayIP, err := ec2.NewEip(ctx, fmt.Sprintf("%s-elastic-ip-%d", name, i), &ec2.EipArgs{
+			natGatewayIP, err := ec2.NewEip(ctx, fmt.Sprintf("elastic-ip-%d", i), &ec2.EipArgs{
 				Vpc: pulumi.Bool(true),
 			}, pulumi.Parent(component))
 			if err != nil {
@@ -186,7 +186,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 			natGatewayIPs = append(natGatewayIPs, natGatewayIP.ID().ToStringOutput())
 
 			// create nat gateway
-			natGateway, err := ec2.NewNatGateway(ctx, fmt.Sprintf("%s-nat-gateway-%d", name, i), &ec2.NatGatewayArgs{
+			natGateway, err := ec2.NewNatGateway(ctx, fmt.Sprintf("nat-gateway-%d", i), &ec2.NatGatewayArgs{
 				AllocationId: natGatewayIP.ID(),
 				SubnetId:     publicSubnet.ID(),
 			}, pulumi.Parent(component))
@@ -198,7 +198,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 
 		if az.PrivateSubnetCidr != "" {
 			// create private subnets
-			privateSubnet, err := ec2.NewSubnet(ctx, fmt.Sprintf("%s-private-subnet-%d", name, i), &ec2.SubnetArgs{
+			privateSubnet, err := ec2.NewSubnet(ctx, fmt.Sprintf("private-subnet-%d", i), &ec2.SubnetArgs{
 				VpcId:            vpc.ID(),
 				CidrBlock:        pulumi.String(az.PrivateSubnetCidr),
 				AvailabilityZone: pulumi.String(az.AzName),
@@ -211,7 +211,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 			privateSubnetIDs = append(privateSubnetIDs, privateSubnet.ID().ToStringOutput())
 
 			// create private subnet route tables
-			privateRouteTable, err := ec2.NewRouteTable(ctx, fmt.Sprintf("%s-private-route-table-%d", name, i), &ec2.RouteTableArgs{
+			privateRouteTable, err := ec2.NewRouteTable(ctx, fmt.Sprintf("private-route-table-%d", i), &ec2.RouteTableArgs{
 				VpcId: vpc.ID(),
 			}, pulumi.Parent(component))
 			if err != nil {
@@ -219,7 +219,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 			}
 
 			// default private route
-			_, err = ec2.NewRoute(ctx, fmt.Sprintf("%s-private-route-%d", name, i), &ec2.RouteArgs{
+			_, err = ec2.NewRoute(ctx, fmt.Sprintf("private-route-%d", i), &ec2.RouteArgs{
 				RouteTableId:         privateRouteTable.ID(),
 				DestinationCidrBlock: pulumi.String("0.0.0.0/0"),
 				NatGatewayId:         natgatewayID,
@@ -229,7 +229,7 @@ func NewVpc(ctx *pulumi.Context, name string, args *VpcArgs, opts ...pulumi.Reso
 			}
 
 			// associate route table to new subnet
-			_, err = ec2.NewRouteTableAssociation(ctx, fmt.Sprintf("%s-private-route-table-association-%d", name, i), &ec2.RouteTableAssociationArgs{
+			_, err = ec2.NewRouteTableAssociation(ctx, fmt.Sprintf("private-route-table-association-%d", i), &ec2.RouteTableAssociationArgs{
 				SubnetId:     privateSubnet.ID(),
 				RouteTableId: privateRouteTable.ID(),
 			}, pulumi.Parent(component))
