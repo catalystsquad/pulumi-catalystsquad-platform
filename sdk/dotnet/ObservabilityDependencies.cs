@@ -77,13 +77,13 @@ namespace Pulumi.CatalystsquadPlatform
         public Input<string>? LokiServiceAccount { get; set; }
 
         /// <summary>
-        /// TODO FIXME
+        /// Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
         /// </summary>
         [Input("oidcProviderArn", required: true)]
         public Input<string> OidcProviderArn { get; set; } = null!;
 
         /// <summary>
-        /// TODO FIXME
+        /// Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
         /// </summary>
         [Input("oidcProviderUrl", required: true)]
         public Input<string> OidcProviderUrl { get; set; } = null!;

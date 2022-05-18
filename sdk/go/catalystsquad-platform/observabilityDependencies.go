@@ -50,9 +50,9 @@ type observabilityDependenciesArgs struct {
 	LokiNamespace *string `pulumi:"lokiNamespace"`
 	// Optional, kubernetes service account name that Loki will use, for configuring the IRSA IAM role trust relationship. Default: loki
 	LokiServiceAccount *string `pulumi:"lokiServiceAccount"`
-	// TODO FIXME
+	// Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
 	OidcProviderArn string `pulumi:"oidcProviderArn"`
-	// TODO FIXME
+	// Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
 	OidcProviderUrl string `pulumi:"oidcProviderUrl"`
 }
 
@@ -70,9 +70,9 @@ type ObservabilityDependenciesArgs struct {
 	LokiNamespace pulumi.StringPtrInput
 	// Optional, kubernetes service account name that Loki will use, for configuring the IRSA IAM role trust relationship. Default: loki
 	LokiServiceAccount pulumi.StringPtrInput
-	// TODO FIXME
+	// Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
 	OidcProviderArn pulumi.StringInput
-	// TODO FIXME
+	// Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
 	OidcProviderUrl pulumi.StringInput
 }
 

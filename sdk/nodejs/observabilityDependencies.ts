@@ -81,11 +81,11 @@ export interface ObservabilityDependenciesArgs {
      */
     lokiServiceAccount?: pulumi.Input<string>;
     /**
-     * TODO FIXME
+     * Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
      */
     oidcProviderArn: pulumi.Input<string>;
     /**
-     * TODO FIXME
+     * Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
      */
     oidcProviderUrl: pulumi.Input<string>;
 }

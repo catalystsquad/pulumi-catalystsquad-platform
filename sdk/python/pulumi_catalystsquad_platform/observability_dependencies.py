@@ -23,8 +23,8 @@ class ObservabilityDependenciesArgs:
                  loki_service_account: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a ObservabilityDependencies resource.
-        :param pulumi.Input[str] oidc_provider_arn: TODO FIXME
-        :param pulumi.Input[str] oidc_provider_url: TODO FIXME
+        :param pulumi.Input[str] oidc_provider_arn: Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
+        :param pulumi.Input[str] oidc_provider_url: Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
         :param pulumi.Input[str] cortex_bucket_name: Optional, name of bucket to create for Cortex. Default: <account-id>-<stack-name>-cortex
         :param pulumi.Input[str] cortex_namespace: Optional, kubernetes namespace where Cortex will exist, for configuring the IRSA IAM role trust relationship. Default: cortex
         :param pulumi.Input[str] cortex_service_account: Optional, kubernetes service account name that Cortex will use, for configuring the IRSA IAM role trust relationship. Default: cortex
@@ -51,7 +51,7 @@ class ObservabilityDependenciesArgs:
     @pulumi.getter(name="oidcProviderArn")
     def oidc_provider_arn(self) -> pulumi.Input[str]:
         """
-        TODO FIXME
+        Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
         """
         return pulumi.get(self, "oidc_provider_arn")
 
@@ -63,7 +63,7 @@ class ObservabilityDependenciesArgs:
     @pulumi.getter(name="oidcProviderUrl")
     def oidc_provider_url(self) -> pulumi.Input[str]:
         """
-        TODO FIXME
+        Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
         """
         return pulumi.get(self, "oidc_provider_url")
 
@@ -168,8 +168,8 @@ class ObservabilityDependencies(pulumi.ComponentResource):
         :param pulumi.Input[str] loki_bucket_name: Optional, name of bucket to create for Loki. Default: <account-id>-<stack-name>-loki
         :param pulumi.Input[str] loki_namespace: Optional, kubernetes namespace where Loki will exist, for configuring the IRSA IAM role trust relationship. Default: loki
         :param pulumi.Input[str] loki_service_account: Optional, kubernetes service account name that Loki will use, for configuring the IRSA IAM role trust relationship. Default: loki
-        :param pulumi.Input[str] oidc_provider_arn: TODO FIXME
-        :param pulumi.Input[str] oidc_provider_url: TODO FIXME
+        :param pulumi.Input[str] oidc_provider_arn: Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
+        :param pulumi.Input[str] oidc_provider_url: Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
         """
         ...
     @overload
