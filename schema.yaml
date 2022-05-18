@@ -596,6 +596,52 @@ resources:
         description: >-
           Optional, configures the platform application release. Does not
           deploy if not specified.
+  catalystsquad-platform:index:ObservabilityDependencies:
+    isComponent: true
+    inputProperties:
+      oidcProviderArn:
+        type: string
+        description: >-
+          Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role
+          trust relationship.
+      oidcProviderUrl:
+        type: string
+        description: >-
+          Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role
+          trust relationship.
+      cortexBucketName:
+        type: string
+        description: >-
+          Optional, name of bucket to create for Cortex.
+          Default: <account-id>-<stack-name>-cortex
+      cortexNamespace:
+        type: string
+        description: >-
+          Optional, kubernetes namespace where Cortex will exist, for
+          configuring the IRSA IAM role trust relationship. Default: cortex
+      cortexServiceAccount:
+        type: string
+        description: >-
+          Optional, kubernetes service account name that Cortex will use, for
+          configuring the IRSA IAM role trust relationship. Default: cortex
+      lokiBucketName:
+        type: string
+        description: >-
+          Optional, name of bucket to create for Loki.
+          Default: <account-id>-<stack-name>-loki
+      lokiNamespace:
+        type: string
+        description: >-
+          Optional, kubernetes namespace where Loki will exist, for configuring
+          the IRSA IAM role trust relationship. Default: loki
+      lokiServiceAccount:
+        type: string
+        description: >-
+          Optional, kubernetes service account name that Loki will use, for
+          configuring the IRSA IAM role trust relationship. Default: loki
+    requiredInputs:
+    - oidcProviderArn
+    - oidcProviderUrl
 language:
   csharp:
     # namespace override, otherwise build fails because of the `-` in catalystsquad-platform
