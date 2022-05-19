@@ -94,31 +94,42 @@ For an example implementation of the EKS component, see [examples/simple-eks-go/
 
 Eks component input properties:
 
-| input property                   | type           | description                                                                                                                         |
-| ---                              | ---            | ---                                                                                                                                 |
-| clusterName                      | string         | Optional, name of the EKS cluster. Default: <stack name>                                                                            |
-| k8sVersion                       | string         | Optional, k8s version of the EKS cluster. Default: 1.22.6                                                                           |
-| nodeGroupVersion                 | string         | Optional, k8s version of all node groups. Allows for upgrading the control plane before upgrading nodegroups. Default: <k8sVersion> |
-| nodeGroupConfig                  | []EksNodeGroup | Required, list of nodegroup configurations to create.                                                                               |
-| enableECRAccess                  | boolean        | Optional, whether to enable ECR access policy on nodegroups. Default: true                                                          |
-| enableClusterAutoscalerResources | boolean        | Optional, whether to enable cluster autoscaler IRSA resources. Default: true                                                        |
-| clusterAutoscalerServiceAccount  | string         | Optional, cluster autoscaler service account name for IRSA. Default: cluster-autoscaler                                             |
-| clusterAutoscalerNamespace       | string         | Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler                                                        |
-| enabledClusterLogTypes           | string         | Optional, list of log types to enable on the cluster. Default: []                                                                   |
-| subnetIDs                        | []string       | Required, list of subnet IDs to deploy the cluster and nodegroups to                                                                |
-| kubeConfigAssumeRoleArn          | string         | Optional, assume role arn to add to the kubeconfig.                                                                                 |
-| kubeConfigAwsProfile             | string         | Optional, AWS profile to add to the kubeconfig.                                                                                     |
+| input property                   | type                | description                                                                                                                         |
+| ---                              | ---                 | ---                                                                                                                                 |
+| clusterName                      | string              | Optional, name of the EKS cluster. Default: <stack name>                                                                            |
+| k8sVersion                       | string              | Optional, k8s version of the EKS cluster. Default: 1.22.6                                                                           |
+| nodeGroupVersion                 | string              | Optional, k8s version of all node groups. Allows for upgrading the control plane before upgrading nodegroups. Default: <k8sVersion> |
+| nodeGroupConfig                  | []EksNodeGroup      | Required, list of nodegroup configurations to create.                                                                               |
+| authConfigmapConfig:             | AuthConfigMapConfig | Optional, configures management of the eks auth configmap.                                                                          |
+| enableECRAccess                  | boolean             | Optional, whether to enable ECR access policy on nodegroups. Default: true                                                          |
+| enableClusterAutoscalerResources | boolean             | Optional, whether to enable cluster autoscaler IRSA resources. Default: true                                                        |
+| clusterAutoscalerServiceAccount  | string              | Optional, cluster autoscaler service account name for IRSA. Default: cluster-autoscaler                                             |
+| clusterAutoscalerNamespace       | string              | Optional, cluster autoscaler namespace for IRSA. Default: cluster-autoscaler                                                        |
+| enabledClusterLogTypes           | string              | Optional, list of log types to enable on the cluster. Default: []                                                                   |
+| subnetIDs                        | []string            | Required, list of subnet IDs to deploy the cluster and nodegroups to                                                                |
+| kubeConfigAssumeRoleArn          | string              | Optional, assume role arn to add to the kubeconfig.                                                                                 |
+| kubeConfigAwsProfile             | string              | Optional, AWS profile to add to the kubeconfig.                                                                                     |
 
 
 EksNodeGroup input properties:
 
-| input property | type     | description                                          |
-| ---            | ---      | ---                                                  |
-| namePrefix     | string   | Name prefix of node group                            |
-| desiredSize    | integer  | Desired size of node group                           |
-| maxSize        | integer  | Max size of node group                               |
-| minSize        | integer  | Min size of node group                               |
-| instanceTypes: | []string | List of instance types to allow the nodegroup to use |
+| input property | type     | description                                                                              |
+| ---            | ---      | ---                                                                                      |
+| namePrefix     | string   | Name prefix of node group                                                                |
+| desiredSize    | integer  | Desired size of node group                                                               |
+| maxSize        | integer  | Max size of node group                                                                   |
+| minSize        | integer  | Min size of node group                                                                   |
+| instanceTypes: | []string | List of instance types to allow the nodegroup to use                                     |
+| subnetIDs      | []string | Optional, list of subnet IDs to deploy the nodegroup in. Defaults to EKS cluster subnets |
+
+
+AuthConfigMapConfig input properties:
+
+| input property       | type                         | description                                                       |
+| ---                  | ---                          | ---                                                               |
+| autoDiscoverSSORoles | []SSORolePermissionSetConfig | Optional, list of AWS SSO permission set roles to autodiscover.   |
+| iamRoles             | []IAMIdentityConfig          | Optional, list of IAM roles to grant access in the auth configmap |
+| iamUsers             | []IAMIdentityConfig          | Optional, list of IAM users to grant access in the auth configmap |
 
 
 ### Bootstrap cluster
@@ -139,7 +150,6 @@ BootstrapCluster input properties:
 | ---                           | ---                         | ---                                                                                                        |
 | argocdHelmConfig              | HelmReleaseConfig           | Optional, configures the argocd helm release.                                                              |
 | kubePrometheusStackHelmConfig | HelmReleaseConfig           | Optional, configures the kube-prometheus-stack helm release.                                               |
-| eksAuthConfigmapConfig        | AuthConfigMapConfig         | Optional, configures management of the eks auth configmap. Does not manage the configmap if not specified. |
 | prometheusRemoteWriteConfig   | PrometheusRemoteWriteConfig | Optional, configuration for a prometheus remoteWrite secret. Does not deploy if not specified.             |
 | platformApplicationConfig     | PlatformApplicationConfig   | Optional, configures the platform application release. Does not deploy if not specified.                   |
 
@@ -151,18 +161,6 @@ HelmReleaseConfig input properties:
 | version        | string      | Optional for each implementation, defaults specific to each helm chart |
 | valuesFiles    | []string    | Optional for each implementation, empty by default                     |
 | values         | map[string] | Optional for each implementation, empty by default                     |
-
-
-AuthConfigMapConfig input properties:
-
-| input property                     | type                         | description                                                                                                                           |
-| ---                                | ---                          | ---                                                                                                                                   |
-| nodeGroupIamRole                   | string                       | IAM role of the Nodegroup. Required if nodegroup IAM role autodiscovery not enabled.                                                  |
-| enableNodeGroupIamRoleAutoDiscover | boolean                      | Whether to attempt Nodegroup IAM role auto-discovery. Required if nodegroup IAM role not supplied. eksClusterName parameter required. |
-| eksClusterName                     | string                       | Name of the EKS cluster. Required with nodeGroupIamRoleAutoDiscover.                                                                  |
-| autoDiscoverSSORoles               | []SSORolePermissionSetConfig | Optional, list of AWS SSO permission set roles to autodiscover.                                                                       |
-| iamRoles                           | []IAMIdentityConfig          | Optional, list of IAM roles to grant access in the auth configmap                                                                     |
-| iamUsers                           | []IAMIdentityConfig          | Optional, list of IAM users to grant access in the auth configmap                                                                     |
 
 
 SSORolePermissionSetConfig input properties:
@@ -236,3 +234,22 @@ ArgocdApplicationSpec input properties:
 | project           | string                               |             |
 | syncPolicy        | ArgocdApplicationSyncPolicy          |             |
 | ignoreDifferences | []ArgocdApplicationIgnoreDifferences |             |
+
+
+### Observability Dependencies
+
+Observability dependencies are AWS resources necessary for operating Cortex and
+Loki. Including S3 buckets and IAM resources for EKS to authenticate to those
+buckets.
+
+| input property       | type   | description                                                                                                                           |
+| ---                  | ---    | ---                                                                                                                                   |
+| oidcProviderArn      | string | Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.                                             |
+| oidcProviderUrl      | string | Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.                                             |
+| cortexBucketName     | string | Optional, name of bucket to create for Cortex. Default: <account-id>-<stack-name>-cortex                                              |
+| cortexNamespace      | string | Optional, kubernetes namespace where Cortex will exist, for configuring the IRSA IAM role trust relationship. Default: cortex         |
+| cortexServiceAccount | string | Optional, kubernetes service account name that Cortex will use, for configuring the IRSA IAM role trust relationship. Default: cortex |
+| lokiBucketName       | string | Optional, name of bucket to create for Loki.  Default: <account-id>-<stack-name>-loki                                                 |
+| lokiNamespace        | string | Optional, kubernetes namespace where Loki will exist, for configuring the IRSA IAM role trust relationship. Default: loki             |
+| lokiServiceAccount   | string | Optional, kubernetes service account name that Loki will use, for configuring the IRSA IAM role trust relationship. Default: loki     |
+

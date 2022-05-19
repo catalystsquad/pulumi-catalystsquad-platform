@@ -23,6 +23,7 @@ import (
 	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/application"
 	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/bootstrap"
 	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/eks"
+	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/observability"
 	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/vpc"
 )
 
@@ -37,6 +38,8 @@ func construct(ctx *pulumi.Context, typ, name string, inputs provider.ConstructI
 		return constructArgocdApp(ctx, name, inputs, options)
 	case "catalystsquad-platform:index:ClusterBootstrap":
 		return constructClusterBootstrap(ctx, name, inputs, options)
+	case "catalystsquad-platform:index:ObservabilityDependencies":
+		return constructObservabilityDependencies(ctx, name, inputs, options)
 	default:
 		return nil, errors.Errorf("unknown resource type %s", typ)
 	}
@@ -54,7 +57,7 @@ func constructVpc(ctx *pulumi.Context, name string, inputs provider.ConstructInp
 	}
 
 	// Create the component resource.
-	vpc, err := vpc.NewVpc(ctx, name, args, options)
+	component, err := vpc.NewVpc(ctx, name, args, options)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating component")
 	}
@@ -62,7 +65,7 @@ func constructVpc(ctx *pulumi.Context, name string, inputs provider.ConstructInp
 	// Return the component resource's URN and state. `NewConstructResult` automatically sets the
 	// ConstructResult's state based on resource struct fields tagged with `pulumi:` tags with a value
 	// that is convertible to `pulumi.Input`.
-	return provider.NewConstructResult(vpc)
+	return provider.NewConstructResult(component)
 }
 
 // constructEks is an implementation of Construct for the EKS component
@@ -74,12 +77,12 @@ func constructEks(ctx *pulumi.Context, name string, inputs provider.ConstructInp
 		return nil, errors.Wrap(err, "setting args")
 	}
 
-	eks, err := eks.NewEks(ctx, name, args, options)
+	component, err := eks.NewEks(ctx, name, args, options)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating component")
 	}
 
-	return provider.NewConstructResult(eks)
+	return provider.NewConstructResult(component)
 }
 
 // constructArgocdApp is an implementation of Construct for the ArgocdApp component
@@ -91,12 +94,12 @@ func constructArgocdApp(ctx *pulumi.Context, name string, inputs provider.Constr
 		return nil, errors.Wrap(err, "setting args")
 	}
 
-	app, err := application.NewArgocdApp(ctx, name, args, options)
+	component, err := application.NewArgocdApp(ctx, name, args, options)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating component")
 	}
 
-	return provider.NewConstructResult(app)
+	return provider.NewConstructResult(component)
 }
 
 // constructClusterBootstrap is an implementation of Construct for the ClusterBootstrap component
@@ -108,10 +111,27 @@ func constructClusterBootstrap(ctx *pulumi.Context, name string, inputs provider
 		return nil, errors.Wrap(err, "setting args")
 	}
 
-	bootstrap, err := bootstrap.NewClusterBootstrap(ctx, name, args, options)
+	component, err := bootstrap.NewClusterBootstrap(ctx, name, args, options)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating component")
 	}
 
-	return provider.NewConstructResult(bootstrap)
+	return provider.NewConstructResult(component)
+}
+
+// constructObservabilityDependencies is an implementation of Construct for the ObservabilityDependencies component
+func constructObservabilityDependencies(ctx *pulumi.Context, name string, inputs provider.ConstructInputs,
+	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
+
+	args := &observability.ObservabilityDependenciesArgs{}
+	if err := inputs.CopyTo(args); err != nil {
+		return nil, errors.Wrap(err, "setting args")
+	}
+
+	component, err := observability.NewObservabilityDependencies(ctx, name, args, options)
+	if err != nil {
+		return nil, errors.Wrap(err, "creating component")
+	}
+
+	return provider.NewConstructResult(component)
 }

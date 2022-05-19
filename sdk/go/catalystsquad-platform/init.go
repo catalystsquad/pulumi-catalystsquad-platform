@@ -26,6 +26,8 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 		r = &ClusterBootstrap{}
 	case "catalystsquad-platform:index:Eks":
 		r = &Eks{}
+	case "catalystsquad-platform:index:ObservabilityDependencies":
+		r = &ObservabilityDependencies{}
 	case "catalystsquad-platform:index:Vpc":
 		r = &Vpc{}
 	default:

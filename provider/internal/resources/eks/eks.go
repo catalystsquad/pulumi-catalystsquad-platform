@@ -7,6 +7,7 @@ import (
 
 	"github.com/pkg/errors"
 
+	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/utils/roles"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/eks"
 	"github.com/pulumi/pulumi-aws/sdk/v5/go/aws/iam"
 	"github.com/pulumi/pulumi-kubernetes/sdk/v3/go/kubernetes"
@@ -360,6 +361,10 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 	var nodeGroups []pulumi.Resource
 	for _, nodeGroupConfig := range args.NodeGroupConfig {
 
+		if nodeGroupConfig.NamePrefix != "" {
+			return nil, errors.New("name argument missing in nodegroup config")
+		}
+
 		// use eks cluster subnets for the node groups unless subnets were
 		// specified for the nodegroups
 		subnetIDs := args.SubnetIDs
@@ -456,8 +461,9 @@ func NewEks(ctx *pulumi.Context, name string, args *EksArgs, opts ...pulumi.Reso
 
 		// create cluster autoscaler iam role with IRSA
 		clusterAutoscalerRole, err := iam.NewRole(ctx, "cluster-autoscaler-role", &iam.RoleArgs{
-			Name:             pulumi.String(fmt.Sprintf("cluster-autoscaler-role-%s", clusterName)),
-			AssumeRolePolicy: createIrsaAssumeRolePolicy(oidcProvider, clusterAutoscalerNamespace, clusterAutoscalerServiceAccount),
+			Name: pulumi.String(fmt.Sprintf("cluster-autoscaler-role-%s", clusterName)),
+			AssumeRolePolicy: roles.CreateIrsaAssumeRolePolicy(oidcProvider.Arn, oidcProvider.Url,
+				clusterAutoscalerNamespace, clusterAutoscalerServiceAccount),
 		}, pulumi.Parent(component))
 		if err != nil {
 			return nil, err

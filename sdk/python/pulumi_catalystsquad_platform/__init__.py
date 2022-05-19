@@ -8,6 +8,7 @@ import typing
 from .argocd_app import *
 from .cluster_bootstrap import *
 from .eks import *
+from .observability_dependencies import *
 from .provider import *
 from .vpc import *
 from ._inputs import *
@@ -22,6 +23,7 @@ _utilities.register(
    "catalystsquad-platform:index:ArgocdApp": "ArgocdApp",
    "catalystsquad-platform:index:ClusterBootstrap": "ClusterBootstrap",
    "catalystsquad-platform:index:Eks": "Eks",
+   "catalystsquad-platform:index:ObservabilityDependencies": "ObservabilityDependencies",
    "catalystsquad-platform:index:Vpc": "Vpc"
   }
  }
