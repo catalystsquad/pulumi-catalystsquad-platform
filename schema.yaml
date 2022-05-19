@@ -642,6 +642,49 @@ resources:
     requiredInputs:
     - oidcProviderArn
     - oidcProviderUrl
+  catalystsquad-platform:index:VeleroDependencies:
+    isComponent: true
+    inputProperties:
+      oidcProviderArn:
+        type: string
+        description: >-
+          Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role
+          trust relationship.
+      oidcProviderUrl:
+        type: string
+        description: >-
+          Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role
+          trust relationship.
+      createBucket:
+        type: boolean
+        description: >-
+          Optional, whether to create the Velero S3 bucket. Allows the bucket
+          to exist outside of pulumi. Default: true
+      veleroBucketName:
+        type: string
+        description: >-
+          Optional, Velero's bucket name. Default: <account-id>-<stack-name>-velero
+      veleroIAMPolicyName:
+        type: string
+        description: >-
+          Optional, Velero's IAM policy name. Default: <stack-name>-velero-policy
+      veleroIAMRoleName:
+        type: string
+        description: >-
+          Optional, Velero's IAM role name. Default: <stack-name>-velero-role
+      veleroNamespace:
+        type: string
+        description: >-
+          Optional, kubernetes namespace where Velero will exist, for configuring
+          the IRSA IAM role trust relationship. Default: velero
+      veleroServiceAccount:
+        type: string
+        description: >-
+          Optional, kubernetes service account name that Velero will use, for
+          configuring the IRSA IAM role trust relationship. Default: velero
+    requiredInputs:
+    - oidcProviderArn
+    - oidcProviderUrl
 language:
   csharp:
     # namespace override, otherwise build fails because of the `-` in catalystsquad-platform

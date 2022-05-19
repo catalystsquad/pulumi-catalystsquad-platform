@@ -39,11 +39,12 @@ func CreateIrsaAssumeRolePolicy(oidcProviderArn pulumi.StringInput, oidcProvider
 }
 
 // CreateRoleWithPolicy creates an IAM policy and associates it to a new IAM role.
-func CreateRoleWithPolicy(ctx *pulumi.Context, resourceNamePrefix string, policyJSON string,
-	assumeRolePolicyJSON pulumi.Output, roleDescription string, parent pulumi.Resource) error {
+func CreateRoleWithPolicy(ctx *pulumi.Context, resourceNamePrefix string, policyName string,
+	roleName string, policyJSON string, assumeRolePolicyJSON pulumi.Output,
+	roleDescription string, parent pulumi.Resource) error {
 
 	policy, err := iam.NewPolicy(ctx, fmt.Sprintf("%s-policy", resourceNamePrefix), &iam.PolicyArgs{
-		Name:        pulumi.String(fmt.Sprintf("%s-policy", resourceNamePrefix)),
+		Name:        pulumi.String(policyName),
 		Description: pulumi.String(roleDescription),
 		Policy:      pulumi.String(policyJSON),
 	}, pulumi.Parent(parent))
@@ -52,7 +53,7 @@ func CreateRoleWithPolicy(ctx *pulumi.Context, resourceNamePrefix string, policy
 	}
 
 	role, err := iam.NewRole(ctx, fmt.Sprintf("%s-role", resourceNamePrefix), &iam.RoleArgs{
-		Name:             pulumi.String(fmt.Sprintf("%s-role", resourceNamePrefix)),
+		Name:             pulumi.String(roleName),
 		AssumeRolePolicy: assumeRolePolicyJSON,
 	}, pulumi.Parent(parent))
 	if err != nil {

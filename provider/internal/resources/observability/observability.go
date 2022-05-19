@@ -18,6 +18,10 @@ type ObservabilityDependenciesArgs struct {
 	// Optional, name of bucket to create for Cortex.
 	// Default: <account-id>-<stack-name>-cortex
 	CortexBucketName string `pulumi:"cortexBucketName"`
+	// Optional, Cortex's IAM policy name. Default: cortex-policy
+	CortexIAMPolicyName string `pulumi:"cortexIAMPolicyName"`
+	// Optional, Cortex's IAM role name. Default: cortex-role
+	CortexIAMRoleName string `pulumi:"cortexIAMRoleName"`
 	// Optional, kubernetes namespace where Cortex will exist, for configuring
 	// the IRSA IAM role trust relationship. Default: cortex
 	CortexNamespace string `pulumi:"cortexNamespace"`
@@ -27,6 +31,10 @@ type ObservabilityDependenciesArgs struct {
 	// Optional, name of bucket to create for Loki.
 	// Default: <account-id>-<stack-name>-loki
 	LokiBucketName string `pulumi:"lokiBucketName"`
+	// Optional, Loki's IAM policy name. Default: loki-policy
+	LokiIAMPolicyName string `pulumi:"LokiIAMPolicyName"`
+	// Optional, Loki's IAM role name. Default: loki-role
+	LokiIAMRoleName string `pulumi:"lokiIAMRoleName"`
 	// Optional, kubernetes namespace where Loki will exist, for configuring
 	// the IRSA IAM role trust relationship. Default: loki
 	LokiNamespace string `pulumi:"lokiNamespace"`
@@ -67,6 +75,14 @@ func NewObservabilityDependencies(ctx *pulumi.Context, name string, args *Observ
 	if args.CortexNamespace != "" {
 		cortexNamespace = args.CortexNamespace
 	}
+	cortexIAMPolicyName := "cortex-policy"
+	if args.CortexIAMPolicyName != "" {
+		cortexIAMPolicyName = args.CortexIAMPolicyName
+	}
+	cortexIAMRoleName := "cortex-role"
+	if args.CortexIAMRoleName != "" {
+		cortexIAMRoleName = args.CortexIAMRoleName
+	}
 	cortexServiceAccount := "cortex"
 	if args.CortexServiceAccount != "" {
 		cortexServiceAccount = args.CortexServiceAccount
@@ -80,6 +96,14 @@ func NewObservabilityDependencies(ctx *pulumi.Context, name string, args *Observ
 	lokiNamespace := "loki"
 	if args.LokiNamespace != "" {
 		lokiNamespace = args.LokiNamespace
+	}
+	lokiIAMPolicyName := "loki-policy"
+	if args.LokiIAMPolicyName != "" {
+		lokiIAMPolicyName = args.LokiIAMPolicyName
+	}
+	lokiIAMRoleName := "loki-role"
+	if args.LokiIAMRoleName != "" {
+		lokiIAMRoleName = args.LokiIAMRoleName
 	}
 	lokiServiceAccount := "loki"
 	if args.LokiServiceAccount != "" {
@@ -118,7 +142,8 @@ func NewObservabilityDependencies(ctx *pulumi.Context, name string, args *Observ
 		return nil, err
 	}
 
-	err = roles.CreateRoleWithPolicy(ctx, "cortex", string(cortexPolicyBytes),
+	err = roles.CreateRoleWithPolicy(
+		ctx, "cortex", cortexIAMPolicyName, cortexIAMRoleName, string(cortexPolicyBytes),
 		roles.CreateIrsaAssumeRolePolicy(args.OidcProviderArn, args.OidcProviderURL,
 			cortexNamespace, cortexServiceAccount),
 		"Grants access to Cortex S3 Bucket", component,
@@ -155,7 +180,8 @@ func NewObservabilityDependencies(ctx *pulumi.Context, name string, args *Observ
 		return nil, err
 	}
 
-	err = roles.CreateRoleWithPolicy(ctx, "loki", string(lokiPolicyBytes),
+	err = roles.CreateRoleWithPolicy(
+		ctx, "loki", lokiIAMPolicyName, lokiIAMRoleName, string(lokiPolicyBytes),
 		roles.CreateIrsaAssumeRolePolicy(args.OidcProviderArn, args.OidcProviderURL,
 			lokiNamespace, lokiServiceAccount),
 		"Grants access to Loki S3 Bucket", component,

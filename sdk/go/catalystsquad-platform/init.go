@@ -28,6 +28,8 @@ func (m *module) Construct(ctx *pulumi.Context, name, typ, urn string) (r pulumi
 		r = &Eks{}
 	case "catalystsquad-platform:index:ObservabilityDependencies":
 		r = &ObservabilityDependencies{}
+	case "catalystsquad-platform:index:VeleroDependencies":
+		r = &VeleroDependencies{}
 	case "catalystsquad-platform:index:Vpc":
 		r = &Vpc{}
 	default:
