@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.2.3...v1.3.0) (2022-05-19)
+
+
+### Features
+
+* add observability dependencies component resource ([#15](https://github.com/catalystsquad/pulumi-catalystsquad-platform/issues/15)) ([b59d6e4](https://github.com/catalystsquad/pulumi-catalystsquad-platform/commit/b59d6e40176f8cfd509e016ff25892ce88ac498e))
+
 ## [1.2.3](https://github.com/catalystsquad/pulumi-catalystsquad-platform/compare/v1.2.2...v1.2.3) (2022-05-17)
 
 
