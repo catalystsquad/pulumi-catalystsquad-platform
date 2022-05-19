@@ -240,7 +240,7 @@ ArgocdApplicationSpec input properties:
 
 Observability dependencies are AWS resources necessary for operating Cortex and
 Loki. Including S3 buckets and IAM resources for EKS to authenticate to those
-buckets.
+buckets via IRSA.
 
 | input property       | type   | description                                                                                                                           |
 | ---                  | ---    | ---                                                                                                                                   |
@@ -253,3 +253,20 @@ buckets.
 | lokiNamespace        | string | Optional, kubernetes namespace where Loki will exist, for configuring the IRSA IAM role trust relationship. Default: loki             |
 | lokiServiceAccount   | string | Optional, kubernetes service account name that Loki will use, for configuring the IRSA IAM role trust relationship. Default: loki     |
 
+
+## Velero Dependencies
+
+Velero dependencies are AWS resources necessary for operating Velero in EKS. It
+includes an S3 bucket which is retained on destroy, and IAM resources for
+authentication to the bucket via IRSA.
+
+| input property       | type    | description                                                                                                                           |
+| ---                  | ---     | ---                                                                                                                                   |
+| oidcProviderArn      | string  | Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.                                             |
+| oidcProviderUrl      | string  | Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.                                             |
+| createBucket         | boolean | Optional, whether to create the Velero S3 bucket. Allows the bucket to exist outside of pulumi. Default: true                         |
+| veleroBucketName     | string  | Optional, Velero's bucket name. Default: <account-id>-<stack-name>-velero                                                             |
+| veleroIAMPolicyName  | string  | Optional, Velero's IAM policy name. Default: <stack-name>-velero-policy                                                               |
+| veleroIAMRoleName    | string  | Optional, Velero's IAM role name. Default: <stack-name>-velero-role                                                                   |
+| veleroNamespace      | string  | Optional, kubernetes namespace where Velero will exist, for configuring the IRSA IAM role trust relationship. Default: velero         |
+| veleroServiceAccount | string  | Optional, kubernetes service account name that Velero will use, for configuring the IRSA IAM role trust relationship. Default: velero |
