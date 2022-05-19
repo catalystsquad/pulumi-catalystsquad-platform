@@ -38,14 +38,22 @@ func NewObservabilityDependencies(ctx *pulumi.Context,
 }
 
 type observabilityDependenciesArgs struct {
+	// Optional, Loki's IAM policy name. Default: loki-policy
+	LokiIAMPolicyName *string `pulumi:"LokiIAMPolicyName"`
 	// Optional, name of bucket to create for Cortex. Default: <account-id>-<stack-name>-cortex
 	CortexBucketName *string `pulumi:"cortexBucketName"`
+	// Optional, Cortex's IAM policy name. Default: cortex-policy
+	CortexIAMPolicyName *string `pulumi:"cortexIAMPolicyName"`
+	// Optional, Cortex's IAM role name. Default: cortex-role
+	CortexIAMRoleName *string `pulumi:"cortexIAMRoleName"`
 	// Optional, kubernetes namespace where Cortex will exist, for configuring the IRSA IAM role trust relationship. Default: cortex
 	CortexNamespace *string `pulumi:"cortexNamespace"`
 	// Optional, kubernetes service account name that Cortex will use, for configuring the IRSA IAM role trust relationship. Default: cortex
 	CortexServiceAccount *string `pulumi:"cortexServiceAccount"`
 	// Optional, name of bucket to create for Loki. Default: <account-id>-<stack-name>-loki
 	LokiBucketName *string `pulumi:"lokiBucketName"`
+	// Optional, Loki's IAM role name. Default: loki-role
+	LokiIAMRoleName *string `pulumi:"lokiIAMRoleName"`
 	// Optional, kubernetes namespace where Loki will exist, for configuring the IRSA IAM role trust relationship. Default: loki
 	LokiNamespace *string `pulumi:"lokiNamespace"`
 	// Optional, kubernetes service account name that Loki will use, for configuring the IRSA IAM role trust relationship. Default: loki
@@ -58,14 +66,22 @@ type observabilityDependenciesArgs struct {
 
 // The set of arguments for constructing a ObservabilityDependencies resource.
 type ObservabilityDependenciesArgs struct {
+	// Optional, Loki's IAM policy name. Default: loki-policy
+	LokiIAMPolicyName pulumi.StringPtrInput
 	// Optional, name of bucket to create for Cortex. Default: <account-id>-<stack-name>-cortex
 	CortexBucketName pulumi.StringPtrInput
+	// Optional, Cortex's IAM policy name. Default: cortex-policy
+	CortexIAMPolicyName pulumi.StringPtrInput
+	// Optional, Cortex's IAM role name. Default: cortex-role
+	CortexIAMRoleName pulumi.StringPtrInput
 	// Optional, kubernetes namespace where Cortex will exist, for configuring the IRSA IAM role trust relationship. Default: cortex
 	CortexNamespace pulumi.StringPtrInput
 	// Optional, kubernetes service account name that Cortex will use, for configuring the IRSA IAM role trust relationship. Default: cortex
 	CortexServiceAccount pulumi.StringPtrInput
 	// Optional, name of bucket to create for Loki. Default: <account-id>-<stack-name>-loki
 	LokiBucketName pulumi.StringPtrInput
+	// Optional, Loki's IAM role name. Default: loki-role
+	LokiIAMRoleName pulumi.StringPtrInput
 	// Optional, kubernetes namespace where Loki will exist, for configuring the IRSA IAM role trust relationship. Default: loki
 	LokiNamespace pulumi.StringPtrInput
 	// Optional, kubernetes service account name that Loki will use, for configuring the IRSA IAM role trust relationship. Default: loki

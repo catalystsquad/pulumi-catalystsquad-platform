@@ -10,6 +10,7 @@ from .cluster_bootstrap import *
 from .eks import *
 from .observability_dependencies import *
 from .provider import *
+from .velero_dependencies import *
 from .vpc import *
 from ._inputs import *
 _utilities.register(
@@ -24,6 +25,7 @@ _utilities.register(
    "catalystsquad-platform:index:ClusterBootstrap": "ClusterBootstrap",
    "catalystsquad-platform:index:Eks": "Eks",
    "catalystsquad-platform:index:ObservabilityDependencies": "ObservabilityDependencies",
+   "catalystsquad-platform:index:VeleroDependencies": "VeleroDependencies",
    "catalystsquad-platform:index:Vpc": "Vpc"
   }
  }

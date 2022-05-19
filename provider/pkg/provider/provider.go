@@ -24,6 +24,7 @@ import (
 	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/bootstrap"
 	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/eks"
 	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/observability"
+	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/velero"
 	"github.com/catalystsquad/pulumi-catalystsquad-platform/internal/resources/vpc"
 )
 
@@ -40,6 +41,8 @@ func construct(ctx *pulumi.Context, typ, name string, inputs provider.ConstructI
 		return constructClusterBootstrap(ctx, name, inputs, options)
 	case "catalystsquad-platform:index:ObservabilityDependencies":
 		return constructObservabilityDependencies(ctx, name, inputs, options)
+	case "catalystsquad-platform:index:VeleroDependencies":
+		return constructVeleroDependencies(ctx, name, inputs, options)
 	default:
 		return nil, errors.Errorf("unknown resource type %s", typ)
 	}
@@ -129,6 +132,23 @@ func constructObservabilityDependencies(ctx *pulumi.Context, name string, inputs
 	}
 
 	component, err := observability.NewObservabilityDependencies(ctx, name, args, options)
+	if err != nil {
+		return nil, errors.Wrap(err, "creating component")
+	}
+
+	return provider.NewConstructResult(component)
+}
+
+// constructVeleroDependencies is an implementation of Construct for the VeleroDependencies component
+func constructVeleroDependencies(ctx *pulumi.Context, name string, inputs provider.ConstructInputs,
+	options pulumi.ResourceOption) (*provider.ConstructResult, error) {
+
+	args := &velero.VeleroDependenciesArgs{}
+	if err := inputs.CopyTo(args); err != nil {
+		return nil, errors.Wrap(err, "setting args")
+	}
+
+	component, err := velero.NewVeleroDependencies(ctx, name, args, options)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating component")
 	}

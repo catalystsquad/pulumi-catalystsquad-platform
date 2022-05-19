@@ -23,6 +23,7 @@
         "types/input.ts",
         "types/output.ts",
         "utilities.ts",
+        "veleroDependencies.ts",
         "vpc.ts"
     ]
 }
