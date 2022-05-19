@@ -41,10 +41,28 @@ namespace Pulumi.CatalystsquadPlatform
     public sealed class ObservabilityDependenciesArgs : Pulumi.ResourceArgs
     {
         /// <summary>
+        /// Optional, Loki's IAM policy name. Default: loki-policy
+        /// </summary>
+        [Input("LokiIAMPolicyName")]
+        public Input<string>? LokiIAMPolicyName { get; set; }
+
+        /// <summary>
         /// Optional, name of bucket to create for Cortex. Default: &lt;account-id&gt;-&lt;stack-name&gt;-cortex
         /// </summary>
         [Input("cortexBucketName")]
         public Input<string>? CortexBucketName { get; set; }
+
+        /// <summary>
+        /// Optional, Cortex's IAM policy name. Default: cortex-policy
+        /// </summary>
+        [Input("cortexIAMPolicyName")]
+        public Input<string>? CortexIAMPolicyName { get; set; }
+
+        /// <summary>
+        /// Optional, Cortex's IAM role name. Default: cortex-role
+        /// </summary>
+        [Input("cortexIAMRoleName")]
+        public Input<string>? CortexIAMRoleName { get; set; }
 
         /// <summary>
         /// Optional, kubernetes namespace where Cortex will exist, for configuring the IRSA IAM role trust relationship. Default: cortex
@@ -63,6 +81,12 @@ namespace Pulumi.CatalystsquadPlatform
         /// </summary>
         [Input("lokiBucketName")]
         public Input<string>? LokiBucketName { get; set; }
+
+        /// <summary>
+        /// Optional, Loki's IAM role name. Default: loki-role
+        /// </summary>
+        [Input("lokiIAMRoleName")]
+        public Input<string>? LokiIAMRoleName { get; set; }
 
         /// <summary>
         /// Optional, kubernetes namespace where Loki will exist, for configuring the IRSA IAM role trust relationship. Default: loki

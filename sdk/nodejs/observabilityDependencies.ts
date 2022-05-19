@@ -37,10 +37,14 @@ export class ObservabilityDependencies extends pulumi.ComponentResource {
             if ((!args || args.oidcProviderUrl === undefined) && !opts.urn) {
                 throw new Error("Missing required property 'oidcProviderUrl'");
             }
+            resourceInputs["LokiIAMPolicyName"] = args ? args.LokiIAMPolicyName : undefined;
             resourceInputs["cortexBucketName"] = args ? args.cortexBucketName : undefined;
+            resourceInputs["cortexIAMPolicyName"] = args ? args.cortexIAMPolicyName : undefined;
+            resourceInputs["cortexIAMRoleName"] = args ? args.cortexIAMRoleName : undefined;
             resourceInputs["cortexNamespace"] = args ? args.cortexNamespace : undefined;
             resourceInputs["cortexServiceAccount"] = args ? args.cortexServiceAccount : undefined;
             resourceInputs["lokiBucketName"] = args ? args.lokiBucketName : undefined;
+            resourceInputs["lokiIAMRoleName"] = args ? args.lokiIAMRoleName : undefined;
             resourceInputs["lokiNamespace"] = args ? args.lokiNamespace : undefined;
             resourceInputs["lokiServiceAccount"] = args ? args.lokiServiceAccount : undefined;
             resourceInputs["oidcProviderArn"] = args ? args.oidcProviderArn : undefined;
@@ -57,9 +61,21 @@ export class ObservabilityDependencies extends pulumi.ComponentResource {
  */
 export interface ObservabilityDependenciesArgs {
     /**
+     * Optional, Loki's IAM policy name. Default: loki-policy
+     */
+    LokiIAMPolicyName?: pulumi.Input<string>;
+    /**
      * Optional, name of bucket to create for Cortex. Default: <account-id>-<stack-name>-cortex
      */
     cortexBucketName?: pulumi.Input<string>;
+    /**
+     * Optional, Cortex's IAM policy name. Default: cortex-policy
+     */
+    cortexIAMPolicyName?: pulumi.Input<string>;
+    /**
+     * Optional, Cortex's IAM role name. Default: cortex-role
+     */
+    cortexIAMRoleName?: pulumi.Input<string>;
     /**
      * Optional, kubernetes namespace where Cortex will exist, for configuring the IRSA IAM role trust relationship. Default: cortex
      */
@@ -72,6 +88,10 @@ export interface ObservabilityDependenciesArgs {
      * Optional, name of bucket to create for Loki. Default: <account-id>-<stack-name>-loki
      */
     lokiBucketName?: pulumi.Input<string>;
+    /**
+     * Optional, Loki's IAM role name. Default: loki-role
+     */
+    lokiIAMRoleName?: pulumi.Input<string>;
     /**
      * Optional, kubernetes namespace where Loki will exist, for configuring the IRSA IAM role trust relationship. Default: loki
      */

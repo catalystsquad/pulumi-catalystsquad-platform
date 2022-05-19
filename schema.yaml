@@ -614,6 +614,14 @@ resources:
         description: >-
           Optional, name of bucket to create for Cortex.
           Default: <account-id>-<stack-name>-cortex
+      cortexIAMPolicyName:
+        type: string
+        description: >-
+          Optional, Cortex's IAM policy name. Default: cortex-policy
+      cortexIAMRoleName:
+        type: string
+        description: >-
+          Optional, Cortex's IAM role name. Default: cortex-role
       cortexNamespace:
         type: string
         description: >-
@@ -629,6 +637,14 @@ resources:
         description: >-
           Optional, name of bucket to create for Loki.
           Default: <account-id>-<stack-name>-loki
+      LokiIAMPolicyName:
+        type: string
+        description: >-
+          Optional, Loki's IAM policy name. Default: loki-policy
+      lokiIAMRoleName:
+        type: string
+        description: >-
+          Optional, Loki's IAM role name. Default: loki-role
       lokiNamespace:
         type: string
         description: >-

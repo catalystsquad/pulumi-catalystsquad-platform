@@ -247,9 +247,13 @@ buckets via IRSA.
 | oidcProviderArn      | string | Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.                                             |
 | oidcProviderUrl      | string | Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.                                             |
 | cortexBucketName     | string | Optional, name of bucket to create for Cortex. Default: <account-id>-<stack-name>-cortex                                              |
+| cortexIAMPolicyName  | string | Optional, Cortex's IAM policy name. Default: cortex-policy                                                                            |
+| cortexIAMRoleName    | string | Optional, Cortex's IAM role name. Default: cortex-role                                                                                |
 | cortexNamespace      | string | Optional, kubernetes namespace where Cortex will exist, for configuring the IRSA IAM role trust relationship. Default: cortex         |
 | cortexServiceAccount | string | Optional, kubernetes service account name that Cortex will use, for configuring the IRSA IAM role trust relationship. Default: cortex |
 | lokiBucketName       | string | Optional, name of bucket to create for Loki.  Default: <account-id>-<stack-name>-loki                                                 |
+| LokiIAMPolicyName    | string | Optional, Loki's IAM policy name. Default: loki-policy                                                                                |
+| lokiIAMRoleName      | string | Optional, Loki's IAM role name. Default: loki-role                                                                                    |
 | lokiNamespace        | string | Optional, kubernetes namespace where Loki will exist, for configuring the IRSA IAM role trust relationship. Default: loki             |
 | lokiServiceAccount   | string | Optional, kubernetes service account name that Loki will use, for configuring the IRSA IAM role trust relationship. Default: loki     |
 

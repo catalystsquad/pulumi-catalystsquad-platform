@@ -15,33 +15,49 @@ class ObservabilityDependenciesArgs:
     def __init__(__self__, *,
                  oidc_provider_arn: pulumi.Input[str],
                  oidc_provider_url: pulumi.Input[str],
+                 loki_iam_policy_name: Optional[pulumi.Input[str]] = None,
                  cortex_bucket_name: Optional[pulumi.Input[str]] = None,
+                 cortex_iam_policy_name: Optional[pulumi.Input[str]] = None,
+                 cortex_iam_role_name: Optional[pulumi.Input[str]] = None,
                  cortex_namespace: Optional[pulumi.Input[str]] = None,
                  cortex_service_account: Optional[pulumi.Input[str]] = None,
                  loki_bucket_name: Optional[pulumi.Input[str]] = None,
+                 loki_iam_role_name: Optional[pulumi.Input[str]] = None,
                  loki_namespace: Optional[pulumi.Input[str]] = None,
                  loki_service_account: Optional[pulumi.Input[str]] = None):
         """
         The set of arguments for constructing a ObservabilityDependencies resource.
         :param pulumi.Input[str] oidc_provider_arn: Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
         :param pulumi.Input[str] oidc_provider_url: Required, URL of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
+        :param pulumi.Input[str] loki_iam_policy_name: Optional, Loki's IAM policy name. Default: loki-policy
         :param pulumi.Input[str] cortex_bucket_name: Optional, name of bucket to create for Cortex. Default: <account-id>-<stack-name>-cortex
+        :param pulumi.Input[str] cortex_iam_policy_name: Optional, Cortex's IAM policy name. Default: cortex-policy
+        :param pulumi.Input[str] cortex_iam_role_name: Optional, Cortex's IAM role name. Default: cortex-role
         :param pulumi.Input[str] cortex_namespace: Optional, kubernetes namespace where Cortex will exist, for configuring the IRSA IAM role trust relationship. Default: cortex
         :param pulumi.Input[str] cortex_service_account: Optional, kubernetes service account name that Cortex will use, for configuring the IRSA IAM role trust relationship. Default: cortex
         :param pulumi.Input[str] loki_bucket_name: Optional, name of bucket to create for Loki. Default: <account-id>-<stack-name>-loki
+        :param pulumi.Input[str] loki_iam_role_name: Optional, Loki's IAM role name. Default: loki-role
         :param pulumi.Input[str] loki_namespace: Optional, kubernetes namespace where Loki will exist, for configuring the IRSA IAM role trust relationship. Default: loki
         :param pulumi.Input[str] loki_service_account: Optional, kubernetes service account name that Loki will use, for configuring the IRSA IAM role trust relationship. Default: loki
         """
         pulumi.set(__self__, "oidc_provider_arn", oidc_provider_arn)
         pulumi.set(__self__, "oidc_provider_url", oidc_provider_url)
+        if loki_iam_policy_name is not None:
+            pulumi.set(__self__, "loki_iam_policy_name", loki_iam_policy_name)
         if cortex_bucket_name is not None:
             pulumi.set(__self__, "cortex_bucket_name", cortex_bucket_name)
+        if cortex_iam_policy_name is not None:
+            pulumi.set(__self__, "cortex_iam_policy_name", cortex_iam_policy_name)
+        if cortex_iam_role_name is not None:
+            pulumi.set(__self__, "cortex_iam_role_name", cortex_iam_role_name)
         if cortex_namespace is not None:
             pulumi.set(__self__, "cortex_namespace", cortex_namespace)
         if cortex_service_account is not None:
             pulumi.set(__self__, "cortex_service_account", cortex_service_account)
         if loki_bucket_name is not None:
             pulumi.set(__self__, "loki_bucket_name", loki_bucket_name)
+        if loki_iam_role_name is not None:
+            pulumi.set(__self__, "loki_iam_role_name", loki_iam_role_name)
         if loki_namespace is not None:
             pulumi.set(__self__, "loki_namespace", loki_namespace)
         if loki_service_account is not None:
@@ -72,6 +88,18 @@ class ObservabilityDependenciesArgs:
         pulumi.set(self, "oidc_provider_url", value)
 
     @property
+    @pulumi.getter(name="LokiIAMPolicyName")
+    def loki_iam_policy_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, Loki's IAM policy name. Default: loki-policy
+        """
+        return pulumi.get(self, "loki_iam_policy_name")
+
+    @loki_iam_policy_name.setter
+    def loki_iam_policy_name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "loki_iam_policy_name", value)
+
+    @property
     @pulumi.getter(name="cortexBucketName")
     def cortex_bucket_name(self) -> Optional[pulumi.Input[str]]:
         """
@@ -82,6 +110,30 @@ class ObservabilityDependenciesArgs:
     @cortex_bucket_name.setter
     def cortex_bucket_name(self, value: Optional[pulumi.Input[str]]):
         pulumi.set(self, "cortex_bucket_name", value)
+
+    @property
+    @pulumi.getter(name="cortexIAMPolicyName")
+    def cortex_iam_policy_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, Cortex's IAM policy name. Default: cortex-policy
+        """
+        return pulumi.get(self, "cortex_iam_policy_name")
+
+    @cortex_iam_policy_name.setter
+    def cortex_iam_policy_name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "cortex_iam_policy_name", value)
+
+    @property
+    @pulumi.getter(name="cortexIAMRoleName")
+    def cortex_iam_role_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, Cortex's IAM role name. Default: cortex-role
+        """
+        return pulumi.get(self, "cortex_iam_role_name")
+
+    @cortex_iam_role_name.setter
+    def cortex_iam_role_name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "cortex_iam_role_name", value)
 
     @property
     @pulumi.getter(name="cortexNamespace")
@@ -120,6 +172,18 @@ class ObservabilityDependenciesArgs:
         pulumi.set(self, "loki_bucket_name", value)
 
     @property
+    @pulumi.getter(name="lokiIAMRoleName")
+    def loki_iam_role_name(self) -> Optional[pulumi.Input[str]]:
+        """
+        Optional, Loki's IAM role name. Default: loki-role
+        """
+        return pulumi.get(self, "loki_iam_role_name")
+
+    @loki_iam_role_name.setter
+    def loki_iam_role_name(self, value: Optional[pulumi.Input[str]]):
+        pulumi.set(self, "loki_iam_role_name", value)
+
+    @property
     @pulumi.getter(name="lokiNamespace")
     def loki_namespace(self) -> Optional[pulumi.Input[str]]:
         """
@@ -149,10 +213,14 @@ class ObservabilityDependencies(pulumi.ComponentResource):
     def __init__(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 loki_iam_policy_name: Optional[pulumi.Input[str]] = None,
                  cortex_bucket_name: Optional[pulumi.Input[str]] = None,
+                 cortex_iam_policy_name: Optional[pulumi.Input[str]] = None,
+                 cortex_iam_role_name: Optional[pulumi.Input[str]] = None,
                  cortex_namespace: Optional[pulumi.Input[str]] = None,
                  cortex_service_account: Optional[pulumi.Input[str]] = None,
                  loki_bucket_name: Optional[pulumi.Input[str]] = None,
+                 loki_iam_role_name: Optional[pulumi.Input[str]] = None,
                  loki_namespace: Optional[pulumi.Input[str]] = None,
                  loki_service_account: Optional[pulumi.Input[str]] = None,
                  oidc_provider_arn: Optional[pulumi.Input[str]] = None,
@@ -162,10 +230,14 @@ class ObservabilityDependencies(pulumi.ComponentResource):
         Create a ObservabilityDependencies resource with the given unique name, props, and options.
         :param str resource_name: The name of the resource.
         :param pulumi.ResourceOptions opts: Options for the resource.
+        :param pulumi.Input[str] loki_iam_policy_name: Optional, Loki's IAM policy name. Default: loki-policy
         :param pulumi.Input[str] cortex_bucket_name: Optional, name of bucket to create for Cortex. Default: <account-id>-<stack-name>-cortex
+        :param pulumi.Input[str] cortex_iam_policy_name: Optional, Cortex's IAM policy name. Default: cortex-policy
+        :param pulumi.Input[str] cortex_iam_role_name: Optional, Cortex's IAM role name. Default: cortex-role
         :param pulumi.Input[str] cortex_namespace: Optional, kubernetes namespace where Cortex will exist, for configuring the IRSA IAM role trust relationship. Default: cortex
         :param pulumi.Input[str] cortex_service_account: Optional, kubernetes service account name that Cortex will use, for configuring the IRSA IAM role trust relationship. Default: cortex
         :param pulumi.Input[str] loki_bucket_name: Optional, name of bucket to create for Loki. Default: <account-id>-<stack-name>-loki
+        :param pulumi.Input[str] loki_iam_role_name: Optional, Loki's IAM role name. Default: loki-role
         :param pulumi.Input[str] loki_namespace: Optional, kubernetes namespace where Loki will exist, for configuring the IRSA IAM role trust relationship. Default: loki
         :param pulumi.Input[str] loki_service_account: Optional, kubernetes service account name that Loki will use, for configuring the IRSA IAM role trust relationship. Default: loki
         :param pulumi.Input[str] oidc_provider_arn: Required, Arn of EKS OIDC Provider for configuring the IRSA  IAM role trust relationship.
@@ -194,10 +266,14 @@ class ObservabilityDependencies(pulumi.ComponentResource):
     def _internal_init(__self__,
                  resource_name: str,
                  opts: Optional[pulumi.ResourceOptions] = None,
+                 loki_iam_policy_name: Optional[pulumi.Input[str]] = None,
                  cortex_bucket_name: Optional[pulumi.Input[str]] = None,
+                 cortex_iam_policy_name: Optional[pulumi.Input[str]] = None,
+                 cortex_iam_role_name: Optional[pulumi.Input[str]] = None,
                  cortex_namespace: Optional[pulumi.Input[str]] = None,
                  cortex_service_account: Optional[pulumi.Input[str]] = None,
                  loki_bucket_name: Optional[pulumi.Input[str]] = None,
+                 loki_iam_role_name: Optional[pulumi.Input[str]] = None,
                  loki_namespace: Optional[pulumi.Input[str]] = None,
                  loki_service_account: Optional[pulumi.Input[str]] = None,
                  oidc_provider_arn: Optional[pulumi.Input[str]] = None,
@@ -218,10 +294,14 @@ class ObservabilityDependencies(pulumi.ComponentResource):
                 raise TypeError('__props__ is only valid when passed in combination with a valid opts.id to get an existing resource')
             __props__ = ObservabilityDependenciesArgs.__new__(ObservabilityDependenciesArgs)
 
+            __props__.__dict__["loki_iam_policy_name"] = loki_iam_policy_name
             __props__.__dict__["cortex_bucket_name"] = cortex_bucket_name
+            __props__.__dict__["cortex_iam_policy_name"] = cortex_iam_policy_name
+            __props__.__dict__["cortex_iam_role_name"] = cortex_iam_role_name
             __props__.__dict__["cortex_namespace"] = cortex_namespace
             __props__.__dict__["cortex_service_account"] = cortex_service_account
             __props__.__dict__["loki_bucket_name"] = loki_bucket_name
+            __props__.__dict__["loki_iam_role_name"] = loki_iam_role_name
             __props__.__dict__["loki_namespace"] = loki_namespace
             __props__.__dict__["loki_service_account"] = loki_service_account
             if oidc_provider_arn is None and not opts.urn:
